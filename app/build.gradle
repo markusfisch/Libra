@@ -47,7 +47,7 @@ android {
 }
 
 dependencies {
-	compile "com.android.support:appcompat-v7:$support_version"
-	compile "com.android.support:design:$support_version"
-	compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+	implementation "com.android.support:appcompat-v7:$support_version"
+	implementation "com.android.support:design:$support_version"
+	implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 }
