@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lint>
+	<!-- Lint can't understand Kotlin sources and reports all resources
+		as unused -->
+	<issue id="UnusedResources">
+		<ignore path="src/main/res/"/>
+	</issue>
+</lint>

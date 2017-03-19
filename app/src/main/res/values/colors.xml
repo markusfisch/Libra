@@ -1,0 +1,6 @@
+<resources>
+	<color name="primary">#006abd</color>
+	<color name="primary_dark">#005aad</color>
+	<color name="accent">#bd6a00</color>
+	<color name="separator">#ddd</color>
+</resources>
