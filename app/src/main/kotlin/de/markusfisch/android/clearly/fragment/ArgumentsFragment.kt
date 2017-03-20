@@ -59,15 +59,21 @@ class ArgumentsFragment(): Fragment() {
 			inflater: LayoutInflater,
 			container: ViewGroup?,
 			state: Bundle?): View {
-		val activity = getActivity()
-		activity.setTitle(R.string.arguments)
-		adapter = ArgumentsAdapter(activity,
-				ClearlyApp.data.getArguments(decisionId))
-
 		var args = getArguments()
 		if (args != null) {
 			decisionId = args.getLong(DECISION_ID, 0)
 		}
+
+		val activity = getActivity()
+		var title = ClearlyApp.data.getDecisionName(decisionId)
+		if (title.isEmpty()) {
+			activity.setTitle(R.string.arguments)
+		} else {
+			activity.setTitle(title)
+		}
+
+		adapter = ArgumentsAdapter(activity,
+				ClearlyApp.data.getArguments(decisionId))
 
 		val view = inflater.inflate(
 				R.layout.fragment_arguments,

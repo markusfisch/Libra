@@ -67,6 +67,25 @@ class DataSource() {
 				ORDER BY $DECISIONS_ID""", null)
 	}
 
+	fun getDecisionName(id: Long): String {
+		val cursor: Cursor? = db.rawQuery("""SELECT
+				$DECISIONS_NAME
+				FROM $DECISIONS
+				WHERE $DECISIONS_ID = $id""", null)
+
+		if (cursor == null) {
+			return ""
+		} else if (!cursor.moveToFirst()) {
+			cursor.close()
+			return ""
+		}
+
+		val name = cursor.getString(cursor.getColumnIndex(DECISIONS_NAME))
+		cursor.close()
+
+		return name
+	}
+
 	fun insertDecision(name: String): Long {
 		val cv = ContentValues()
 		cv.put(DECISIONS_NAME, name)

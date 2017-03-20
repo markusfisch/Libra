@@ -82,8 +82,8 @@ class ArgumentView: TextView {
 			color = 0x44880000.toInt()
 		}
 		paint.setColor(color)
-		var top = height - padding * 2
-		var bottom = height - padding
+		var top = padding
+		var bottom = padding + padding
 		var i = Math.abs(weight % 11)
 		while (i-- > 0) {
 			canvas.drawRect(
