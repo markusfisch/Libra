@@ -3,10 +3,12 @@ package de.markusfisch.android.clearly.fragment
 import de.markusfisch.android.clearly.adapter.ArgumentsAdapter
 import de.markusfisch.android.clearly.app.ClearlyApp
 import de.markusfisch.android.clearly.app.replaceFragment
+import de.markusfisch.android.clearly.database.DataSource
 import de.markusfisch.android.clearly.R
 
 import android.app.AlertDialog
 import android.content.Context
+import android.database.Cursor
 import android.support.v4.app.Fragment
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -18,6 +20,7 @@ import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import android.widget.ListView
+import android.widget.TextView
 
 class ArgumentsFragment(): Fragment() {
 	companion object {
@@ -37,11 +40,14 @@ class ArgumentsFragment(): Fragment() {
 	private lateinit var editText: EditText
 	private lateinit var cancelButton: View
 	private lateinit var removeButton: View
+	private lateinit var headerText: TextView
 	private var argumentId: Long = 0
 	private var decisionId: Long = 0
 
 	fun reloadList() {
-		adapter.changeCursor(ClearlyApp.data.getArguments(decisionId))
+		val cursor = ClearlyApp.data.getArguments(decisionId)
+		adapter.changeCursor(cursor)
+		setRecommendation(cursor, headerText)
 	}
 
 	fun editArgument(id: Long) {
@@ -73,8 +79,8 @@ class ArgumentsFragment(): Fragment() {
 			activity.setTitle(title)
 		}
 
-		adapter = ArgumentsAdapter(activity,
-				ClearlyApp.data.getArguments(decisionId))
+		val cursor = ClearlyApp.data.getArguments(decisionId)
+		adapter = ArgumentsAdapter(activity, cursor)
 
 		val view = inflater.inflate(
 				R.layout.fragment_arguments,
@@ -105,12 +111,15 @@ class ArgumentsFragment(): Fragment() {
 		}
 
 		val listView = view.findViewById(R.id.arguments) as ListView
-		listView.addHeaderView(inflater.inflate(
+		headerText = inflater.inflate(
 				R.layout.header_arguments,
 				listView,
-				false), null, false)
+				false) as TextView
+		listView.addHeaderView(headerText, null, false)
 		listView.setEmptyView(view.findViewById(R.id.no_arguments))
 		listView.setAdapter(adapter)
+
+		setRecommendation(cursor, headerText)
 
 		return view
 	}
@@ -139,6 +148,39 @@ class ArgumentsFragment(): Fragment() {
 				true
 			}
 			else -> super.onOptionsItemSelected(item)
+		}
+	}
+
+	private fun setRecommendation(cursor: Cursor, textView: TextView) {
+		if (!cursor.moveToFirst()) {
+			return
+		}
+
+		val weightIndex = cursor.getColumnIndex(
+				DataSource.ARGUMENTS_WEIGHT)
+		var positive = 0
+		var negative = 0
+
+		do {
+			val weight = cursor.getInt(weightIndex)
+			if (weight > 0) {
+				positive += weight
+			} else if (weight < 0) {
+				negative += -weight
+			} else {
+				textView.setText(R.string.weigh_arguments)
+				return
+			}
+		} while (cursor.moveToNext())
+
+		cursor.moveToFirst()
+
+		if (positive >= negative * 2) {
+			textView.setText(R.string.do_it)
+		} else if (positive > negative) {
+			textView.setText(R.string.think_it_over)
+		} else {
+			textView.setText(R.string.do_not_do_it)
 		}
 	}
 
