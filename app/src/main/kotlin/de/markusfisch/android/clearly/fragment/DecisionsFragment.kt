@@ -13,16 +13,13 @@ import android.view.ViewGroup
 import android.widget.ListView
 
 class DecisionsFragment(): Fragment() {
-	private lateinit var adapter: DecisionsAdapter
-	private lateinit var listView: ListView
-
 	override fun onCreateView(
 			inflater: LayoutInflater,
 			container: ViewGroup?,
 			state: Bundle?): View {
 		val activity = getActivity()
 		activity.setTitle(R.string.decisions)
-		adapter = DecisionsAdapter(activity,
+		val adapter = DecisionsAdapter(activity,
 				ClearlyApp.data.getDecisions())
 
 		val view = inflater.inflate(
@@ -30,7 +27,7 @@ class DecisionsFragment(): Fragment() {
 				container,
 				false)
 
-		listView = view.findViewById(R.id.decisions) as ListView
+		val listView = view.findViewById(R.id.decisions) as ListView
 		listView.setEmptyView(view.findViewById(R.id.no_decisions))
 		listView.setAdapter(adapter)
 		listView.setOnItemClickListener { parent, view, position, id ->

@@ -114,5 +114,6 @@ svg/ic_action_remove.svg
 svg/ic_action_list.svg
 svg/ic_arrow_down.svg
 svg/ic_arrow_up.svg
+svg/ic_cancel.svg
 svg/ic_delete.svg
 EOF

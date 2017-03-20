@@ -3,7 +3,6 @@ package de.markusfisch.android.clearly.widget
 import android.content.Context
 import android.util.AttributeSet
 import android.view.MotionEvent
-import android.view.ViewConfiguration
 import android.widget.ListView
 
 class SwipeListView: ListView {

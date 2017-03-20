@@ -34,8 +34,8 @@ class ArgumentsFragment(): Fragment() {
 	}
 
 	private lateinit var adapter: ArgumentsAdapter
-	private lateinit var listView: ListView
 	private lateinit var editText: EditText
+	private lateinit var cancelButton: View
 	private lateinit var removeButton: View
 	private var argumentId: Long = 0
 	private var decisionId: Long = 0
@@ -47,6 +47,7 @@ class ArgumentsFragment(): Fragment() {
 	fun editArgument(id: Long) {
 		argumentId = id
 		editText.setText(ClearlyApp.data.getArgumentText(id))
+		cancelButton.setVisibility(View.VISIBLE)
 		removeButton.setVisibility(View.VISIBLE)
 	}
 
@@ -92,15 +93,18 @@ class ArgumentsFragment(): Fragment() {
 			}
 		}
 
+		cancelButton = view.findViewById(R.id.cancel_editing)
+		cancelButton.setOnClickListener { v -> resetInput() }
+
 		removeButton = view.findViewById(R.id.remove_argument)
 		removeButton.setOnClickListener { v ->
 			if (argumentId > 0) {
-				removeArgument(argumentId)
+				askToRemoveArgument(activity, argumentId)
 				resetInput()
 			}
 		}
 
-		listView = view.findViewById(R.id.arguments) as ListView
+		val listView = view.findViewById(R.id.arguments) as ListView
 		listView.addHeaderView(inflater.inflate(
 				R.layout.header_arguments,
 				listView,
@@ -156,9 +160,10 @@ class ArgumentsFragment(): Fragment() {
 		AlertDialog.Builder(context)
 				.setMessage(R.string.really_remove)
 				.setPositiveButton(android.R.string.ok, { dialog, id ->
-						removeArgument(argId) })
+						removeArgument(argId)
+				})
 				.setNegativeButton(android.R.string.cancel, { dialog, id ->
-						})
+				})
 				.show()
 	}
 
@@ -189,5 +194,6 @@ class ArgumentsFragment(): Fragment() {
 		editText.setText("")
 		argumentId = 0
 		removeButton.setVisibility(View.GONE)
+		cancelButton.setVisibility(View.GONE)
 	}
 }

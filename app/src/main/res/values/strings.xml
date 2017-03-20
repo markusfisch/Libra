@@ -7,8 +7,9 @@
 	<string name="think_it_over">Maybe you should give this thing a second thought.</string>
 	<string name="do_not_do_it">Well, rather not.</string>
 	<string name="enter_argument">Enter argument</string>
-	<string name="remove_argument">Delete argument</string>
+	<string name="remove_argument">Remove argument</string>
 	<string name="really_remove">Really remove argument?</string>
+	<string name="cancel_editing">Cancel editing</string>
 	<string name="new_decision">New</string>
 	<string name="decisions_list">Decisions</string>
 	<string name="remove_decision">Remove decision</string>
