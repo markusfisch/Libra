@@ -123,14 +123,7 @@ class ArgumentsFragment(): Fragment() {
 	override fun onOptionsItemSelected(item: MenuItem): Boolean {
 		return when (item.getItemId()) {
 			R.id.decisions_list -> {
-				/*getFragmentManager()
-						.beginTransaction()
-						.replace(R.id.content_frame, DecisionsFragment())
-						.addToBackStack(null)
-						.commit()*/
-				replaceFragment(
-						getFragmentManager(),
-						DecisionsFragment())
+				replaceFragment(getFragmentManager(), DecisionsFragment())
 				true
 			}
 			R.id.new_decision -> {

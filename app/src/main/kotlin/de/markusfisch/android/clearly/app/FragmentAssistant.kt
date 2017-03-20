@@ -14,7 +14,7 @@ fun replaceFragment(fm: FragmentManager, fragment: Fragment) {
 	getTransaction(fm, fragment).addToBackStack(null).commit()
 }
 
-fun getTransaction(
+private fun getTransaction(
 		fm: FragmentManager,
 		fragment: Fragment): FragmentTransaction {
 	return fm.beginTransaction().replace(R.id.content_frame, fragment)

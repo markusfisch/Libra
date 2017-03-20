@@ -26,13 +26,7 @@ class MainActivity(): AppCompatActivity() {
 		initToolbar()
 
 		if (state == null) {
-			/*getSupportFragmentManager()
-					.beginTransaction()
-					.replace(R.id.content_frame, ArgumentsFragment())
-					.commit()*/
-			setFragment(
-					getSupportFragmentManager(),
-					ArgumentsFragment())
+			setFragment(getSupportFragmentManager(), ArgumentsFragment())
 		}
 	}
 

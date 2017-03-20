@@ -34,8 +34,7 @@ class DecisionsFragment(): Fragment() {
 		listView.setEmptyView(view.findViewById(R.id.no_decisions))
 		listView.setAdapter(adapter)
 		listView.setOnItemClickListener { parent, view, position, id ->
-			replaceFragment(
-					getFragmentManager(),
+			replaceFragment(getFragmentManager(),
 					ArgumentsFragment.newInstance(id))
 		}
 
