@@ -140,11 +140,11 @@ class ArgumentsFragment(): Fragment() {
 				true
 			}
 			R.id.new_decision -> {
-				newDecision()
+				askForDecisionName(getActivity())
 				true
 			}
 			R.id.remove_decision-> {
-				removeDecision()
+				askToRemoveDecision(getActivity())
 				true
 			}
 			else -> super.onOptionsItemSelected(item)
@@ -200,7 +200,7 @@ class ArgumentsFragment(): Fragment() {
 
 	private fun askToRemoveArgument(context: Context, argId: Long) {
 		AlertDialog.Builder(context)
-				.setMessage(R.string.really_remove)
+				.setMessage(R.string.really_remove_argument)
 				.setPositiveButton(android.R.string.ok, { dialog, id ->
 						removeArgument(argId)
 				})
@@ -214,15 +214,41 @@ class ArgumentsFragment(): Fragment() {
 		reloadList()
 	}
 
-	private fun newDecision(discard: Boolean = false) {
-		if (discard) {
+	private fun askForDecisionName(context: Context) {
+		val view = LayoutInflater.from(context).inflate(
+				R.layout.dialog_enter_name, null)
+		val nameView = view.findViewById(R.id.name) as EditText
+		AlertDialog.Builder(context)
+				.setView(view)
+				.setPositiveButton(android.R.string.ok, { dialog, id ->
+					newDecision(nameView.getText().toString())
+				})
+				.setNegativeButton(android.R.string.cancel, { dialog, id ->
+					newDecision()
+				})
+				.show()
+	}
+
+	private fun newDecision(name: String? = null) {
+		if (name == null || name.isEmpty()) {
 			ClearlyApp.data.removeDecision(0)
 		} else if (decisionId == 0L) {
 			ClearlyApp.data.fileArguments(0,
-					ClearlyApp.data.insertDecision("test"))
+					ClearlyApp.data.insertDecision(name))
 		}
 		decisionId = 0
 		reloadList()
+	}
+
+	private fun askToRemoveDecision(context: Context) {
+		AlertDialog.Builder(context)
+				.setMessage(R.string.really_remove_decision)
+				.setPositiveButton(android.R.string.ok, { dialog, id ->
+						removeDecision()
+				})
+				.setNegativeButton(android.R.string.cancel, { dialog, id ->
+				})
+				.show()
 	}
 
 	private fun removeDecision() {

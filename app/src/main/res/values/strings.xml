@@ -8,11 +8,14 @@
 	<string name="do_not_do_it">Well, rather not.</string>
 	<string name="enter_argument">Enter argument</string>
 	<string name="remove_argument">Remove argument</string>
-	<string name="really_remove">Really remove argument?</string>
+	<string name="really_remove_argument">Really remove argument?</string>
+	<string name="really_remove_decision">Really remove decision?</string>
 	<string name="cancel_editing">Cancel editing</string>
 	<string name="new_decision">New</string>
 	<string name="decisions_list">Decisions</string>
 	<string name="remove_decision">Remove decision</string>
 	<string name="decisions">Decisions</string>
 	<string name="no_decisions_saved">No decisions saved yet.</string>
+	<string name="enter_name">Enter a name</string>
+	<string name="enter_name_hint">What\'s this about?</string>
 </resources>
