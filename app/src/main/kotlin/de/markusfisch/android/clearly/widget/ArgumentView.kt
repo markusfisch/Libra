@@ -46,6 +46,7 @@ class ArgumentView: TextView {
 					} else {
 						storeWeight()
 					}
+					performClick()
 					true
 				}
 				MotionEvent.ACTION_CANCEL -> {

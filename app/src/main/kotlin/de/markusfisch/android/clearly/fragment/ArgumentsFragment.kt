@@ -126,25 +126,12 @@ class ArgumentsFragment(): Fragment() {
 
 	override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
 		inflater.inflate(R.menu.fragment_arguments, menu)
-
-		val hasId = decisionId > 0
-		menu.findItem(R.id.decisions_list).setVisible(!hasId)
-		menu.findItem(R.id.new_decision).setVisible(!hasId)
-		menu.findItem(R.id.remove_decision).setVisible(hasId)
 	}
 
 	override fun onOptionsItemSelected(item: MenuItem): Boolean {
 		return when (item.getItemId()) {
 			R.id.sort_arguments -> {
 				sortArguments()
-				true
-			}
-			R.id.decisions_list -> {
-				replaceFragment(getFragmentManager(), DecisionsFragment())
-				true
-			}
-			R.id.new_decision -> {
-				askForDecisionName(getActivity())
 				true
 			}
 			R.id.remove_decision-> {
@@ -218,32 +205,6 @@ class ArgumentsFragment(): Fragment() {
 		reloadList()
 	}
 
-	private fun askForDecisionName(context: Context) {
-		val view = LayoutInflater.from(context).inflate(
-				R.layout.dialog_enter_name, null)
-		val nameView = view.findViewById(R.id.name) as EditText
-		AlertDialog.Builder(context)
-				.setView(view)
-				.setPositiveButton(android.R.string.ok, { dialog, id ->
-					newDecision(nameView.getText().toString())
-				})
-				.setNegativeButton(android.R.string.cancel, { dialog, id ->
-					newDecision()
-				})
-				.show()
-	}
-
-	private fun newDecision(name: String? = null) {
-		if (name == null || name.isEmpty()) {
-			ClearlyApp.data.removeDecision(0)
-		} else if (decisionId == 0L) {
-			ClearlyApp.data.fileArguments(0,
-					ClearlyApp.data.insertDecision(name))
-		}
-		decisionId = 0
-		reloadList()
-	}
-
 	private fun askToRemoveDecision(context: Context) {
 		AlertDialog.Builder(context)
 				.setMessage(R.string.really_remove_decision)
@@ -255,10 +216,8 @@ class ArgumentsFragment(): Fragment() {
 	}
 
 	private fun removeDecision() {
-		if (decisionId > 0) {
-			ClearlyApp.data.removeDecision(decisionId)
-			getFragmentManager().popBackStack()
-		}
+		ClearlyApp.data.removeDecision(decisionId)
+		getFragmentManager().popBackStack()
 	}
 
 	private fun sortArguments() {

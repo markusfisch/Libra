@@ -15,6 +15,8 @@ class DecisionsAdapter(context: Context, cursor: Cursor):
 		CursorAdapter(context, cursor, false) {
 	private val nameIndex = cursor.getColumnIndex(
 			DataSource.DECISIONS_NAME)
+	private val createdIndex = cursor.getColumnIndex(
+			DataSource.DECISIONS_CREATED_STRING)
 
 	override fun newView(
 			context: Context,
@@ -29,18 +31,26 @@ class DecisionsAdapter(context: Context, cursor: Cursor):
 			context: Context,
 			cursor: Cursor) {
 		val holder = getViewHolder(view)
-		holder.nameView.setText(cursor.getString(nameIndex))
+		var name: String? = cursor.getString(nameIndex)
+		if (name == null || name.isEmpty()) {
+			name = context.getString(R.string.unnamed)
+		}
+		holder.nameView.setText(name)
+		holder.createdView.setText(cursor.getString(createdIndex))
 	}
 
 	private fun getViewHolder(view: View): ViewHolder {
 		var holder = view.getTag() as ViewHolder?
 		if (holder == null) {
 			holder = ViewHolder(
-					view.findViewById(R.id.name) as TextView)
+					view.findViewById(R.id.name) as TextView,
+					view.findViewById(R.id.created) as TextView)
 			view.setTag(holder)
 		}
 		return holder
 	}
 
-	private data class ViewHolder(val nameView: TextView)
+	private data class ViewHolder(
+			val nameView: TextView,
+			val createdView: TextView)
 }

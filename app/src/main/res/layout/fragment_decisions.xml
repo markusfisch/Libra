@@ -1,5 +1,6 @@
 <RelativeLayout
 	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
 	xmlns:tools="http://schemas.android.com/tools"
 	tools:ignore="UnusedAttribute"
 	android:layout_width="match_parent"
@@ -25,4 +26,14 @@
 			android:gravity="center"
 			android:text="@string/no_decisions_saved"/>
 	</RelativeLayout>
+	<android.support.design.widget.FloatingActionButton
+		android:id="@+id/add"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_alignParentEnd="true"
+		android:layout_alignParentRight="true"
+		android:layout_alignParentBottom="true"
+		android:layout_margin="20dp"
+		android:src="@drawable/ic_action_add"
+		app:elevation="4dp"/>
 </RelativeLayout>

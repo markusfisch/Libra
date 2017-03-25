@@ -17,6 +17,7 @@ class DataSource() {
 		val DECISIONS_ID = "_id"
 		val DECISIONS_NAME = "name"
 		val DECISIONS_CREATED = "created"
+		val DECISIONS_CREATED_STRING = "created_string"
 
 		val ARGUMENTS = "arguments"
 		val ARGUMENTS_ID = "_id"
@@ -29,7 +30,7 @@ class DataSource() {
 			db.execSQL("DROP TABLE IF EXISTS $DECISIONS")
 			db.execSQL("""CREATE TABLE $DECISIONS (
 					$DECISIONS_ID INTEGER PRIMARY KEY AUTOINCREMENT,
-					$DECISIONS_NAME TEXT NOT NULL,
+					$DECISIONS_NAME TEXT,
 					$DECISIONS_CREATED DATETIME)""")
 		}
 
@@ -64,33 +65,22 @@ class DataSource() {
 	fun getDecisions(): Cursor {
 		return db.rawQuery("""SELECT
 				$DECISIONS_ID,
-				$DECISIONS_NAME
+				$DECISIONS_NAME,
+				strftime('%Y-%m-%d %H:%M',
+						$DECISIONS_CREATED) AS $DECISIONS_CREATED_STRING
 				FROM $DECISIONS
-				ORDER BY $DECISIONS_ID""", null)
+				ORDER BY $DECISIONS_CREATED DESC""", null)
 	}
 
 	fun getDecisionName(id: Long): String {
-		val cursor: Cursor? = db.rawQuery("""SELECT
+		return queryStringColumn("""SELECT
 				$DECISIONS_NAME
 				FROM $DECISIONS
-				WHERE $DECISIONS_ID = $id""", null)
-
-		if (cursor == null) {
-			return ""
-		} else if (!cursor.moveToFirst()) {
-			cursor.close()
-			return ""
-		}
-
-		val name = cursor.getString(cursor.getColumnIndex(DECISIONS_NAME))
-		cursor.close()
-
-		return name
+				WHERE $DECISIONS_ID = $id""", DECISIONS_NAME)
 	}
 
-	fun insertDecision(name: String): Long {
+	fun insertDecision(): Long {
 		val cv = ContentValues()
-		cv.put(DECISIONS_NAME, name)
 		cv.put(DECISIONS_CREATED, now())
 		return db.insert(DECISIONS, null, cv)
 	}
@@ -98,6 +88,12 @@ class DataSource() {
 	fun removeDecision(id: Long) {
 		db.delete(ARGUMENTS, "$ARGUMENTS_DECISION = $id", null)
 		db.delete(DECISIONS, "$DECISIONS_ID = $id", null)
+	}
+
+	fun updateDecisionName(id: Long, name: String) {
+		val cv = ContentValues()
+		cv.put(DECISIONS_NAME, name)
+		db.update(DECISIONS, cv, "$DECISIONS_ID = $id", null)
 	}
 
 	fun getArguments(decisionId: Long): Cursor {
@@ -111,29 +107,11 @@ class DataSource() {
 				ORDER BY $ARGUMENTS_ORDER, $ARGUMENTS_ID""", null)
 	}
 
-	fun sortArguments(decisionId: Long) {
-		val cv = ContentValues()
-		cv.put(ARGUMENTS_ORDER, ARGUMENTS_WEIGHT)
-		db.update(ARGUMENTS, cv, "$ARGUMENTS_DECISION = $decisionId", null)
-	}
-
 	fun getArgumentText(id: Long): String {
-		val cursor: Cursor? = db.rawQuery("""SELECT
+		return queryStringColumn("""SELECT
 				$ARGUMENTS_TEXT
 				FROM $ARGUMENTS
-				WHERE $ARGUMENTS_ID = $id""", null)
-
-		if (cursor == null) {
-			return ""
-		} else if (!cursor.moveToFirst()) {
-			cursor.close()
-			return ""
-		}
-
-		val text = cursor.getString(cursor.getColumnIndex(ARGUMENTS_TEXT))
-		cursor.close()
-
-		return text
+				WHERE $ARGUMENTS_ID = $id""", ARGUMENTS_TEXT)
 	}
 
 	fun insertArgument(decisionId: Long, text: String, weight: Int): Long {
@@ -161,11 +139,26 @@ class DataSource() {
 		db.update(ARGUMENTS, cv, "$ARGUMENTS_ID = $id", null)
 	}
 
-	fun fileArguments(from: Long, to: Long) {
+	fun sortArguments(decisionId: Long) {
 		val cv = ContentValues()
-		cv.put(ARGUMENTS_DECISION, to)
 		cv.put(ARGUMENTS_ORDER, ARGUMENTS_WEIGHT)
-		db.update(ARGUMENTS, cv, "$ARGUMENTS_DECISION = $from", null)
+		db.update(ARGUMENTS, cv, "$ARGUMENTS_DECISION = $decisionId", null)
+	}
+
+	private fun queryStringColumn(query: String, column: String): String {
+		val cursor: Cursor? = db.rawQuery(query, null)
+
+		if (cursor == null) {
+			return ""
+		} else if (!cursor.moveToFirst()) {
+			cursor.close()
+			return ""
+		}
+
+		val text: String? = cursor.getString(cursor.getColumnIndex(column))
+		cursor.close()
+
+		return text ?: ""
 	}
 
 	private class OpenHelper(context: Context):

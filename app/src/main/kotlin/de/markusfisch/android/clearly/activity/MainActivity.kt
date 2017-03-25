@@ -1,7 +1,7 @@
 package de.markusfisch.android.clearly.activity
 
 import de.markusfisch.android.clearly.app.setFragment
-import de.markusfisch.android.clearly.fragment.ArgumentsFragment
+import de.markusfisch.android.clearly.fragment.DecisionsFragment
 import de.markusfisch.android.clearly.R
 
 import android.support.v7.app.AppCompatActivity
@@ -26,7 +26,7 @@ class MainActivity(): AppCompatActivity() {
 		initToolbar()
 
 		if (state == null) {
-			setFragment(getSupportFragmentManager(), ArgumentsFragment())
+			setFragment(getSupportFragmentManager(), DecisionsFragment())
 		}
 	}
 
