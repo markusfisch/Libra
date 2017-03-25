@@ -11,6 +11,7 @@
 	<string name="really_remove_argument">Really remove argument?</string>
 	<string name="really_remove_decision">Really remove decision?</string>
 	<string name="cancel_editing">Cancel editing</string>
+	<string name="sort_arguments">Sort arguments</string>
 	<string name="new_decision">New</string>
 	<string name="decisions_list">Decisions</string>
 	<string name="remove_decision">Remove decision</string>

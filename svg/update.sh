@@ -110,8 +110,9 @@ EOF
 # drawable SVGs to PNGs
 update app/src/main/res/drawable << EOF
 svg/ic_action_add.svg
-svg/ic_action_remove.svg
 svg/ic_action_list.svg
+svg/ic_action_remove.svg
+svg/ic_action_sort.svg
 svg/ic_arrow_down.svg
 svg/ic_arrow_up.svg
 svg/ic_cancel.svg

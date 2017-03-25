@@ -23,6 +23,7 @@ class DataSource() {
 		val ARGUMENTS_DECISION = "fk_decision"
 		val ARGUMENTS_TEXT = "text"
 		val ARGUMENTS_WEIGHT = "weight"
+		val ARGUMENTS_ORDER = "sort_order"
 
 		private fun createDecisions(db: SQLiteDatabase) {
 			db.execSQL("DROP TABLE IF EXISTS $DECISIONS")
@@ -38,7 +39,8 @@ class DataSource() {
 					$ARGUMENTS_ID INTEGER PRIMARY KEY AUTOINCREMENT,
 					$ARGUMENTS_DECISION INTEGER,
 					$ARGUMENTS_TEXT TEXT NOT NULL,
-					$ARGUMENTS_WEIGHT INTEGER)""")
+					$ARGUMENTS_WEIGHT INTEGER,
+					$ARGUMENTS_ORDER INTEGER)""")
 		}
 
 		private fun now(): String {
@@ -98,14 +100,21 @@ class DataSource() {
 		db.delete(DECISIONS, "$DECISIONS_ID = $id", null)
 	}
 
-	fun getArguments(decision: Long): Cursor {
+	fun getArguments(decisionId: Long): Cursor {
 		return db.rawQuery("""SELECT
 				$ARGUMENTS_ID,
 				$ARGUMENTS_TEXT,
-				$ARGUMENTS_WEIGHT
+				$ARGUMENTS_WEIGHT,
+				$ARGUMENTS_ORDER
 				FROM $ARGUMENTS
-				WHERE $ARGUMENTS_DECISION = $decision
-				ORDER BY $ARGUMENTS_WEIGHT""", null)
+				WHERE $ARGUMENTS_DECISION = $decisionId
+				ORDER BY $ARGUMENTS_ORDER, $ARGUMENTS_ID""", null)
+	}
+
+	fun sortArguments(decisionId: Long) {
+		val cv = ContentValues()
+		cv.put(ARGUMENTS_ORDER, ARGUMENTS_WEIGHT)
+		db.update(ARGUMENTS, cv, "$ARGUMENTS_DECISION = $decisionId", null)
 	}
 
 	fun getArgumentText(id: Long): String {
@@ -127,11 +136,12 @@ class DataSource() {
 		return text
 	}
 
-	fun insertArgument(decision: Long, text: String, weight: Int): Long {
+	fun insertArgument(decisionId: Long, text: String, weight: Int): Long {
 		val cv = ContentValues()
-		cv.put(ARGUMENTS_DECISION, decision)
+		cv.put(ARGUMENTS_DECISION, decisionId)
 		cv.put(ARGUMENTS_TEXT, text)
 		cv.put(ARGUMENTS_WEIGHT, weight)
+		cv.put(ARGUMENTS_ORDER, 0)
 		return db.insert(ARGUMENTS, null, cv)
 	}
 
@@ -154,6 +164,7 @@ class DataSource() {
 	fun fileArguments(from: Long, to: Long) {
 		val cv = ContentValues()
 		cv.put(ARGUMENTS_DECISION, to)
+		cv.put(ARGUMENTS_ORDER, ARGUMENTS_WEIGHT)
 		db.update(ARGUMENTS, cv, "$ARGUMENTS_DECISION = $from", null)
 	}
 

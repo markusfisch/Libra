@@ -12,6 +12,11 @@
 		android:icon="@drawable/ic_action_list"
 		material:showAsAction="ifRoom"/>
 	<item
+		android:id="@+id/sort_arguments"
+		android:title="@string/sort_arguments"
+		android:icon="@drawable/ic_action_sort"
+		material:showAsAction="ifRoom"/>
+	<item
 		android:id="@+id/remove_decision"
 		android:title="@string/remove_decision"
 		android:icon="@drawable/ic_action_remove"

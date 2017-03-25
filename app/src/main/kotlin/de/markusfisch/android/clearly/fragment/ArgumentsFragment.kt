@@ -135,6 +135,10 @@ class ArgumentsFragment(): Fragment() {
 
 	override fun onOptionsItemSelected(item: MenuItem): Boolean {
 		return when (item.getItemId()) {
+			R.id.sort_arguments -> {
+				sortArguments()
+				true
+			}
 			R.id.decisions_list -> {
 				replaceFragment(getFragmentManager(), DecisionsFragment())
 				true
@@ -246,8 +250,7 @@ class ArgumentsFragment(): Fragment() {
 				.setPositiveButton(android.R.string.ok, { dialog, id ->
 						removeDecision()
 				})
-				.setNegativeButton(android.R.string.cancel, { dialog, id ->
-				})
+				.setNegativeButton(android.R.string.cancel, { dialog, id -> })
 				.show()
 	}
 
@@ -256,6 +259,11 @@ class ArgumentsFragment(): Fragment() {
 			ClearlyApp.data.removeDecision(decisionId)
 			getFragmentManager().popBackStack()
 		}
+	}
+
+	private fun sortArguments() {
+		ClearlyApp.data.sortArguments(decisionId)
+		reloadList()
 	}
 
 	private fun resetInput() {
