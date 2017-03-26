@@ -9,10 +9,9 @@
 		android:layout_above="@+id/argument_editor"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
-		android:animateLayoutChanges="true"
 		android:choiceMode="singleChoice"
-		android:divider="@color/separator"
-		android:dividerHeight="1px"/>
+		android:divider="@android:color/transparent"
+		android:dividerHeight="0px"/>
 	<RelativeLayout
 		android:id="@+id/no_arguments"
 		android:layout_above="@+id/argument_editor"
@@ -24,14 +23,14 @@
 			android:layout_height="wrap_content"
 			android:layout_centerInParent="true"
 			android:drawablePadding="8dp"
-			android:drawableBottom="@drawable/ic_arrow_down"
+			android:drawableTop="@drawable/ic_empty"
 			android:padding="32dp"
 			android:gravity="center"
 			android:text="@string/collect_arguments"/>
 	</RelativeLayout>
 	<LinearLayout
 		android:id="@+id/argument_editor"
-		android:background="@drawable/background_enter_argument"
+		android:background="@color/background_enter_argument"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:layout_alignParentBottom="true"

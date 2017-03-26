@@ -1,6 +1,7 @@
 <resources>
-	<color name="primary">#006abd</color>
-	<color name="primary_dark">#005aad</color>
-	<color name="accent">#bd6a00</color>
+	<color name="primary">#f2f2f2</color>
+	<color name="primary_dark">#ececec</color>
+	<color name="accent">#1a1a1a</color>
 	<color name="separator">#ddd</color>
+	<color name="background_enter_argument">#fff</color>
 </resources>

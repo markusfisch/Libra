@@ -19,9 +19,10 @@ class ArgumentView: TextView {
 	private val paint: Paint = Paint(Paint.ANTI_ALIAS_FLAG)
 	private val padding: Float
 
+	private var width: Float = 0f
+	private var height: Float = 0f
 	private var block: Float = 0f
 	private var center: Float = 0f
-	private var height: Float = 0f
 	private var savedX: Float = -1f
 	private var savedWeight: Int = 0
 
@@ -46,11 +47,14 @@ class ArgumentView: TextView {
 					} else {
 						storeWeight()
 					}
+					savedX = -1f
 					performClick()
+					invalidate()
 					true
 				}
 				MotionEvent.ACTION_CANCEL -> {
 					weight = savedWeight
+					savedX = -1f
 					invalidate()
 					true
 				}
@@ -64,27 +68,48 @@ class ArgumentView: TextView {
 	constructor(context: Context, attrs: AttributeSet):
 			this(context, attrs, 0) {}
 
+	public override fun onLayout(
+			changed: Boolean,
+			left: Int,
+			top: Int,
+			right: Int,
+			bottom: Int) {
+		super.onLayout(changed, left, top, right, bottom)
+		width = (right - left).toFloat()
+		height = (bottom - top).toFloat()
+		center = Math.round(width / 2f).toFloat()
+		block = Math.round(center / 10f).toFloat()
+	}
+
 	public override fun onDraw(canvas: Canvas) {
-		if (block == 0f) {
-			center = Math.round(canvas.getWidth() / 2f).toFloat()
-			block = Math.round(center / 10f).toFloat()
-			height = canvas.getHeight().toFloat()
+		if (savedX > -1f) {
+			paint.setColor(0xffdfdfdf.toInt())
+			canvas.drawRect(0f, 0f, width, height, paint)
 		}
+
+		var top = height - padding * 3f
+		var bottom = height - padding * 2f
+		paint.setColor(0xfff0f0f0.toInt())
+		canvas.drawRect(
+				padding,
+				top,
+				width - padding,
+				bottom,
+				paint)
+
 		var x: Float
 		var step: Float
 		var color: Int
 		if (weight > 0) {
 			x = center
 			step = block
-			color = 0x44008800.toInt()
+			color = 0xff55d400.toInt()
 		} else {
 			x = center - block + padding
 			step = -block
-			color = 0x44880000.toInt()
+			color = 0xffff6600.toInt()
 		}
 		paint.setColor(color)
-		var top = padding
-		var bottom = padding + padding
 		var i = Math.abs(weight % 11)
 		while (i-- > 0) {
 			canvas.drawRect(
@@ -95,6 +120,7 @@ class ArgumentView: TextView {
 					paint)
 			x += step
 		}
+
 		super.onDraw(canvas)
 	}
 

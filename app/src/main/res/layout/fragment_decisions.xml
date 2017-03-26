@@ -9,7 +9,6 @@
 		android:id="@+id/decisions"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
-		android:animateLayoutChanges="true"
 		android:choiceMode="singleChoice"
 		android:divider="@color/separator"
 		android:dividerHeight="1px"/>
@@ -22,6 +21,8 @@
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_centerInParent="true"
+			android:drawablePadding="8dp"
+			android:drawableTop="@drawable/ic_empty"
 			android:padding="32dp"
 			android:gravity="center"
 			android:text="@string/no_decisions_saved"/>

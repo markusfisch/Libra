@@ -4,6 +4,7 @@ import de.markusfisch.android.clearly.adapter.ArgumentsAdapter
 import de.markusfisch.android.clearly.app.ClearlyApp
 import de.markusfisch.android.clearly.app.replaceFragment
 import de.markusfisch.android.clearly.database.DataSource
+import de.markusfisch.android.clearly.widget.RecommendationView
 import de.markusfisch.android.clearly.R
 
 import android.app.AlertDialog
@@ -40,14 +41,14 @@ class ArgumentsFragment(): Fragment() {
 	private lateinit var editText: EditText
 	private lateinit var cancelButton: View
 	private lateinit var removeButton: View
-	private lateinit var headerText: TextView
+	private lateinit var recommendationView: RecommendationView
 	private var argumentId: Long = 0
 	private var decisionId: Long = 0
 
 	fun reloadList() {
 		val cursor = ClearlyApp.data.getArguments(decisionId)
 		adapter.changeCursor(cursor)
-		setRecommendation(cursor, headerText)
+		setRecommendation(cursor)
 	}
 
 	fun editArgument(id: Long) {
@@ -110,16 +111,14 @@ class ArgumentsFragment(): Fragment() {
 			}
 		}
 
+		recommendationView = RecommendationView(activity)
+
 		val listView = view.findViewById(R.id.arguments) as ListView
-		headerText = inflater.inflate(
-				R.layout.header_arguments,
-				listView,
-				false) as TextView
-		listView.addHeaderView(headerText, null, false)
+		listView.addHeaderView(recommendationView, null, false)
 		listView.setEmptyView(view.findViewById(R.id.no_arguments))
 		listView.setAdapter(adapter)
 
-		setRecommendation(cursor, headerText)
+		setRecommendation(cursor)
 
 		return view
 	}
@@ -142,8 +141,9 @@ class ArgumentsFragment(): Fragment() {
 		}
 	}
 
-	private fun setRecommendation(cursor: Cursor, textView: TextView) {
+	private fun setRecommendation(cursor: Cursor) {
 		if (!cursor.moveToFirst()) {
+android.util.Log.e("mfdbg", "mfdbg: cannot move to first")
 			return
 		}
 
@@ -159,19 +159,23 @@ class ArgumentsFragment(): Fragment() {
 			} else if (weight < 0) {
 				negative += -weight
 			} else {
-				textView.setText(R.string.weigh_arguments)
+android.util.Log.d("mfdbg", "mfdbg: setWeight()")
+				recommendationView.setWeight(0, 0)
+				recommendationView.setText(R.string.weigh_arguments)
 				return
 			}
 		} while (cursor.moveToNext())
 
+android.util.Log.d("mfdbg", "mfdbg: setWeight($negative, $positive)")
+		recommendationView.setWeight(negative, positive)
 		cursor.moveToFirst()
 
 		if (positive >= negative * 2) {
-			textView.setText(R.string.do_it)
+			recommendationView.setText(R.string.do_it)
 		} else if (positive > negative) {
-			textView.setText(R.string.think_it_over)
+			recommendationView.setText(R.string.think_it_over)
 		} else {
-			textView.setText(R.string.do_not_do_it)
+			recommendationView.setText(R.string.do_not_do_it)
 		}
 	}
 

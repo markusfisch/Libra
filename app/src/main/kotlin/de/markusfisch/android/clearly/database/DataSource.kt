@@ -140,9 +140,11 @@ class DataSource() {
 	}
 
 	fun sortArguments(decisionId: Long) {
-		val cv = ContentValues()
-		cv.put(ARGUMENTS_ORDER, ARGUMENTS_WEIGHT)
-		db.update(ARGUMENTS, cv, "$ARGUMENTS_DECISION = $decisionId", null)
+		// execSQL() instead of update() because we can't use column
+		// names in ContentValues; another leaking abstraction
+		db.execSQL("""UPDATE $ARGUMENTS
+				SET $ARGUMENTS_ORDER = $ARGUMENTS_WEIGHT
+				WHERE $ARGUMENTS_DECISION = $decisionId""")
 	}
 
 	private fun queryStringColumn(query: String, column: String): String {

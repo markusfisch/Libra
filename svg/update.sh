@@ -112,8 +112,11 @@ update app/src/main/res/drawable << EOF
 svg/ic_action_add.svg
 svg/ic_action_remove.svg
 svg/ic_action_sort.svg
-svg/ic_arrow_down.svg
-svg/ic_arrow_up.svg
 svg/ic_cancel.svg
 svg/ic_delete.svg
+svg/ic_empty.svg 128
+svg/ic_frame.svg 128
+svg/ic_pan.svg 30x48
+svg/ic_scale.svg 102x68
+svg/ic_splash.svg 128
 EOF
