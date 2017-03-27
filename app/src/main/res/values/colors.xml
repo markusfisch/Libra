@@ -1,7 +1,9 @@
 <resources>
 	<color name="primary">#f2f2f2</color>
-	<color name="primary_dark">#ececec</color>
+	<color name="primary_dark">#c2c2c2</color>
 	<color name="accent">#1a1a1a</color>
-	<color name="separator">#ddd</color>
 	<color name="background_enter_argument">#fff</color>
+	<color name="positive">#55d400</color>
+	<color name="negative">#ff6600</color>
+	<color name="weight_bar">#f0f0f0</color>
 </resources>

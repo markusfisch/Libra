@@ -10,8 +10,8 @@
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
 		android:choiceMode="singleChoice"
-		android:divider="@color/separator"
-		android:dividerHeight="1px"/>
+		android:divider="@android:color/transparent"
+		android:dividerHeight="0px"/>
 	<RelativeLayout
 		android:id="@+id/no_decisions"
 		android:layout_width="match_parent"
@@ -22,8 +22,11 @@
 			android:layout_height="wrap_content"
 			android:layout_centerInParent="true"
 			android:drawablePadding="8dp"
-			android:drawableTop="@drawable/ic_empty"
-			android:padding="32dp"
+			android:drawableTop="@drawable/ic_empty_list"
+			android:paddingLeft="32dp"
+			android:paddingStart="32dp"
+			android:paddingRight="32dp"
+			android:paddingEnd="32dp"
 			android:gravity="center"
 			android:text="@string/no_decisions_saved"/>
 	</RelativeLayout>

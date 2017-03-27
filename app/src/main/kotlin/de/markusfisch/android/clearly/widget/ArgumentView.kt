@@ -5,19 +5,40 @@ import de.markusfisch.android.clearly.fragment.ArgumentsFragment
 import de.markusfisch.android.clearly.R
 
 import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import android.graphics.Paint
 import android.support.v7.app.AppCompatActivity
+import android.support.v4.content.ContextCompat
 import android.util.AttributeSet
+import android.view.Gravity
 import android.view.MotionEvent
 import android.widget.TextView
 
 class ArgumentView: TextView {
 	var id: Long = 0
 	var weight: Int = 0
+		set(value) {
+			setGravity(if (value < 0) {
+					Gravity.LEFT
+				} else if (value > 0) {
+					Gravity.RIGHT
+				} else {
+					Gravity.CENTER_HORIZONTAL
+				})
+			field = value
+		}
 
 	private val paint: Paint = Paint(Paint.ANTI_ALIAS_FLAG)
 	private val padding: Float
+	private val positiveColor: Int
+	private val negativeColor: Int
+	private val barColor: Int
+	private val swipeLeft: Bitmap
+	private val swipeRight: Bitmap
+	private val swipeWidth: Int
+	private val swipeHeight: Int
 
 	private var width: Float = 0f
 	private var height: Float = 0f
@@ -47,22 +68,28 @@ class ArgumentView: TextView {
 					} else {
 						storeWeight()
 					}
-					savedX = -1f
 					performClick()
 					invalidate()
 					true
 				}
 				MotionEvent.ACTION_CANCEL -> {
 					weight = savedWeight
-					savedX = -1f
 					invalidate()
 					true
 				}
 				else -> false
 			}
 		}
-		val dp = context.getResources().getDisplayMetrics().density
+		val res = context.getResources()
+		val dp = res.getDisplayMetrics().density
 		padding = dp * 4
+		positiveColor = ContextCompat.getColor(context, R.color.positive)
+		negativeColor = ContextCompat.getColor(context, R.color.negative)
+		barColor = ContextCompat.getColor(context, R.color.weight_bar)
+		swipeLeft = BitmapFactory.decodeResource(res, R.drawable.swipe_left)
+		swipeRight = BitmapFactory.decodeResource(res, R.drawable.swipe_right)
+		swipeWidth = swipeLeft.getWidth()
+		swipeHeight = swipeLeft.getHeight()
 	}
 
 	constructor(context: Context, attrs: AttributeSet):
@@ -82,14 +109,9 @@ class ArgumentView: TextView {
 	}
 
 	public override fun onDraw(canvas: Canvas) {
-		if (savedX > -1f) {
-			paint.setColor(0xffdfdfdf.toInt())
-			canvas.drawRect(0f, 0f, width, height, paint)
-		}
-
 		var top = height - padding * 3f
 		var bottom = height - padding * 2f
-		paint.setColor(0xfff0f0f0.toInt())
+		paint.setColor(barColor)
 		canvas.drawRect(
 				padding,
 				top,
@@ -97,28 +119,38 @@ class ArgumentView: TextView {
 				bottom,
 				paint)
 
-		var x: Float
-		var step: Float
-		var color: Int
-		if (weight > 0) {
-			x = center
-			step = block
-			color = 0xff55d400.toInt()
+		if (weight == 0) {
+			val pad = padding * 4
+			val top = (height - swipeHeight) / 2
+			val left = pad
+			val right = width - swipeWidth - pad
+			canvas.drawBitmap(swipeLeft, left, top, null)
+			canvas.drawBitmap(swipeRight, right, top, null)
 		} else {
-			x = center - block + padding
-			step = -block
-			color = 0xffff6600.toInt()
-		}
-		paint.setColor(color)
-		var i = Math.abs(weight % 11)
-		while (i-- > 0) {
-			canvas.drawRect(
-					x,
-					top,
-					x + block - padding,
-					bottom,
-					paint)
-			x += step
+			var x: Float
+			var step: Float
+			var color: Int
+			if (weight > 0) {
+				x = center
+				step = block
+				color = positiveColor
+			} else {
+				x = center - block + padding
+				step = -block
+				color = negativeColor
+			}
+
+			paint.setColor(color)
+			var i = Math.abs(weight % 11)
+			while (i-- > 0) {
+				canvas.drawRect(
+						x,
+						top,
+						x + block - padding,
+						bottom,
+						paint)
+				x += step
+			}
 		}
 
 		super.onDraw(canvas)

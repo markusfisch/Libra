@@ -1,13 +1,13 @@
 <resources>
 	<string name="app_name">Clearly</string>
-	<string name="decisions">Decisions</string>
 	<string name="arguments">Pros and cons</string>
-	<string name="unnamed">Unnamed</string>
-	<string name="collect_arguments">First write down all pros and cons you can think of.</string>
-	<string name="weigh_arguments">Weigh arguments by swiping left to give a negative or right to give a positive weight.</string>
+	<string name="recommendation">Recommendation</string>
+	<string name="just_now">Just now</string>
+	<string name="collect_arguments">First write down all pros and cons.</string>
+	<string name="weigh_arguments">Weigh arguments by swiping over them.</string>
 	<string name="do_it">By all means do it!</string>
-	<string name="think_it_over">Maybe you should give this thing a second thought.</string>
-	<string name="do_not_do_it">Well, rather not.</string>
+	<string name="think_it_over">Give it a second thought.</string>
+	<string name="do_not_do_it">Rather not.</string>
 	<string name="enter_argument">Enter argument</string>
 	<string name="remove_argument">Remove argument</string>
 	<string name="really_remove_argument">Really remove argument?</string>
@@ -16,6 +16,6 @@
 	<string name="sort_arguments">Sort arguments</string>
 	<string name="remove_decision">Remove decision</string>
 	<string name="no_decisions_saved">No decisions saved yet.</string>
-	<string name="enter_name">Enter a name</string>
+	<string name="enter_name">Enter a new name</string>
 	<string name="enter_name_hint">What\'s this about?</string>
 </resources>

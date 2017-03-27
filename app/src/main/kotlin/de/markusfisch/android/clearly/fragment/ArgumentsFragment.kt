@@ -2,9 +2,9 @@ package de.markusfisch.android.clearly.fragment
 
 import de.markusfisch.android.clearly.adapter.ArgumentsAdapter
 import de.markusfisch.android.clearly.app.ClearlyApp
-import de.markusfisch.android.clearly.app.replaceFragment
+import de.markusfisch.android.clearly.app.Recommendation
 import de.markusfisch.android.clearly.database.DataSource
-import de.markusfisch.android.clearly.widget.RecommendationView
+import de.markusfisch.android.clearly.widget.ScaleView
 import de.markusfisch.android.clearly.R
 
 import android.app.AlertDialog
@@ -21,7 +21,6 @@ import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import android.widget.ListView
-import android.widget.TextView
 
 class ArgumentsFragment(): Fragment() {
 	companion object {
@@ -38,17 +37,18 @@ class ArgumentsFragment(): Fragment() {
 	}
 
 	private lateinit var adapter: ArgumentsAdapter
+	private lateinit var listView: ListView
 	private lateinit var editText: EditText
 	private lateinit var cancelButton: View
 	private lateinit var removeButton: View
-	private lateinit var recommendationView: RecommendationView
+	private lateinit var scaleView: ScaleView
 	private var argumentId: Long = 0
 	private var decisionId: Long = 0
 
 	fun reloadList() {
 		val cursor = ClearlyApp.data.getArguments(decisionId)
 		adapter.changeCursor(cursor)
-		setRecommendation(cursor)
+		updateScale(cursor)
 	}
 
 	fun editArgument(id: Long) {
@@ -111,14 +111,14 @@ class ArgumentsFragment(): Fragment() {
 			}
 		}
 
-		recommendationView = RecommendationView(activity)
+		scaleView = ScaleView(activity)
 
-		val listView = view.findViewById(R.id.arguments) as ListView
-		listView.addHeaderView(recommendationView, null, false)
+		listView = view.findViewById(R.id.arguments) as ListView
+		listView.addHeaderView(scaleView, null, false)
 		listView.setEmptyView(view.findViewById(R.id.no_arguments))
 		listView.setAdapter(adapter)
 
-		setRecommendation(cursor)
+		updateScale(cursor)
 
 		return view
 	}
@@ -141,14 +141,12 @@ class ArgumentsFragment(): Fragment() {
 		}
 	}
 
-	private fun setRecommendation(cursor: Cursor) {
+	private fun updateScale(cursor: Cursor) {
 		if (!cursor.moveToFirst()) {
-android.util.Log.e("mfdbg", "mfdbg: cannot move to first")
 			return
 		}
 
-		val weightIndex = cursor.getColumnIndex(
-				DataSource.ARGUMENTS_WEIGHT)
+		val weightIndex = cursor.getColumnIndex(DataSource.ARGUMENTS_WEIGHT)
 		var positive = 0
 		var negative = 0
 
@@ -159,37 +157,39 @@ android.util.Log.e("mfdbg", "mfdbg: cannot move to first")
 			} else if (weight < 0) {
 				negative += -weight
 			} else {
-android.util.Log.d("mfdbg", "mfdbg: setWeight()")
-				recommendationView.setWeight(0, 0)
-				recommendationView.setText(R.string.weigh_arguments)
+				scaleView.setWeights(-1, -1)
+				scaleView.setText(R.string.weigh_arguments)
 				return
 			}
 		} while (cursor.moveToNext())
 
-android.util.Log.d("mfdbg", "mfdbg: setWeight($negative, $positive)")
-		recommendationView.setWeight(negative, positive)
-		cursor.moveToFirst()
-
-		if (positive >= negative * 2) {
-			recommendationView.setText(R.string.do_it)
-		} else if (positive > negative) {
-			recommendationView.setText(R.string.think_it_over)
-		} else {
-			recommendationView.setText(R.string.do_not_do_it)
+		scaleView.setWeights(negative, positive)
+		when (Recommendation.getRecommendation(negative, positive)) {
+			Recommendation.YES ->
+					scaleView.setText(R.string.do_it)
+			Recommendation.MAYBE ->
+					scaleView.setText(R.string.think_it_over)
+			else ->
+					scaleView.setText(R.string.do_not_do_it)
 		}
+
+		cursor.moveToFirst()
 	}
 
 	private fun saveArgument(text: String): Boolean {
 		if (text.trim().length < 1) {
 			return false
 		}
+		var id: Long
 		if (argumentId > 0) {
 			ClearlyApp.data.updateArgumentText(argumentId, text)
+			id = argumentId
 		} else {
-			ClearlyApp.data.insertArgument(decisionId, text, 0)
+			id = ClearlyApp.data.insertArgument(decisionId, text, 0)
 		}
 		resetInput()
 		reloadList()
+		listView.setSelection(getItemPosition(id))
 		return true
 	}
 
@@ -234,5 +234,15 @@ android.util.Log.d("mfdbg", "mfdbg: setWeight($negative, $positive)")
 		argumentId = 0
 		removeButton.setVisibility(View.GONE)
 		cancelButton.setVisibility(View.GONE)
+	}
+
+	private fun getItemPosition(id: Long): Int {
+		var i = adapter.getCount()
+		while (i-- > 0) {
+			if (adapter.getItemId(i) == id) {
+				return i
+			}
+		}
+		return -1
 	}
 }

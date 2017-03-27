@@ -17,7 +17,9 @@ class DataSource() {
 		val DECISIONS_ID = "_id"
 		val DECISIONS_NAME = "name"
 		val DECISIONS_CREATED = "created"
-		val DECISIONS_CREATED_STRING = "created_string"
+		val DECISIONS_CREATED_TIMESTAMP = "created_timestamp"
+		val DECISIONS_NEGATIVE = "negative"
+		val DECISIONS_POSITIVE = "positive"
 
 		val ARGUMENTS = "arguments"
 		val ARGUMENTS_ID = "_id"
@@ -64,12 +66,20 @@ class DataSource() {
 
 	fun getDecisions(): Cursor {
 		return db.rawQuery("""SELECT
-				$DECISIONS_ID,
-				$DECISIONS_NAME,
-				strftime('%Y-%m-%d %H:%M',
-						$DECISIONS_CREATED) AS $DECISIONS_CREATED_STRING
-				FROM $DECISIONS
-				ORDER BY $DECISIONS_CREATED DESC""", null)
+				d.$DECISIONS_ID,
+				d.$DECISIONS_NAME,
+				strftime('%s', d.$DECISIONS_CREATED, 'utc')
+					AS $DECISIONS_CREATED_TIMESTAMP,
+				(SELECT SUM(a.$ARGUMENTS_WEIGHT)
+					FROM $ARGUMENTS AS a
+					WHERE a.$ARGUMENTS_DECISION = d.$DECISIONS_ID AND
+						a.$ARGUMENTS_WEIGHT < 0) AS $DECISIONS_NEGATIVE,
+				(SELECT SUM(a.$ARGUMENTS_WEIGHT)
+					FROM $ARGUMENTS AS a
+					WHERE a.$ARGUMENTS_DECISION = d.$DECISIONS_ID AND
+						a.$ARGUMENTS_WEIGHT > 0) AS $DECISIONS_POSITIVE
+				FROM $DECISIONS AS d
+				ORDER BY d.$DECISIONS_CREATED DESC""", null)
 	}
 
 	fun getDecisionName(id: Long): String {

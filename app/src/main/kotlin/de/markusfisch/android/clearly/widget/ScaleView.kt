@@ -8,19 +8,20 @@ import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import android.graphics.Matrix
 import android.graphics.Paint
-import android.util.AttributeSet
+import android.graphics.Rect
 import android.view.Gravity
 import android.widget.TextView
 
-class RecommendationView(context: Context): TextView(context) {
+class ScaleView(context: Context): TextView(context) {
 	var leftWeight: Int = 0
 	var rightWeight: Int = 0
 
+	private val transparentPaint = Paint(Paint.ANTI_ALIAS_FLAG)
 	private val mat = Matrix()
-	private val padding: Float
+	private val padding: Int
 	private val frame: Bitmap
+	private val frameHeight: Int
 	private val frameMidX: Float
-	private val frameMidY: Float
 	private val frameAxis: Float
 	private val scale: Bitmap
 	private val scaleMidX: Float
@@ -29,45 +30,53 @@ class RecommendationView(context: Context): TextView(context) {
 	private val pan: Bitmap
 	private val panMidX: Float
 
+	private var textHeight: Int = 0
 	private var width: Float = 0f
 	private var height: Float = 0f
 
 	init {
 		val res = context.getResources()
 		val dp = res.getDisplayMetrics().density
-		padding = 16f * dp
-		val p = padding.toInt()
-		setPadding(p, p, p, p)
-		setGravity(Gravity.BOTTOM)
+		padding = Math.round(16f * dp)
 
-		frame = BitmapFactory.decodeResource(res, R.drawable.ic_frame)
+		setPadding(padding, padding, padding, padding)
+		setGravity(Gravity.CENTER_HORIZONTAL)
+
+		frame = BitmapFactory.decodeResource(res, R.drawable.scale_frame)
 		val frameWidth = frame.getWidth()
-		val frameHeight = frame.getHeight()
+		frameHeight = frame.getHeight()
 		frameMidX = Math.round(frameWidth * .5f).toFloat()
-		frameMidY = Math.round(frameHeight * .5f).toFloat()
-		frameAxis = Math.round(frameHeight * .56f).toFloat()
+		frameAxis = Math.round(frameHeight * .4f).toFloat()
 
-		scale = BitmapFactory.decodeResource(res, R.drawable.ic_scale)
+		scale = BitmapFactory.decodeResource(res, R.drawable.scale_bar)
 		val scaleWidth = scale.getWidth()
 		val scaleHeight = scale.getHeight()
 		scaleMidX = Math.round(scaleWidth * .5f).toFloat()
 		scaleMidY = Math.round(scaleHeight * .5f).toFloat()
 		scaleRadius = Math.round(scaleWidth * .48f).toFloat()
 
-		pan = BitmapFactory.decodeResource(res, R.drawable.ic_pan)
+		pan = BitmapFactory.decodeResource(res, R.drawable.scale_pan)
 		val panWidth = pan.getWidth()
 		panMidX = Math.round(panWidth * .5f).toFloat()
+
+		transparentPaint.setColor(0x40000000.toInt())
 	}
 
-	public fun setWeight(left: Int, right: Int) {
+	public fun setWeights(left: Int, right: Int) {
 		leftWeight = left
 		rightWeight = right
 	}
 
 	public override fun onMeasure(widthSpec: Int, heightSpec: Int) {
+		val textPaint = getPaint()
+		val bounds = Rect()
+		val text = getText().toString()
+		textPaint.getTextBounds(text, 0, text.length, bounds)
+		textHeight = bounds.height()
+
 		setMeasuredDimension(
 				widthSpec,
-				Math.round(frame.getHeight() + padding * 2))
+				padding * 2 + textHeight + frameHeight)
 	}
 
 	public override fun onLayout(
@@ -84,16 +93,43 @@ class RecommendationView(context: Context): TextView(context) {
 	public override fun onDraw(canvas: Canvas) {
 		canvas.drawColor(0)
 
+		var paint: Paint? = null
 		val cx = Math.round(width / 2f).toFloat()
+		val top = (padding * 2 + textHeight).toFloat()
+		val radians: Double = if (leftWeight > -1) {
+			calculateBalance()
+		} else {
+			paint = transparentPaint
+			0.0
+		}
 
-		mat.setTranslate(cx - frameMidX,
-				Math.round(height / 2f).toFloat() - frameMidY)
-		canvas.drawBitmap(frame, mat, null)
+		mat.setTranslate(cx - frameMidX, top)
+		canvas.drawBitmap(frame, mat, paint)
 
-		val balance: Float = (rightWeight - leftWeight).toFloat()
+		val topAxis = top + frameAxis
+		val rx = cx + scaleRadius * Math.cos(radians).toFloat()
+		val ry = topAxis + scaleRadius * Math.sin(radians).toFloat()
+		val lx = cx + scaleRadius * Math.cos(radians + Math.PI).toFloat()
+		val ly = topAxis + scaleRadius * Math.sin(radians + Math.PI).toFloat()
+
+		mat.setTranslate(lx - panMidX, ly)
+		canvas.drawBitmap(pan, mat, paint)
+
+		mat.setTranslate(rx - panMidX, ry)
+		canvas.drawBitmap(pan, mat, paint)
+
+		mat.setTranslate(cx - scaleMidX, topAxis - scaleMidY)
+		mat.postRotate(radians.toFloat() / 6.283f * 360f, cx, topAxis)
+		canvas.drawBitmap(scale, mat, paint)
+
+		super.onDraw(canvas)
+	}
+
+	private fun calculateBalance(): Double {
 		val min: Float = Math.max(1f, Math.min(
 				leftWeight.toFloat(),
 				rightWeight.toFloat()))
+		val balance: Float = (rightWeight - leftWeight).toFloat()
 		var factor: Float
 		if (balance == 0f) {
 			factor = 0f
@@ -103,26 +139,6 @@ class RecommendationView(context: Context): TextView(context) {
 			factor = Math.max(-min, balance)
 		}
 		factor /= min
-		val lock = .9f
-		val radians: Double = (lock * factor).toDouble()
-		val degrees: Float = lock / 6.283f * 360f * factor
-
-		val rx = cx + scaleRadius * Math.cos(radians).toFloat()
-		val ry = frameAxis + scaleRadius * Math.sin(radians).toFloat()
-		val lx = cx + scaleRadius * Math.cos(radians + Math.PI).toFloat()
-		val ly = frameAxis +
-				scaleRadius * Math.sin(radians + Math.PI).toFloat()
-
-		mat.setTranslate(lx - panMidX, ly)
-		canvas.drawBitmap(pan, mat, null)
-
-		mat.setTranslate(rx - panMidX, ry)
-		canvas.drawBitmap(pan, mat, null)
-
-		mat.setTranslate(cx - scaleMidX, frameAxis - scaleMidY)
-		mat.postRotate(degrees, cx, frameAxis)
-		canvas.drawBitmap(scale, mat, null)
-
-		//super.onDraw(canvas)
+		return (.9f * factor).toDouble()
 	}
 }
