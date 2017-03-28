@@ -1,4 +1,4 @@
-<de.markusfisch.android.clearly.widget.ArgumentView
+<de.markusfisch.android.libra.widget.ArgumentView
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	android:id="@+id/text"
 	android:layout_width="match_parent"

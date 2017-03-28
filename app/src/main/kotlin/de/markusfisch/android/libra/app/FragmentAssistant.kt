@@ -1,6 +1,6 @@
-package de.markusfisch.android.clearly.app
+package de.markusfisch.android.libra.app
 
-import de.markusfisch.android.clearly.R
+import de.markusfisch.android.libra.R
 
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager

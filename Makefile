@@ -1,4 +1,4 @@
-PACKAGE = de.markusfisch.android.clearly
+PACKAGE = de.markusfisch.android.libra
 APK = app/build/outputs/apk/app-debug.apk
 
 all: debug install start

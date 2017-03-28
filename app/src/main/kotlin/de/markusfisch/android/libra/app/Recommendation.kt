@@ -1,4 +1,4 @@
-package de.markusfisch.android.clearly.app
+package de.markusfisch.android.libra.app
 
 enum class Recommendation {
 	INCOMPLETE,

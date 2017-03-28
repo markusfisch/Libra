@@ -1,10 +1,10 @@
-package de.markusfisch.android.clearly.app
+package de.markusfisch.android.libra.app
 
-import de.markusfisch.android.clearly.database.DataSource
+import de.markusfisch.android.libra.database.DataSource
 
 import android.app.Application
 
-class ClearlyApp(): Application() {
+class LibraApp(): Application() {
 	companion object {
 		val data = DataSource()
 	}

@@ -1,10 +1,10 @@
-package de.markusfisch.android.clearly.fragment
+package de.markusfisch.android.libra.fragment
 
-import de.markusfisch.android.clearly.adapter.DecisionsAdapter
-import de.markusfisch.android.clearly.app.ClearlyApp
-import de.markusfisch.android.clearly.app.replaceFragment
-import de.markusfisch.android.clearly.database.DataSource
-import de.markusfisch.android.clearly.R
+import de.markusfisch.android.libra.adapter.DecisionsAdapter
+import de.markusfisch.android.libra.app.LibraApp
+import de.markusfisch.android.libra.app.replaceFragment
+import de.markusfisch.android.libra.database.DataSource
+import de.markusfisch.android.libra.R
 
 import android.app.AlertDialog
 import android.database.Cursor
@@ -26,7 +26,7 @@ class DecisionsFragment(): Fragment() {
 		val activity = getActivity()
 		activity.setTitle(R.string.app_name)
 		adapter = DecisionsAdapter(activity,
-				ClearlyApp.data.getDecisions())
+				LibraApp.data.getDecisions())
 
 		val view = inflater.inflate(
 				R.layout.fragment_decisions,
@@ -46,7 +46,7 @@ class DecisionsFragment(): Fragment() {
 
 		var addButton = view.findViewById(R.id.add)
 		addButton.setOnClickListener { v ->
-			showArguments(ClearlyApp.data.insertDecision())
+			showArguments(LibraApp.data.insertDecision())
 		}
 
 		return view
@@ -75,7 +75,7 @@ class DecisionsFragment(): Fragment() {
 	}
 
 	private fun updateDecisionName(id: Long, name: String) {
-		ClearlyApp.data.updateDecisionName(id, name)
-		adapter.changeCursor(ClearlyApp.data.getDecisions())
+		LibraApp.data.updateDecisionName(id, name)
+		adapter.changeCursor(LibraApp.data.getDecisions())
 	}
 }

@@ -1,4 +1,4 @@
-package de.markusfisch.android.clearly.widget
+package de.markusfisch.android.libra.widget
 
 import android.content.Context
 import android.util.AttributeSet

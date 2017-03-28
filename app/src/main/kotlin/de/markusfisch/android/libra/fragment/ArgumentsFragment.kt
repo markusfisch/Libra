@@ -1,11 +1,11 @@
-package de.markusfisch.android.clearly.fragment
+package de.markusfisch.android.libra.fragment
 
-import de.markusfisch.android.clearly.adapter.ArgumentsAdapter
-import de.markusfisch.android.clearly.app.ClearlyApp
-import de.markusfisch.android.clearly.app.Recommendation
-import de.markusfisch.android.clearly.database.DataSource
-import de.markusfisch.android.clearly.widget.ScaleView
-import de.markusfisch.android.clearly.R
+import de.markusfisch.android.libra.adapter.ArgumentsAdapter
+import de.markusfisch.android.libra.app.LibraApp
+import de.markusfisch.android.libra.app.Recommendation
+import de.markusfisch.android.libra.database.DataSource
+import de.markusfisch.android.libra.widget.ScaleView
+import de.markusfisch.android.libra.R
 
 import android.app.AlertDialog
 import android.content.Context
@@ -46,14 +46,14 @@ class ArgumentsFragment(): Fragment() {
 	private var decisionId: Long = 0
 
 	fun reloadList() {
-		val cursor = ClearlyApp.data.getArguments(decisionId)
+		val cursor = LibraApp.data.getArguments(decisionId)
 		adapter.changeCursor(cursor)
 		updateScale(cursor)
 	}
 
 	fun editArgument(id: Long) {
 		argumentId = id
-		editText.setText(ClearlyApp.data.getArgumentText(id))
+		editText.setText(LibraApp.data.getArgumentText(id))
 		cancelButton.setVisibility(View.VISIBLE)
 		removeButton.setVisibility(View.VISIBLE)
 	}
@@ -73,14 +73,14 @@ class ArgumentsFragment(): Fragment() {
 		}
 
 		val activity = getActivity()
-		var title = ClearlyApp.data.getDecisionName(decisionId)
+		var title = LibraApp.data.getDecisionName(decisionId)
 		if (title.isEmpty()) {
 			activity.setTitle(R.string.arguments)
 		} else {
 			activity.setTitle(title)
 		}
 
-		val cursor = ClearlyApp.data.getArguments(decisionId)
+		val cursor = LibraApp.data.getArguments(decisionId)
 		adapter = ArgumentsAdapter(activity, cursor)
 
 		val view = inflater.inflate(
@@ -182,10 +182,10 @@ class ArgumentsFragment(): Fragment() {
 		}
 		var id: Long
 		if (argumentId > 0) {
-			ClearlyApp.data.updateArgumentText(argumentId, text)
+			LibraApp.data.updateArgumentText(argumentId, text)
 			id = argumentId
 		} else {
-			id = ClearlyApp.data.insertArgument(decisionId, text, 0)
+			id = LibraApp.data.insertArgument(decisionId, text, 0)
 		}
 		resetInput()
 		reloadList()
@@ -205,7 +205,7 @@ class ArgumentsFragment(): Fragment() {
 	}
 
 	private fun removeArgument(id: Long) {
-		ClearlyApp.data.removeArgument(id)
+		LibraApp.data.removeArgument(id)
 		reloadList()
 	}
 
@@ -220,12 +220,12 @@ class ArgumentsFragment(): Fragment() {
 	}
 
 	private fun removeDecision() {
-		ClearlyApp.data.removeDecision(decisionId)
+		LibraApp.data.removeDecision(decisionId)
 		getFragmentManager().popBackStack()
 	}
 
 	private fun sortArguments() {
-		ClearlyApp.data.sortArguments(decisionId)
+		LibraApp.data.sortArguments(decisionId)
 		reloadList()
 	}
 

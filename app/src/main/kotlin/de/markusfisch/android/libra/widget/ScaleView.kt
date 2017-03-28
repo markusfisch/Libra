@@ -1,6 +1,6 @@
-package de.markusfisch.android.clearly.widget
+package de.markusfisch.android.libra.widget
 
-import de.markusfisch.android.clearly.R
+import de.markusfisch.android.libra.R
 
 import android.content.Context
 import android.graphics.Bitmap

@@ -1,10 +1,14 @@
-Clear App
-=========
+Libra
+=====
 
-Helps making hard decisions.
+Android app that helps making hard decisions. Works like this:
 
-1. Write down all pro's and con's
-2. Swipe right over a point to give it a positive weight
-3. Swipe left over a point to give it a negative weight
+1. Write down pros and cons
+2. Weigh every argument by swiping left or right over it
+3. When everything's weighted you get a recommendation
 
-As soon as everything's weighted you the a recommendation.
+Inspired by this [Time article][time-article].
+
+Wrote this app to get my feet wet with Kotlin. Still mixed feelings.
+
+[time-article]: http://time.com/3772262/billionaire-trick-for-decisions/

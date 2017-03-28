@@ -1,4 +1,4 @@
-package de.markusfisch.android.clearly.database
+package de.markusfisch.android.libra.database
 
 import android.content.ContentValues
 import android.content.Context

@@ -1,8 +1,8 @@
-package de.markusfisch.android.clearly.activity
+package de.markusfisch.android.libra.activity
 
-import de.markusfisch.android.clearly.app.setFragment
-import de.markusfisch.android.clearly.fragment.DecisionsFragment
-import de.markusfisch.android.clearly.R
+import de.markusfisch.android.libra.app.setFragment
+import de.markusfisch.android.libra.fragment.DecisionsFragment
+import de.markusfisch.android.libra.R
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle

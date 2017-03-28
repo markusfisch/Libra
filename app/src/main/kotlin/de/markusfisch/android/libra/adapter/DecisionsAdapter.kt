@@ -1,8 +1,8 @@
-package de.markusfisch.android.clearly.adapter
+package de.markusfisch.android.libra.adapter
 
-import de.markusfisch.android.clearly.app.Recommendation
-import de.markusfisch.android.clearly.database.DataSource
-import de.markusfisch.android.clearly.R
+import de.markusfisch.android.libra.app.Recommendation
+import de.markusfisch.android.libra.database.DataSource
+import de.markusfisch.android.libra.R
 
 import android.content.Context
 import android.database.Cursor
