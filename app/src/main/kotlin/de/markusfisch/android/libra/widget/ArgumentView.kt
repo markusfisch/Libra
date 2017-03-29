@@ -14,6 +14,7 @@ import android.support.v4.content.ContextCompat
 import android.util.AttributeSet
 import android.view.Gravity
 import android.view.MotionEvent
+import android.view.ViewConfiguration
 import android.widget.TextView
 
 class ArgumentView: TextView {
@@ -39,6 +40,11 @@ class ArgumentView: TextView {
 	private val swipeRight: Bitmap
 	private val swipeWidth: Int
 	private val swipeHeight: Int
+	private val longClickRunnable = Runnable() { ->
+		if (weight == savedWeight) {
+			editText()
+		}
+	}
 
 	private var width: Float = 0f
 	private var height: Float = 0f
@@ -52,20 +58,26 @@ class ArgumentView: TextView {
 		setOnTouchListener { v, event ->
 			when (event.getActionMasked()) {
 				MotionEvent.ACTION_DOWN -> {
+					v.setPressed(true)
 					savedX = event.getX()
 					savedWeight = weight
+					postDelayed(longClickRunnable,
+							ViewConfiguration.getLongPressTimeout().toLong())
 					true
 				}
 				MotionEvent.ACTION_MOVE -> {
 					val mod = Math.round((event.getX() - savedX) * 2f / block)
 					weight = Math.max(-10, Math.min(10, savedWeight + mod))
+					if (weight != savedWeight) {
+						removeCallbacks(longClickRunnable)
+					}
 					invalidate()
 					true
 				}
 				MotionEvent.ACTION_UP -> {
-					if (weight == savedWeight) {
-						editText()
-					} else {
+					v.setPressed(false)
+					removeCallbacks(longClickRunnable)
+					if (weight != savedWeight) {
 						storeWeight()
 					}
 					performClick()
@@ -73,6 +85,8 @@ class ArgumentView: TextView {
 					true
 				}
 				MotionEvent.ACTION_CANCEL -> {
+					v.setPressed(false)
+					removeCallbacks(longClickRunnable)
 					weight = savedWeight
 					invalidate()
 					true
@@ -120,40 +134,48 @@ class ArgumentView: TextView {
 				paint)
 
 		if (weight == 0) {
-			val pad = padding * 4
-			val top = (height - swipeHeight) / 2
-			val left = pad
-			val right = width - swipeWidth - pad
-			canvas.drawBitmap(swipeLeft, left, top, null)
-			canvas.drawBitmap(swipeRight, right, top, null)
+			drawArrows(canvas)
 		} else {
-			var x: Float
-			var step: Float
-			var color: Int
-			if (weight > 0) {
-				x = center
-				step = block
-				color = positiveColor
-			} else {
-				x = center - block + padding
-				step = -block
-				color = negativeColor
-			}
-
-			paint.setColor(color)
-			var i = Math.abs(weight % 11)
-			while (i-- > 0) {
-				canvas.drawRect(
-						x,
-						top,
-						x + block - padding,
-						bottom,
-						paint)
-				x += step
-			}
+			drawWeight(canvas, top, bottom)
 		}
 
 		super.onDraw(canvas)
+	}
+
+	private fun drawArrows(canvas: Canvas) {
+		val pad = padding * 4
+		val y = (height - swipeHeight) / 2
+		val left = pad
+		val right = width - swipeWidth - pad
+		canvas.drawBitmap(swipeLeft, left, y, null)
+		canvas.drawBitmap(swipeRight, right, y, null)
+	}
+
+	private fun drawWeight(canvas: Canvas, top: Float, bottom: Float) {
+		var x: Float
+		var step: Float
+		var color: Int
+		if (weight > 0) {
+			x = center
+			step = block
+			color = positiveColor
+		} else {
+			x = center - block + padding
+			step = -block
+			color = negativeColor
+		}
+
+		paint.setColor(color)
+		var i = Math.abs(weight % 11)
+		while (i-- > 0) {
+			canvas.drawRect(
+					x,
+					top,
+					x + block - padding,
+					bottom,
+					paint)
+			x += step
+		}
 	}
 
 	private fun editText() {

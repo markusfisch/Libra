@@ -118,11 +118,11 @@ svg/ic_decision_maybe.svg
 svg/ic_decision_no.svg
 svg/ic_edit_cancel.svg
 svg/ic_edit_remove.svg
-svg/ic_empty_list.svg 128
+svg/ic_empty_list.svg 152x112
 svg/ic_splash.svg 128
 svg/scale_bar.svg 102x68
 svg/scale_frame.svg 96x142
 svg/scale_pan.svg 30x48
-svg/swipe_left.svg 48x24
-svg/swipe_right.svg 48x24
+svg/swipe_left.svg 120x24
+svg/swipe_right.svg 120x24
 EOF

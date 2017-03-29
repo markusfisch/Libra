@@ -62,7 +62,7 @@ class DecisionsFragment(): Fragment() {
 		val view = LayoutInflater.from(context).inflate(
 				R.layout.dialog_enter_name, null)
 		val nameView = view.findViewById(R.id.name) as EditText
-		nameView.setText(cursor?.getString(cursor?.getColumnIndex(
+		nameView.setText(cursor?.getString(cursor.getColumnIndex(
 				DataSource.DECISIONS_NAME)))
 		AlertDialog.Builder(context)
 				.setView(view)
