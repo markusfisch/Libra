@@ -53,8 +53,8 @@ class ArgumentView: TextView {
 		val res = context.getResources()
 		val dp = res.getDisplayMetrics().density
 		padding = dp * 4
-		positiveColor = ContextCompat.getColor(context, R.color.positive)
-		negativeColor = ContextCompat.getColor(context, R.color.negative)
+		positiveColor = ContextCompat.getColor(context, R.color.yes)
+		negativeColor = ContextCompat.getColor(context, R.color.no)
 		barColor = ContextCompat.getColor(context, R.color.weight_bar)
 		swipeLeft = BitmapFactory.decodeResource(res, R.drawable.swipe_left)
 		swipeRight = BitmapFactory.decodeResource(res, R.drawable.swipe_right)

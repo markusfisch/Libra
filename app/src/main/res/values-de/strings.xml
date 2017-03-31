@@ -4,6 +4,9 @@
 	<string name="just_now">Gerade eben</string>
 	<string name="collect_arguments">Schreibe alle Pro\'s und Contra\'s auf.</string>
 	<string name="weigh_arguments">Gewichte die Argumente indem Du seitlich darüber streichst.</string>
+	<string name="yes">Ja</string>
+	<string name="maybe">Vielleicht</string>
+	<string name="no">Nein</string>
 	<string name="do_it">Auf jeden Fall!</string>
 	<string name="think_it_over">Hm, überleg\' noch mal.</string>
 	<string name="do_not_do_it">Eher nicht.</string>

@@ -9,6 +9,7 @@ import android.graphics.Canvas
 import android.graphics.Matrix
 import android.graphics.Paint
 import android.graphics.Rect
+import android.support.v4.content.ContextCompat
 import android.view.Gravity
 import android.widget.TextView
 
@@ -16,9 +17,17 @@ class ScaleView(context: Context): TextView(context) {
 	var leftWeight: Int = 0
 	var rightWeight: Int = 0
 
-	private val transparentPaint = Paint(Paint.ANTI_ALIAS_FLAG)
+	private val radPerDeg = 6.283f / 360f
+	private val pnt = Paint(Paint.ANTI_ALIAS_FLAG)
 	private val mat = Matrix()
 	private val padding: Int
+	private val transparentColor: Int
+	private val yesColor: Int
+	private val yesString: String
+	private val maybeColor: Int
+	private val maybeString: String
+	private val noColor: Int
+	private val noString: String
 	private val frame: Bitmap
 	private val frameHeight: Int
 	private val frameMidX: Float
@@ -37,7 +46,17 @@ class ScaleView(context: Context): TextView(context) {
 	init {
 		val res = context.getResources()
 		val dp = res.getDisplayMetrics().density
+
+		pnt.setTextSize(12f * dp)
 		padding = Math.round(16f * dp)
+
+		transparentColor = 0x40000000.toInt()
+		yesColor = ContextCompat.getColor(context, R.color.yes)
+		yesString = context.getString(R.string.yes)
+		maybeColor = ContextCompat.getColor(context, R.color.maybe)
+		maybeString = context.getString(R.string.maybe)
+		noColor = ContextCompat.getColor(context, R.color.no)
+		noString = context.getString(R.string.no)
 
 		setPadding(padding, padding, padding, padding)
 		setGravity(Gravity.CENTER_HORIZONTAL)
@@ -58,8 +77,6 @@ class ScaleView(context: Context): TextView(context) {
 		pan = BitmapFactory.decodeResource(res, R.drawable.scale_pan)
 		val panWidth = pan.getWidth()
 		panMidX = Math.round(panWidth * .5f).toFloat()
-
-		transparentPaint.setColor(0x40000000.toInt())
 	}
 
 	fun setWeights(left: Int, right: Int) {
@@ -93,36 +110,54 @@ class ScaleView(context: Context): TextView(context) {
 	override fun onDraw(canvas: Canvas) {
 		canvas.drawColor(0)
 
-		var paint: Paint? = null
-		val cx = Math.round(width / 2f).toFloat()
+		val centerX = Math.round(width / 2f).toFloat()
 		val top = (padding * 2 + textHeight).toFloat()
+
+		var bitmapPaint: Paint? = null
+		var alphaMod = 0xff000000.toInt()
 		val radians: Double = if (leftWeight > -1) {
+			// It's important to use a null paint for drawBitmap()
+			// when drawing transparent PNG's with no alpha value.
+			// Using 0xffffffff gives jagged edges because that's
+			// multiplied with the PNG's alpha channel.
 			calculateBalance()
 		} else {
-			paint = transparentPaint
+			pnt.setColor(transparentColor)
+			alphaMod = transparentColor
+			bitmapPaint = pnt
 			0.0
 		}
 
-		mat.setTranslate(cx - frameMidX, top)
-		canvas.drawBitmap(frame, mat, paint)
+		pnt.setColor(noColor and 0xffffff or alphaMod)
+		canvas.drawText(noString,
+				centerX - frameMidX - pnt.measureText(noString),
+				top + padding,
+				pnt)
+		pnt.setColor(maybeColor and 0xffffff or alphaMod)
+		canvas.drawText(maybeString, centerX, top - padding * .5f, pnt)
+		pnt.setColor(yesColor and 0xffffff or alphaMod)
+		canvas.drawText(yesString, centerX + frameMidX, top + padding, pnt)
+
+		mat.setTranslate(centerX - frameMidX, top)
+		canvas.drawBitmap(frame, mat, bitmapPaint)
 
 		val topAxis = top + frameAxis
-		val rx = cx + scaleRadius * Math.cos(radians).toFloat()
+		val rx = centerX + scaleRadius * Math.cos(radians).toFloat()
 		val ry = topAxis + scaleRadius * Math.sin(radians).toFloat()
-		val lx = cx + scaleRadius * Math.cos(radians + Math.PI).toFloat()
+		val lx = centerX + scaleRadius * Math.cos(radians + Math.PI).toFloat()
 		val ly = topAxis + scaleRadius * Math.sin(radians + Math.PI).toFloat()
 
 		mat.setTranslate(lx - panMidX, ly)
-		canvas.drawBitmap(pan, mat, paint)
+		canvas.drawBitmap(pan, mat, bitmapPaint)
 
 		mat.setTranslate(rx - panMidX, ry)
-		canvas.drawBitmap(pan, mat, paint)
+		canvas.drawBitmap(pan, mat, bitmapPaint)
 
-		mat.setTranslate(cx - scaleMidX, topAxis - scaleMidY)
-		mat.postRotate(radians.toFloat() / 6.283f * 360f, cx, topAxis)
-		canvas.drawBitmap(scale, mat, paint)
+		mat.setTranslate(centerX - scaleMidX, topAxis - scaleMidY)
+		mat.postRotate(radians.toFloat() / radPerDeg, centerX, topAxis)
+		canvas.drawBitmap(scale, mat, bitmapPaint)
 
-		super.onDraw(canvas)
+		//super.onDraw(canvas)
 	}
 
 	private fun calculateBalance(): Double {
