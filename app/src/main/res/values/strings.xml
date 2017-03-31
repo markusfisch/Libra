@@ -1,9 +1,8 @@
 <resources>
-	<string name="app_name">Libra</string>
 	<string name="arguments">Pros and cons</string>
 	<string name="recommendation">Recommendation</string>
 	<string name="just_now">Just now</string>
-	<string name="collect_arguments">First write down pros and cons.</string>
+	<string name="collect_arguments">Write down pros and cons.</string>
 	<string name="weigh_arguments">Weigh arguments by swiping over them.</string>
 	<string name="do_it">By all means do it!</string>
 	<string name="think_it_over">Give it a second thought.</string>

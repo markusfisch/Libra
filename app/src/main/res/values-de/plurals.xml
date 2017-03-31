@@ -1,0 +1,14 @@
+<resources>
+	<plurals name="minutes_ago">
+		<item quantity="one">Vor %d Minute</item>
+		<item quantity="other">Vor %d Minuten</item>
+	</plurals>
+	<plurals name="hours_ago">
+		<item quantity="one">Vor %d Stunde</item>
+		<item quantity="other">Vor %d Stunden</item>
+	</plurals>
+	<plurals name="days_ago">
+		<item quantity="one">Gestern</item>
+		<item quantity="other">Vor %d Tagen</item>
+	</plurals>
+</resources>

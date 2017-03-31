@@ -4,7 +4,7 @@
 		<item quantity="other">%d minutes ago</item>
 	</plurals>
 	<plurals name="hours_ago">
-		<item quantity="one">%d hour ago.</item>
+		<item quantity="one">%d hour ago</item>
 		<item quantity="other">%d hours ago</item>
 	</plurals>
 	<plurals name="days_ago">

@@ -1,0 +1,20 @@
+<resources>
+	<string name="arguments">Pro und Contra</string>
+	<string name="recommendation">Empfehlung</string>
+	<string name="just_now">Gerade eben</string>
+	<string name="collect_arguments">Schreibe alle Pro\'s und Contra\'s auf.</string>
+	<string name="weigh_arguments">Gewichte die Argumente indem Du seitlich darüber streichst.</string>
+	<string name="do_it">Auf jeden Fall!</string>
+	<string name="think_it_over">Hm, überleg\' noch mal.</string>
+	<string name="do_not_do_it">Eher nicht.</string>
+	<string name="enter_argument">Argument eingeben</string>
+	<string name="remove_argument">Argument entfernen</string>
+	<string name="really_remove_argument">Argument löschen?</string>
+	<string name="really_remove_decision">Entscheidung löschen?</string>
+	<string name="cancel_editing">Editieren abbrechen</string>
+	<string name="sort_arguments">Argumente sortieren</string>
+	<string name="remove_decision">Entscheidung entfernen</string>
+	<string name="no_decisions_saved">Keine Entscheidungen gespeichert.</string>
+	<string name="enter_name">Gib\' einen neuen Namen ein</string>
+	<string name="enter_name_hint">Um was geht es?</string>
+</resources>
