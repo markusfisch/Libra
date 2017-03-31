@@ -1,7 +1,7 @@
 package de.markusfisch.android.libra.activity
 
 import de.markusfisch.android.libra.app.setFragment
-import de.markusfisch.android.libra.fragment.DecisionsFragment
+import de.markusfisch.android.libra.fragment.IssuesFragment
 import de.markusfisch.android.libra.R
 
 import android.support.v7.app.AppCompatActivity
@@ -26,7 +26,7 @@ class MainActivity(): AppCompatActivity() {
 		initToolbar()
 
 		if (state == null) {
-			setFragment(getSupportFragmentManager(), DecisionsFragment())
+			setFragment(getSupportFragmentManager(), IssuesFragment())
 		}
 	}
 

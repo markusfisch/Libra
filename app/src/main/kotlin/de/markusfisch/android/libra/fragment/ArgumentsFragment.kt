@@ -23,11 +23,11 @@ import android.widget.EditText
 
 class ArgumentsFragment(): Fragment() {
 	companion object {
-		private val DECISION_ID = "decision_id"
+		private val ISSUE_ID = "issue_id"
 
-		fun newInstance(decisionId: Long): ArgumentsFragment {
+		fun newInstance(issueId: Long): ArgumentsFragment {
 			val args = Bundle()
-			args.putLong(DECISION_ID, decisionId)
+			args.putLong(ISSUE_ID, issueId)
 
 			val fragment = ArgumentsFragment()
 			fragment.setArguments(args)
@@ -42,10 +42,10 @@ class ArgumentsFragment(): Fragment() {
 	private lateinit var removeButton: View
 	private lateinit var scaleView: ScaleView
 	private var argumentId: Long = 0
-	private var decisionId: Long = 0
+	private var issueId: Long = 0
 
 	fun reloadList() {
-		val cursor = LibraApp.data.getArguments(decisionId)
+		val cursor = LibraApp.data.getArguments(issueId)
 		adapter.changeCursor(cursor)
 		updateScale(cursor)
 	}
@@ -61,18 +61,18 @@ class ArgumentsFragment(): Fragment() {
 			state: Bundle?): View {
 		var args = getArguments()
 		if (args != null) {
-			decisionId = args.getLong(DECISION_ID, 0)
+			issueId = args.getLong(ISSUE_ID, 0)
 		}
 
 		val activity = getActivity()
-		var title = LibraApp.data.getDecisionName(decisionId)
+		var title = LibraApp.data.getIssueName(issueId)
 		if (title.isEmpty()) {
 			activity.setTitle(R.string.arguments)
 		} else {
 			activity.setTitle(title)
 		}
 
-		val cursor = LibraApp.data.getArguments(decisionId)
+		val cursor = LibraApp.data.getArguments(issueId)
 		adapter = ArgumentsAdapter(activity, cursor)
 
 		val view = inflater.inflate(
@@ -133,8 +133,8 @@ class ArgumentsFragment(): Fragment() {
 				sortArguments()
 				true
 			}
-			R.id.remove_decision-> {
-				askToRemoveDecision(getActivity())
+			R.id.remove_issue-> {
+				askToRemoveIssue(getActivity())
 				true
 			}
 			else -> super.onOptionsItemSelected(item)
@@ -175,7 +175,7 @@ class ArgumentsFragment(): Fragment() {
 			LibraApp.data.updateArgumentText(argumentId, text)
 			id = argumentId
 		} else {
-			id = LibraApp.data.insertArgument(decisionId, text, 0)
+			id = LibraApp.data.insertArgument(issueId, text, 0)
 		}
 		resetInput()
 		reloadList()
@@ -206,23 +206,23 @@ class ArgumentsFragment(): Fragment() {
 		removeButton.setVisibility(View.VISIBLE)
 	}
 
-	private fun askToRemoveDecision(context: Context) {
+	private fun askToRemoveIssue(context: Context) {
 		AlertDialog.Builder(context)
-				.setMessage(R.string.really_remove_decision)
+				.setMessage(R.string.really_remove_issue)
 				.setPositiveButton(android.R.string.ok, { dialog, id ->
-						removeDecision()
+						removeIssue()
 				})
 				.setNegativeButton(android.R.string.cancel, { dialog, id -> })
 				.show()
 	}
 
-	private fun removeDecision() {
-		LibraApp.data.removeDecision(decisionId)
+	private fun removeIssue() {
+		LibraApp.data.removeIssue(issueId)
 		getFragmentManager().popBackStack()
 	}
 
 	private fun sortArguments() {
-		LibraApp.data.sortArguments(decisionId)
+		LibraApp.data.sortArguments(issueId)
 		reloadList()
 	}
 

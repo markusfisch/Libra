@@ -13,34 +13,34 @@ import java.util.Locale
 
 class DataSource() {
 	companion object {
-		val DECISIONS = "decisions"
-		val DECISIONS_ID = "_id"
-		val DECISIONS_NAME = "name"
-		val DECISIONS_CREATED = "created"
-		val DECISIONS_CREATED_TIMESTAMP = "created_timestamp"
-		val DECISIONS_NEGATIVE = "negative"
-		val DECISIONS_POSITIVE = "positive"
+		val ISSUES = "issues"
+		val ISSUES_ID = "_id"
+		val ISSUES_NAME = "name"
+		val ISSUES_CREATED = "created"
+		val ISSUES_CREATED_TIMESTAMP = "created_timestamp"
+		val ISSUES_NEGATIVE = "negative"
+		val ISSUES_POSITIVE = "positive"
 
 		val ARGUMENTS = "arguments"
 		val ARGUMENTS_ID = "_id"
-		val ARGUMENTS_DECISION = "fk_decision"
+		val ARGUMENTS_ISSUE = "fk_issue"
 		val ARGUMENTS_TEXT = "text"
 		val ARGUMENTS_WEIGHT = "weight"
 		val ARGUMENTS_ORDER = "sort_order"
 
-		private fun createDecisions(db: SQLiteDatabase) {
-			db.execSQL("DROP TABLE IF EXISTS $DECISIONS")
-			db.execSQL("""CREATE TABLE $DECISIONS (
-					$DECISIONS_ID INTEGER PRIMARY KEY AUTOINCREMENT,
-					$DECISIONS_NAME TEXT,
-					$DECISIONS_CREATED DATETIME)""")
+		private fun createIssues(db: SQLiteDatabase) {
+			db.execSQL("DROP TABLE IF EXISTS $ISSUES")
+			db.execSQL("""CREATE TABLE $ISSUES (
+					$ISSUES_ID INTEGER PRIMARY KEY AUTOINCREMENT,
+					$ISSUES_NAME TEXT,
+					$ISSUES_CREATED DATETIME)""")
 		}
 
 		private fun createArguments(db: SQLiteDatabase) {
 			db.execSQL("DROP TABLE IF EXISTS $ARGUMENTS")
 			db.execSQL("""CREATE TABLE $ARGUMENTS (
 					$ARGUMENTS_ID INTEGER PRIMARY KEY AUTOINCREMENT,
-					$ARGUMENTS_DECISION INTEGER,
+					$ARGUMENTS_ISSUE INTEGER,
 					$ARGUMENTS_TEXT TEXT NOT NULL,
 					$ARGUMENTS_WEIGHT INTEGER,
 					$ARGUMENTS_ORDER INTEGER)""")
@@ -64,56 +64,56 @@ class DataSource() {
 		}
 	}
 
-	fun getDecisions(): Cursor {
+	fun getIssues(): Cursor {
 		return db.rawQuery("""SELECT
-				d.$DECISIONS_ID,
-				d.$DECISIONS_NAME,
-				strftime('%s', d.$DECISIONS_CREATED, 'utc')
-					AS $DECISIONS_CREATED_TIMESTAMP,
+				d.$ISSUES_ID,
+				d.$ISSUES_NAME,
+				strftime('%s', d.$ISSUES_CREATED, 'utc')
+					AS $ISSUES_CREATED_TIMESTAMP,
 				(SELECT SUM(a.$ARGUMENTS_WEIGHT)
 					FROM $ARGUMENTS AS a
-					WHERE a.$ARGUMENTS_DECISION = d.$DECISIONS_ID AND
-						a.$ARGUMENTS_WEIGHT < 0) AS $DECISIONS_NEGATIVE,
+					WHERE a.$ARGUMENTS_ISSUE = d.$ISSUES_ID AND
+						a.$ARGUMENTS_WEIGHT < 0) AS $ISSUES_NEGATIVE,
 				(SELECT SUM(a.$ARGUMENTS_WEIGHT)
 					FROM $ARGUMENTS AS a
-					WHERE a.$ARGUMENTS_DECISION = d.$DECISIONS_ID AND
-						a.$ARGUMENTS_WEIGHT > 0) AS $DECISIONS_POSITIVE
-				FROM $DECISIONS AS d
-				ORDER BY d.$DECISIONS_CREATED DESC""", null)
+					WHERE a.$ARGUMENTS_ISSUE = d.$ISSUES_ID AND
+						a.$ARGUMENTS_WEIGHT > 0) AS $ISSUES_POSITIVE
+				FROM $ISSUES AS d
+				ORDER BY d.$ISSUES_CREATED DESC""", null)
 	}
 
-	fun getDecisionName(id: Long): String {
+	fun getIssueName(id: Long): String {
 		return queryStringColumn("""SELECT
-				$DECISIONS_NAME
-				FROM $DECISIONS
-				WHERE $DECISIONS_ID = $id""", DECISIONS_NAME)
+				$ISSUES_NAME
+				FROM $ISSUES
+				WHERE $ISSUES_ID = $id""", ISSUES_NAME)
 	}
 
-	fun insertDecision(): Long {
+	fun insertIssue(): Long {
 		val cv = ContentValues()
-		cv.put(DECISIONS_CREATED, now())
-		return db.insert(DECISIONS, null, cv)
+		cv.put(ISSUES_CREATED, now())
+		return db.insert(ISSUES, null, cv)
 	}
 
-	fun removeDecision(id: Long) {
-		db.delete(ARGUMENTS, "$ARGUMENTS_DECISION = $id", null)
-		db.delete(DECISIONS, "$DECISIONS_ID = $id", null)
+	fun removeIssue(id: Long) {
+		db.delete(ARGUMENTS, "$ARGUMENTS_ISSUE = $id", null)
+		db.delete(ISSUES, "$ISSUES_ID = $id", null)
 	}
 
-	fun updateDecisionName(id: Long, name: String) {
+	fun updateIssueName(id: Long, name: String) {
 		val cv = ContentValues()
-		cv.put(DECISIONS_NAME, name)
-		db.update(DECISIONS, cv, "$DECISIONS_ID = $id", null)
+		cv.put(ISSUES_NAME, name)
+		db.update(ISSUES, cv, "$ISSUES_ID = $id", null)
 	}
 
-	fun getArguments(decisionId: Long): Cursor {
+	fun getArguments(issueId: Long): Cursor {
 		return db.rawQuery("""SELECT
 				$ARGUMENTS_ID,
 				$ARGUMENTS_TEXT,
 				$ARGUMENTS_WEIGHT,
 				$ARGUMENTS_ORDER
 				FROM $ARGUMENTS
-				WHERE $ARGUMENTS_DECISION = $decisionId
+				WHERE $ARGUMENTS_ISSUE = $issueId
 				ORDER BY $ARGUMENTS_ORDER, $ARGUMENTS_ID""", null)
 	}
 
@@ -124,9 +124,9 @@ class DataSource() {
 				WHERE $ARGUMENTS_ID = $id""", ARGUMENTS_TEXT)
 	}
 
-	fun insertArgument(decisionId: Long, text: String, weight: Int): Long {
+	fun insertArgument(issueId: Long, text: String, weight: Int): Long {
 		val cv = ContentValues()
-		cv.put(ARGUMENTS_DECISION, decisionId)
+		cv.put(ARGUMENTS_ISSUE, issueId)
 		cv.put(ARGUMENTS_TEXT, text)
 		cv.put(ARGUMENTS_WEIGHT, weight)
 		cv.put(ARGUMENTS_ORDER, 0)
@@ -149,12 +149,12 @@ class DataSource() {
 		db.update(ARGUMENTS, cv, "$ARGUMENTS_ID = $id", null)
 	}
 
-	fun sortArguments(decisionId: Long) {
+	fun sortArguments(issueId: Long) {
 		// execSQL() instead of update() because we can't use column
 		// names in ContentValues; another leaking abstraction
 		db.execSQL("""UPDATE $ARGUMENTS
 				SET $ARGUMENTS_ORDER = $ARGUMENTS_WEIGHT
-				WHERE $ARGUMENTS_DECISION = $decisionId""")
+				WHERE $ARGUMENTS_ISSUE = $issueId""")
 	}
 
 	private fun queryStringColumn(query: String, column: String): String {
@@ -176,7 +176,7 @@ class DataSource() {
 	private class OpenHelper(context: Context):
 			SQLiteOpenHelper(context, "arguments.db", null, 1) {
 		override fun onCreate(db: SQLiteDatabase) {
-			createDecisions(db)
+			createIssues(db)
 			createArguments(db)
 		}
 

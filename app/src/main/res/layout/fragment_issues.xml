@@ -6,14 +6,14 @@
 	android:layout_width="match_parent"
 	android:layout_height="match_parent">
 	<ListView
-		android:id="@+id/decisions"
+		android:id="@+id/issues"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
 		android:choiceMode="singleChoice"
 		android:divider="@android:color/transparent"
 		android:dividerHeight="0px"/>
 	<RelativeLayout
-		android:id="@+id/no_decisions"
+		android:id="@+id/no_issues"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
 		android:visibility="gone">
@@ -28,7 +28,7 @@
 			android:paddingRight="32dp"
 			android:paddingEnd="32dp"
 			android:gravity="center"
-			android:text="@string/no_decisions_saved"/>
+			android:text="@string/no_issues_saved"/>
 	</RelativeLayout>
 	<android.support.design.widget.FloatingActionButton
 		android:id="@+id/add"

@@ -112,10 +112,10 @@ update app/src/main/res/drawable << EOF
 svg/ic_action_add.svg
 svg/ic_action_remove.svg
 svg/ic_action_sort.svg
-svg/ic_decision_incomplete.svg
-svg/ic_decision_yes.svg
-svg/ic_decision_maybe.svg
-svg/ic_decision_no.svg
+svg/ic_issue_incomplete.svg
+svg/ic_issue_yes.svg
+svg/ic_issue_maybe.svg
+svg/ic_issue_no.svg
 svg/ic_edit_cancel.svg
 svg/ic_edit_remove.svg
 svg/ic_empty_list.svg 152x112

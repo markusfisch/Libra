@@ -16,25 +16,25 @@ import android.widget.TextView
 
 import java.util.Date
 
-class DecisionsAdapter(context: Context, cursor: Cursor):
+class IssuesAdapter(context: Context, cursor: Cursor):
 		CursorAdapter(context, cursor, false) {
 	private val dateFormat = DateFormat.getLongDateFormat(context)
 	private val res = context.getResources()
 	private val nameIndex = cursor.getColumnIndex(
-			DataSource.DECISIONS_NAME)
+			DataSource.ISSUES_NAME)
 	private val createdIndex = cursor.getColumnIndex(
-			DataSource.DECISIONS_CREATED_TIMESTAMP)
+			DataSource.ISSUES_CREATED_TIMESTAMP)
 	private val negativeIndex = cursor.getColumnIndex(
-			DataSource.DECISIONS_NEGATIVE)
+			DataSource.ISSUES_NEGATIVE)
 	private val positiveIndex = cursor.getColumnIndex(
-			DataSource.DECISIONS_POSITIVE)
+			DataSource.ISSUES_POSITIVE)
 
 	override fun newView(
 			context: Context,
 			cursor: Cursor,
 			parent: ViewGroup): View  {
 		return LayoutInflater.from(parent.getContext()).inflate(
-				R.layout.item_decision, parent, false)
+				R.layout.item_issue, parent, false)
 	}
 
 	override fun bindView(
@@ -45,10 +45,10 @@ class DecisionsAdapter(context: Context, cursor: Cursor):
 		var icon: Int = when (Recommendation.getRecommendation(
 				cursor.getInt(negativeIndex),
 				cursor.getInt(positiveIndex))) {
-			Recommendation.YES -> R.drawable.ic_decision_yes
-			Recommendation.MAYBE -> R.drawable.ic_decision_maybe
-			Recommendation.NO -> R.drawable.ic_decision_no
-			else -> R.drawable.ic_decision_incomplete
+			Recommendation.YES -> R.drawable.ic_issue_yes
+			Recommendation.MAYBE -> R.drawable.ic_issue_maybe
+			Recommendation.NO -> R.drawable.ic_issue_no
+			else -> R.drawable.ic_issue_incomplete
 		}
 		holder.iconView.setImageResource(icon)
 		val time = cursor.getLong(createdIndex)
