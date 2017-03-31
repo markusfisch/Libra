@@ -40,11 +40,6 @@ class ArgumentView: TextView {
 	private val swipeRight: Bitmap
 	private val swipeWidth: Int
 	private val swipeHeight: Int
-	private val longClickRunnable = Runnable() { ->
-		if (weight == savedWeight) {
-			editText()
-		}
-	}
 
 	private var width: Float = 0f
 	private var height: Float = 0f
@@ -70,47 +65,30 @@ class ArgumentView: TextView {
 	constructor(context: Context, attrs: AttributeSet):
 			this(context, attrs, 0) {}
 
-	public override fun onTouchEvent(event: MotionEvent): Boolean {
-		return when (event.getActionMasked()) {
-			MotionEvent.ACTION_DOWN -> {
-				setPressed(true)
-				savedX = event.getX()
-				savedWeight = weight
-				postDelayed(longClickRunnable,
-						ViewConfiguration.getLongPressTimeout().toLong())
-				true
-			}
-			MotionEvent.ACTION_MOVE -> {
-				val mod = Math.round((event.getX() - savedX) * 2f / block)
-				weight = Math.max(-10, Math.min(10, savedWeight + mod))
-				if (weight != savedWeight) {
-					removeCallbacks(longClickRunnable)
-				}
-				invalidate()
-				true
-			}
-			MotionEvent.ACTION_UP -> {
-				removeCallbacks(longClickRunnable)
-				if (weight != savedWeight) {
-					storeWeight()
-				}
-				setPressed(false)
-				performClick()
-				invalidate()
-				true
-			}
-			MotionEvent.ACTION_CANCEL -> {
-				removeCallbacks(longClickRunnable)
-				setPressed(false)
-				weight = savedWeight
-				invalidate()
-				true
-			}
-			else -> false
-		}
+	fun onTouchDown(event: MotionEvent) {
+		savedX = event.getX()
+		savedWeight = weight
 	}
 
-	public override fun onLayout(
+	fun onTouchMove(event: MotionEvent) {
+		val mod = Math.round((event.getX() - savedX) * 2f / block)
+		weight = Math.max(-10, Math.min(10, savedWeight + mod))
+		invalidate()
+	}
+
+	fun onTouchUp() {
+		if (weight != savedWeight) {
+			storeWeight()
+		}
+		invalidate()
+	}
+
+	fun onTouchCancel() {
+		weight = savedWeight
+		invalidate()
+	}
+
+	override fun onLayout(
 			changed: Boolean,
 			left: Int,
 			top: Int,
@@ -123,7 +101,7 @@ class ArgumentView: TextView {
 		block = Math.round(center / 10f).toFloat()
 	}
 
-	public override fun onDraw(canvas: Canvas) {
+	override fun onDraw(canvas: Canvas) {
 		var top = height - padding * 3f
 		var bottom = height - padding * 2f
 		paint.setColor(barColor)
@@ -177,10 +155,6 @@ class ArgumentView: TextView {
 					paint)
 			x += step
 		}
-	}
-
-	private fun editText() {
-		getArgumentsFragment()?.editArgument(id)
 	}
 
 	private fun storeWeight() {

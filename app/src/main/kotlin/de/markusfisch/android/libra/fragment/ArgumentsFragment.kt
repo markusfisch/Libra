@@ -51,13 +51,6 @@ class ArgumentsFragment(): Fragment() {
 		updateScale(cursor)
 	}
 
-	fun editArgument(id: Long) {
-		argumentId = id
-		editText.setText(LibraApp.data.getArgumentText(id))
-		cancelButton.setVisibility(View.VISIBLE)
-		removeButton.setVisibility(View.VISIBLE)
-	}
-
 	override fun onCreate(state: Bundle?) {
 		super.onCreate(state)
 		setHasOptionsMenu(true)
@@ -117,6 +110,10 @@ class ArgumentsFragment(): Fragment() {
 		listView.addHeaderView(scaleView, null, false)
 		listView.setEmptyView(view.findViewById(R.id.no_arguments))
 		listView.setAdapter(adapter)
+		listView.setOnItemLongClickListener { parent, view, position, id ->
+			editArgument(id)
+			true
+		}
 
 		updateScale(cursor)
 
@@ -207,6 +204,13 @@ class ArgumentsFragment(): Fragment() {
 	private fun removeArgument(id: Long) {
 		LibraApp.data.removeArgument(id)
 		reloadList()
+	}
+
+	private fun editArgument(id: Long) {
+		argumentId = id
+		editText.setText(LibraApp.data.getArgumentText(id))
+		cancelButton.setVisibility(View.VISIBLE)
+		removeButton.setVisibility(View.VISIBLE)
 	}
 
 	private fun askToRemoveDecision(context: Context) {

@@ -1,10 +1,9 @@
 <RelativeLayout
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:tools="http://schemas.android.com/tools"
-	tools:ignore="UnusedAttribute"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent">
-	<de.markusfisch.android.libra.widget.SwipeListView
+	<de.markusfisch.android.libra.widget.ArgumentListView
 		style="@style/Widget.AppCompat.ListView"
 		android:id="@+id/arguments"
 		android:layout_above="@+id/argument_editor"
@@ -39,7 +38,9 @@
 		android:layout_height="wrap_content"
 		android:layout_alignParentBottom="true"
 		android:orientation="horizontal">
+		<!-- ignore paddingStart on old versions and missing paddingEnd -->
 		<ImageView
+			tools:ignore="UnusedAttribute,RtlSymmetry"
 			android:id="@+id/cancel_editing"
 			android:contentDescription="@string/cancel_editing"
 			android:layout_width="40dp"
@@ -64,7 +65,9 @@
 			android:maxLength="1024">
 			<requestFocus/>
 		</EditText>
+		<!-- ignore paddingEnd on old versions and missing paddingStart -->
 		<ImageView
+			tools:ignore="UnusedAttribute,RtlSymmetry"
 			android:id="@+id/remove_argument"
 			android:contentDescription="@string/remove_argument"
 			android:layout_width="40dp"

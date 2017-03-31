@@ -62,16 +62,16 @@ class ScaleView(context: Context): TextView(context) {
 		transparentPaint.setColor(0x40000000.toInt())
 	}
 
-	public fun setWeights(left: Int, right: Int) {
+	fun setWeights(left: Int, right: Int) {
 		leftWeight = left
 		rightWeight = right
 	}
 
-	public override fun onMeasure(widthSpec: Int, heightSpec: Int) {
-		val textPaint = getPaint()
+	override fun onMeasure(widthSpec: Int, heightSpec: Int) {
+		val paint = getPaint()
 		val bounds = Rect()
 		val text = getText().toString()
-		textPaint.getTextBounds(text, 0, text.length, bounds)
+		paint.getTextBounds(text, 0, text.length, bounds)
 		textHeight = bounds.height()
 
 		setMeasuredDimension(
@@ -79,7 +79,7 @@ class ScaleView(context: Context): TextView(context) {
 				padding * 2 + textHeight + frameHeight)
 	}
 
-	public override fun onLayout(
+	override fun onLayout(
 			changed: Boolean,
 			left: Int,
 			top: Int,
@@ -90,7 +90,7 @@ class ScaleView(context: Context): TextView(context) {
 		height = (bottom - top).toFloat()
 	}
 
-	public override fun onDraw(canvas: Canvas) {
+	override fun onDraw(canvas: Canvas) {
 		canvas.drawColor(0)
 
 		var paint: Paint? = null
