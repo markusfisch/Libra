@@ -114,7 +114,7 @@ class ArgumentView: TextView {
 		if (weight == 0) {
 			drawArrows(canvas)
 		} else {
-			drawWeight(canvas, top, bottom)
+			drawWeightBar(canvas, top, bottom)
 		}
 
 		super.onDraw(canvas)
@@ -129,7 +129,7 @@ class ArgumentView: TextView {
 		canvas.drawBitmap(swipeRight, right, y, null)
 	}
 
-	private fun drawWeight(canvas: Canvas, top: Float, bottom: Float) {
+	private fun drawWeightBar(canvas: Canvas, top: Float, bottom: Float) {
 		var x: Float
 		var step: Float
 		var color: Int
