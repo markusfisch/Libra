@@ -55,45 +55,6 @@ class ArgumentView: TextView {
 
 	constructor(context: Context, attrs: AttributeSet, defStyle: Int):
 			super(context, attrs, defStyle) {
-		setOnTouchListener { v, event ->
-			when (event.getActionMasked()) {
-				MotionEvent.ACTION_DOWN -> {
-					v.setPressed(true)
-					savedX = event.getX()
-					savedWeight = weight
-					postDelayed(longClickRunnable,
-							ViewConfiguration.getLongPressTimeout().toLong())
-					true
-				}
-				MotionEvent.ACTION_MOVE -> {
-					val mod = Math.round((event.getX() - savedX) * 2f / block)
-					weight = Math.max(-10, Math.min(10, savedWeight + mod))
-					if (weight != savedWeight) {
-						removeCallbacks(longClickRunnable)
-					}
-					invalidate()
-					true
-				}
-				MotionEvent.ACTION_UP -> {
-					v.setPressed(false)
-					removeCallbacks(longClickRunnable)
-					if (weight != savedWeight) {
-						storeWeight()
-					}
-					performClick()
-					invalidate()
-					true
-				}
-				MotionEvent.ACTION_CANCEL -> {
-					v.setPressed(false)
-					removeCallbacks(longClickRunnable)
-					weight = savedWeight
-					invalidate()
-					true
-				}
-				else -> false
-			}
-		}
 		val res = context.getResources()
 		val dp = res.getDisplayMetrics().density
 		padding = dp * 4
@@ -108,6 +69,46 @@ class ArgumentView: TextView {
 
 	constructor(context: Context, attrs: AttributeSet):
 			this(context, attrs, 0) {}
+
+	public override fun onTouchEvent(event: MotionEvent): Boolean {
+		return when (event.getActionMasked()) {
+			MotionEvent.ACTION_DOWN -> {
+				setPressed(true)
+				savedX = event.getX()
+				savedWeight = weight
+				postDelayed(longClickRunnable,
+						ViewConfiguration.getLongPressTimeout().toLong())
+				true
+			}
+			MotionEvent.ACTION_MOVE -> {
+				val mod = Math.round((event.getX() - savedX) * 2f / block)
+				weight = Math.max(-10, Math.min(10, savedWeight + mod))
+				if (weight != savedWeight) {
+					removeCallbacks(longClickRunnable)
+				}
+				invalidate()
+				true
+			}
+			MotionEvent.ACTION_UP -> {
+				removeCallbacks(longClickRunnable)
+				if (weight != savedWeight) {
+					storeWeight()
+				}
+				setPressed(false)
+				performClick()
+				invalidate()
+				true
+			}
+			MotionEvent.ACTION_CANCEL -> {
+				removeCallbacks(longClickRunnable)
+				setPressed(false)
+				weight = savedWeight
+				invalidate()
+				true
+			}
+			else -> false
+		}
+	}
 
 	public override fun onLayout(
 			changed: Boolean,

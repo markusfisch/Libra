@@ -5,6 +5,7 @@
 	android:layout_width="match_parent"
 	android:layout_height="match_parent">
 	<de.markusfisch.android.libra.widget.SwipeListView
+		style="@style/Widget.AppCompat.ListView"
 		android:id="@+id/arguments"
 		android:layout_above="@+id/argument_editor"
 		android:layout_width="match_parent"
