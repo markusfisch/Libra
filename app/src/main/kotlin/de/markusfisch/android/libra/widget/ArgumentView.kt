@@ -14,7 +14,6 @@ import android.support.v4.content.ContextCompat
 import android.util.AttributeSet
 import android.view.Gravity
 import android.view.MotionEvent
-import android.view.ViewConfiguration
 import android.widget.TextView
 
 class ArgumentView: TextView {

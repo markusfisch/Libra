@@ -8,19 +8,17 @@ import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import android.graphics.Matrix
 import android.graphics.Paint
-import android.graphics.Rect
 import android.support.v4.content.ContextCompat
-import android.view.Gravity
-import android.widget.TextView
+import android.view.View
 
-class ScaleView(context: Context): TextView(context) {
+class ScaleView(context: Context): View(context) {
 	var leftWeight: Int = 0
 	var rightWeight: Int = 0
 
 	private val radPerDeg = 6.283f / 360f
 	private val pnt = Paint(Paint.ANTI_ALIAS_FLAG)
 	private val mat = Matrix()
-	private val padding: Int
+	private val topMargin: Int
 	private val transparentColor: Int
 	private val yesColor: Int
 	private val yesString: String
@@ -39,7 +37,6 @@ class ScaleView(context: Context): TextView(context) {
 	private val pan: Bitmap
 	private val panMidX: Float
 
-	private var textHeight: Int = 0
 	private var width: Float = 0f
 	private var height: Float = 0f
 
@@ -48,7 +45,7 @@ class ScaleView(context: Context): TextView(context) {
 		val dp = res.getDisplayMetrics().density
 
 		pnt.setTextSize(12f * dp)
-		padding = Math.round(16f * dp)
+		topMargin = Math.round(32f * dp)
 
 		transparentColor = 0x40000000.toInt()
 		yesColor = ContextCompat.getColor(context, R.color.yes)
@@ -57,9 +54,6 @@ class ScaleView(context: Context): TextView(context) {
 		maybeString = context.getString(R.string.maybe)
 		noColor = ContextCompat.getColor(context, R.color.no)
 		noString = context.getString(R.string.no)
-
-		setPadding(padding, padding, padding, padding)
-		setGravity(Gravity.CENTER_HORIZONTAL)
 
 		frame = BitmapFactory.decodeResource(res, R.drawable.scale_frame)
 		val frameWidth = frame.getWidth()
@@ -85,15 +79,9 @@ class ScaleView(context: Context): TextView(context) {
 	}
 
 	override fun onMeasure(widthSpec: Int, heightSpec: Int) {
-		val paint = getPaint()
-		val bounds = Rect()
-		val text = getText().toString()
-		paint.getTextBounds(text, 0, text.length, bounds)
-		textHeight = bounds.height()
-
 		setMeasuredDimension(
 				widthSpec,
-				padding * 2 + textHeight + frameHeight)
+				topMargin + frameHeight)
 	}
 
 	override fun onLayout(
@@ -111,7 +99,7 @@ class ScaleView(context: Context): TextView(context) {
 		canvas.drawColor(0)
 
 		val centerX = Math.round(width / 2f).toFloat()
-		val top = (padding * 2 + textHeight).toFloat()
+		val top = topMargin.toFloat()
 
 		var bitmapPaint: Paint? = null
 		var alphaMod = 0xff000000.toInt()
@@ -128,15 +116,16 @@ class ScaleView(context: Context): TextView(context) {
 			0.0
 		}
 
+		val textPad = top * .5f
 		pnt.setColor(noColor and 0xffffff or alphaMod)
 		canvas.drawText(noString,
 				centerX - frameMidX - pnt.measureText(noString),
-				top + padding,
+				top + textPad,
 				pnt)
 		pnt.setColor(maybeColor and 0xffffff or alphaMod)
-		canvas.drawText(maybeString, centerX, top - padding * .5f, pnt)
+		canvas.drawText(maybeString, centerX, top - textPad * .5f, pnt)
 		pnt.setColor(yesColor and 0xffffff or alphaMod)
-		canvas.drawText(yesString, centerX + frameMidX, top + padding, pnt)
+		canvas.drawText(yesString, centerX + frameMidX, top + textPad, pnt)
 
 		mat.setTranslate(centerX - frameMidX, top)
 		canvas.drawBitmap(frame, mat, bitmapPaint)
@@ -156,8 +145,6 @@ class ScaleView(context: Context): TextView(context) {
 		mat.setTranslate(centerX - scaleMidX, topAxis - scaleMidY)
 		mat.postRotate(radians.toFloat() / radPerDeg, centerX, topAxis)
 		canvas.drawBitmap(scale, mat, bitmapPaint)
-
-		//super.onDraw(canvas)
 	}
 
 	private fun calculateBalance(): Double {

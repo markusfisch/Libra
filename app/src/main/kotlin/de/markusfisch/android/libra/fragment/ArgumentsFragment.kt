@@ -2,7 +2,6 @@ package de.markusfisch.android.libra.fragment
 
 import de.markusfisch.android.libra.adapter.ArgumentsAdapter
 import de.markusfisch.android.libra.app.LibraApp
-import de.markusfisch.android.libra.app.Recommendation
 import de.markusfisch.android.libra.database.DataSource
 import de.markusfisch.android.libra.widget.ScaleView
 import de.markusfisch.android.libra.R
@@ -155,21 +154,11 @@ class ArgumentsFragment(): Fragment() {
 				negative += -weight
 			} else {
 				scaleView.setWeights(-1, -1)
-				scaleView.setText(R.string.weigh_arguments)
 				return
 			}
 		} while (cursor.moveToNext())
 
 		scaleView.setWeights(negative, positive)
-		when (Recommendation.getRecommendation(negative, positive)) {
-			Recommendation.YES ->
-					scaleView.setText(R.string.do_it)
-			Recommendation.MAYBE ->
-					scaleView.setText(R.string.think_it_over)
-			else ->
-					scaleView.setText(R.string.do_not_do_it)
-		}
-
 		cursor.moveToFirst()
 	}
 
