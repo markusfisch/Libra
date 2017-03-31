@@ -3,6 +3,7 @@ package de.markusfisch.android.libra.fragment
 import de.markusfisch.android.libra.adapter.ArgumentsAdapter
 import de.markusfisch.android.libra.app.LibraApp
 import de.markusfisch.android.libra.database.DataSource
+import de.markusfisch.android.libra.widget.ArgumentListView
 import de.markusfisch.android.libra.widget.ScaleView
 import de.markusfisch.android.libra.R
 
@@ -19,7 +20,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText
-import android.widget.ListView
 
 class ArgumentsFragment(): Fragment() {
 	companion object {
@@ -36,7 +36,7 @@ class ArgumentsFragment(): Fragment() {
 	}
 
 	private lateinit var adapter: ArgumentsAdapter
-	private lateinit var listView: ListView
+	private lateinit var listView: ArgumentListView
 	private lateinit var editText: EditText
 	private lateinit var cancelButton: View
 	private lateinit var removeButton: View
@@ -105,13 +105,17 @@ class ArgumentsFragment(): Fragment() {
 
 		scaleView = ScaleView(activity)
 
-		listView = view.findViewById(R.id.arguments) as ListView
+		listView = view.findViewById(R.id.arguments) as ArgumentListView
 		listView.addHeaderView(scaleView, null, false)
 		listView.setEmptyView(view.findViewById(R.id.no_arguments))
 		listView.setAdapter(adapter)
 		listView.setOnItemLongClickListener { parent, view, position, id ->
-			editArgument(id)
-			true
+			if (!listView.isWeighing) {
+				editArgument(id)
+				true
+			} else {
+				false
+			}
 		}
 
 		updateScale(cursor)

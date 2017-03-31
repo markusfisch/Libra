@@ -8,6 +8,9 @@ import android.view.View
 import android.widget.ListView
 
 class ArgumentListView: ListView {
+	var isWeighing = false
+			private set
+
 	private val rect = Rect()
 
 	private var downX: Float = 0f
@@ -35,14 +38,17 @@ class ArgumentListView: ListView {
 				if (Math.abs(downX - event.getX()) >
 						Math.abs(downY - event.getY())) {
 					swipeView?.onTouchMove(event)
+					isWeighing = true
 					return false
 				}
 			}
 			MotionEvent.ACTION_UP -> {
 				swipeView?.onTouchUp()
+				isWeighing = false
 			}
 			MotionEvent.ACTION_CANCEL -> {
 				swipeView?.onTouchCancel()
+				isWeighing = false
 			}
 		}
 		return super.onTouchEvent(event)
