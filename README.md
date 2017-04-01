@@ -9,6 +9,8 @@ Android app that helps making hard decisions. Works like this:
 
 Inspired by this [Time article][time-article].
 
-Wrote this app to get my feet wet with Kotlin. Still mixed feelings.
+Wrote this app to get my feet wet with [Kotlin][kotlin].
+Still mixed feelings.
 
 [time-article]: http://time.com/3772262/billionaire-trick-for-decisions/
+[kotlin]: http://kotlinlang.org/
