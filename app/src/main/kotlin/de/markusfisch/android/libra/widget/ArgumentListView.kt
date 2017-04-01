@@ -15,7 +15,8 @@ class ArgumentListView: ListView {
 
 	private var downX: Float = 0f
 	private var downY: Float = 0f
-	private var swipeView: ArgumentView? = null
+	private var downWeight: Int? = 0
+	private var argumentView: ArgumentView? = null
 
 	constructor(context: Context, attrs: AttributeSet, defStyle: Int):
 			super(context, attrs, defStyle) {
@@ -29,25 +30,26 @@ class ArgumentListView: ListView {
 			MotionEvent.ACTION_DOWN -> {
 				downX = event.getX()
 				downY = event.getY()
-				swipeView = findView(event)
-				swipeView?.onTouchDown(event)
+				argumentView = findView(event)
+				argumentView?.onTouchDown(event)
+				downWeight = argumentView?.weight
 			}
 			MotionEvent.ACTION_MOVE -> {
 				// don't route ACTION_MOVE to ListView if the
 				// gesture is more horizontal than vertical
 				if (Math.abs(downX - event.getX()) >
 						Math.abs(downY - event.getY())) {
-					swipeView?.onTouchMove(event)
-					isWeighing = true
+					argumentView?.onTouchMove(event)
+					isWeighing = downWeight != argumentView?.weight
 					return false
 				}
 			}
 			MotionEvent.ACTION_UP -> {
-				swipeView?.onTouchUp()
+				argumentView?.onTouchUp()
 				isWeighing = false
 			}
 			MotionEvent.ACTION_CANCEL -> {
-				swipeView?.onTouchCancel()
+				argumentView?.onTouchCancel()
 				isWeighing = false
 			}
 		}
