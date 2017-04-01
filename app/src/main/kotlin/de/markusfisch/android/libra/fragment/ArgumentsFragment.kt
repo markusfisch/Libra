@@ -104,6 +104,7 @@ class ArgumentsFragment(): Fragment() {
 		}
 
 		scaleView = ScaleView(activity)
+		updateScale(cursor)
 
 		listView = view.findViewById(R.id.arguments) as ArgumentListView
 		listView.addHeaderView(scaleView, null, false)
@@ -117,8 +118,6 @@ class ArgumentsFragment(): Fragment() {
 				false
 			}
 		}
-
-		updateScale(cursor)
 
 		return view
 	}
@@ -187,7 +186,7 @@ class ArgumentsFragment(): Fragment() {
 		AlertDialog.Builder(context)
 				.setMessage(R.string.really_remove_argument)
 				.setPositiveButton(android.R.string.ok, { dialog, id ->
-						removeArgument(argId)
+					removeArgument(argId)
 				})
 				.setNegativeButton(android.R.string.cancel, { dialog, id ->
 				})
@@ -210,7 +209,7 @@ class ArgumentsFragment(): Fragment() {
 		AlertDialog.Builder(context)
 				.setMessage(R.string.really_remove_issue)
 				.setPositiveButton(android.R.string.ok, { dialog, id ->
-						removeIssue()
+					removeIssue()
 				})
 				.setNegativeButton(android.R.string.cancel, { dialog, id -> })
 				.show()

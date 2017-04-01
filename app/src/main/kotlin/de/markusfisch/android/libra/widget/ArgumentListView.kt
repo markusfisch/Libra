@@ -74,20 +74,17 @@ class ArgumentListView: ListView {
 	}
 
 	private fun findView(event: MotionEvent): ArgumentView? {
-		val childCount = getChildCount()
 		val listViewCoords = IntArray(2)
 		getLocationOnScreen(listViewCoords)
 		val x = event.getRawX().toInt() - listViewCoords[0]
 		val y = event.getRawY().toInt() - listViewCoords[1]
-		var child: View
-		var i = 0
-		while (i < childCount) {
-			child = getChildAt(i)
-			child.getHitRect(rect)
+		val childCount = getChildCount() - 1
+		for (it in 0..childCount) {
+			var child = getChildAt(it)
+			child?.getHitRect(rect)
 			if (child is ArgumentView && rect.contains(x, y)) {
 				return child
 			}
-			++i
 		}
 		return null
 	}

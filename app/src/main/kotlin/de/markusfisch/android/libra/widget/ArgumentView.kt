@@ -144,8 +144,7 @@ class ArgumentView: TextView {
 		}
 
 		paint.setColor(color)
-		var i = Math.abs(weight % 11)
-		while (i-- > 0) {
+		for (it in 1..Math.abs(weight % 11)) {
 			canvas.drawRect(
 					x,
 					top,

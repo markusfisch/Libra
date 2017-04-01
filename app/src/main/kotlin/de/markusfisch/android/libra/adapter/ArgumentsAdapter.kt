@@ -41,8 +41,7 @@ class ArgumentsAdapter(context: Context, cursor: Cursor):
 	private fun getViewHolder(view: View): ViewHolder {
 		var holder = view.getTag() as ViewHolder?
 		if (holder == null) {
-			holder = ViewHolder(
-					view.findViewById(R.id.text) as ArgumentView)
+			holder = ViewHolder(view.findViewById(R.id.text) as ArgumentView)
 			view.setTag(holder)
 		}
 		return holder

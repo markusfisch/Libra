@@ -79,9 +79,7 @@ class ScaleView(context: Context): View(context) {
 	}
 
 	override fun onMeasure(widthSpec: Int, heightSpec: Int) {
-		setMeasuredDimension(
-				widthSpec,
-				topMargin + frameHeight)
+		setMeasuredDimension(widthSpec, topMargin + frameHeight)
 	}
 
 	override fun onLayout(

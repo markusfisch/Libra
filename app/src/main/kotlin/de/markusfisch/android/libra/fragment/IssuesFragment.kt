@@ -25,8 +25,7 @@ class IssuesFragment(): Fragment() {
 			state: Bundle?): View {
 		val activity = getActivity()
 		activity.setTitle(R.string.issues)
-		adapter = IssuesAdapter(activity,
-				LibraApp.data.getIssues())
+		adapter = IssuesAdapter(activity, LibraApp.data.getIssues())
 
 		val view = inflater.inflate(
 				R.layout.fragment_issues,
