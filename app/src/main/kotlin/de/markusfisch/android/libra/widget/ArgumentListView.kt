@@ -5,21 +5,31 @@ import android.graphics.Rect
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
+import android.view.ViewConfiguration
 import android.widget.ListView
 
 class ArgumentListView: ListView {
 	var isWeighing = false
 			private set
 
+	private enum class Mode {
+		NONE,
+		SCROLLING,
+		WEIGHING
+	}
+
 	private val rect = Rect()
+	private val touchSlop: Int
 
 	private var downX: Float = 0f
 	private var downY: Float = 0f
 	private var downWeight: Int? = 0
 	private var argumentView: ArgumentView? = null
+	private var mode = Mode.NONE
 
 	constructor(context: Context, attrs: AttributeSet, defStyle: Int):
 			super(context, attrs, defStyle) {
+		touchSlop = ViewConfiguration.get(context).getScaledTouchSlop()
 	}
 
 	constructor(context: Context, attrs: AttributeSet):
@@ -33,15 +43,22 @@ class ArgumentListView: ListView {
 				argumentView = findView(event)
 				argumentView?.onTouchDown(event)
 				downWeight = argumentView?.weight
+				mode = Mode.NONE
 			}
 			MotionEvent.ACTION_MOVE -> {
-				// don't route ACTION_MOVE to ListView if the
-				// gesture is more horizontal than vertical
-				if (Math.abs(downX - event.getX()) >
-						Math.abs(downY - event.getY())) {
+				val dx = Math.abs(downX - event.getX())
+				val dy = Math.abs(downY - event.getY())
+				if (mode == Mode.NONE && dx + dy >= touchSlop) {
+					if (dx > dy) {
+						mode = Mode.WEIGHING
+					} else {
+						mode = Mode.SCROLLING
+					}
+				}
+				if (mode == Mode.WEIGHING) {
 					argumentView?.onTouchMove(event)
 					isWeighing = downWeight != argumentView?.weight
-					return false
+					return true
 				}
 			}
 			MotionEvent.ACTION_UP -> {
