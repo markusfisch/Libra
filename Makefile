@@ -21,10 +21,11 @@ install:
 	adb $(TARGET) install -r $(APK)
 
 start:
-	adb $(TARGET) shell 'am start -n $(PACKAGE)/.activity.SplashActivity'
+	adb $(TARGET) shell 'am start -n \
+		$(PACKAGE).debug/$(PACKAGE).activity.SplashActivity'
 
 uninstall:
-	adb $(TARGET) uninstall $(PACKAGE)
+	adb $(TARGET) uninstall $(PACKAGE).debug
 
 clean:
 	./gradlew clean

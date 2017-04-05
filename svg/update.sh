@@ -102,6 +102,11 @@ type converter &>/dev/null || find_converter || {
 	exit 1
 }
 
+# debug mipmap SVGs to PNGs
+update app/src/debug/res/mipmap << EOF
+svg/debug/ic_launcher.svg 48
+EOF
+
 # mipmap SVGs to PNGs
 update app/src/main/res/mipmap << EOF
 svg/ic_launcher.svg 48
