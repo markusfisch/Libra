@@ -8,10 +8,10 @@
 	<string name="maybe">Maybe</string>
 	<string name="no">No</string>
 	<string name="enter_argument">Enter argument</string>
-	<string name="remove_argument">Remove argument</string>
+	<string name="remove_argument">Remove</string>
 	<string name="really_remove_argument">Remove argument?</string>
 	<string name="really_remove_issue">Remove issue?</string>
-	<string name="cancel_editing">Cancel editing</string>
+	<string name="cancel_editing">Cancel</string>
 	<string name="sort_arguments">Sort arguments</string>
 	<string name="remove_issue">Remove issue</string>
 	<string name="no_issues_saved">No issues yet.</string>

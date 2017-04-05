@@ -38,8 +38,7 @@ class ArgumentsFragment(): Fragment() {
 	private lateinit var adapter: ArgumentsAdapter
 	private lateinit var listView: ArgumentListView
 	private lateinit var editText: EditText
-	private lateinit var cancelButton: View
-	private lateinit var removeButton: View
+	private lateinit var editBar: View
 	private lateinit var scaleView: ScaleView
 	private var argumentId: Long = 0
 	private var issueId: Long = 0
@@ -80,22 +79,27 @@ class ArgumentsFragment(): Fragment() {
 				container,
 				false)
 
-		editText = view.findViewById(R.id.enter_argument) as EditText
+		editBar = view.findViewById(R.id.edit_bar)
+
+		editText = view.findViewById(R.id.argument) as EditText
 		editText.setOnEditorActionListener { v, actionId, event ->
 			when (actionId) {
 				EditorInfo.IME_ACTION_GO,
 				EditorInfo.IME_ACTION_SEND,
 				EditorInfo.IME_ACTION_DONE,
 				EditorInfo.IME_ACTION_NEXT,
-				EditorInfo.IME_NULL -> saveArgument(v.getText().toString())
+				EditorInfo.IME_NULL -> saveArgument()
 				else -> false
 			}
 		}
 
-		cancelButton = view.findViewById(R.id.cancel_editing)
+		val enterButton = view.findViewById(R.id.enter_argument)
+		enterButton.setOnClickListener { v -> saveArgument() }
+
+		val cancelButton = view.findViewById(R.id.cancel_editing)
 		cancelButton.setOnClickListener { v -> resetInput() }
 
-		removeButton = view.findViewById(R.id.remove_argument)
+		val removeButton = view.findViewById(R.id.remove_argument)
 		removeButton.setOnClickListener { v ->
 			if (argumentId > 0) {
 				askToRemoveArgument(activity, argumentId)
@@ -165,7 +169,8 @@ class ArgumentsFragment(): Fragment() {
 		cursor.moveToFirst()
 	}
 
-	private fun saveArgument(text: String): Boolean {
+	private fun saveArgument(): Boolean {
+		val text = editText.getText().toString()
 		if (text.trim().length < 1) {
 			return false
 		}
@@ -201,8 +206,7 @@ class ArgumentsFragment(): Fragment() {
 	private fun editArgument(id: Long) {
 		argumentId = id
 		editText.setText(LibraApp.data.getArgumentText(id))
-		cancelButton.setVisibility(View.VISIBLE)
-		removeButton.setVisibility(View.VISIBLE)
+		editBar.setVisibility(View.VISIBLE)
 	}
 
 	private fun askToRemoveIssue(context: Context) {
@@ -228,8 +232,7 @@ class ArgumentsFragment(): Fragment() {
 	private fun resetInput() {
 		editText.setText("")
 		argumentId = 0
-		removeButton.setVisibility(View.GONE)
-		cancelButton.setVisibility(View.GONE)
+		editBar.setVisibility(View.GONE)
 	}
 
 	private fun getItemPosition(id: Long): Int {

@@ -122,6 +122,7 @@ svg/ic_issue_yes.svg
 svg/ic_issue_maybe.svg
 svg/ic_issue_no.svg
 svg/ic_edit_cancel.svg
+svg/ic_edit_enter.svg
 svg/ic_edit_remove.svg
 svg/ic_empty_list.svg 174x128
 svg/ic_splash.svg 128

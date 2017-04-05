@@ -37,46 +37,67 @@
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:layout_alignParentBottom="true"
-		android:orientation="horizontal">
-		<!-- ignore paddingStart on old versions and missing paddingEnd -->
-		<ImageView
-			tools:ignore="UnusedAttribute,RtlSymmetry"
-			android:id="@+id/cancel_editing"
-			android:contentDescription="@string/cancel_editing"
-			android:layout_width="40dp"
-			android:layout_height="56dp"
-			android:paddingStart="16dp"
-			android:paddingLeft="16dp"
-			android:paddingTop="16dp"
-			android:paddingBottom="16dp"
-			android:src="@drawable/ic_edit_cancel"
-			android:visibility="gone"/>
-		<EditText
-			android:id="@+id/enter_argument"
-			android:background="@android:color/transparent"
-			android:layout_width="0dp"
+		android:orientation="vertical">
+		<LinearLayout
+			android:id="@+id/edit_bar"
+			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:layout_weight="1"
-			android:layout_margin="16dp"
-			android:inputType="textShortMessage|textAutoCorrect|textCapSentences"
-			android:imeOptions="actionDone|flagNoExtractUi"
-			android:hint="@string/enter_argument"
-			android:maxLines="1"
-			android:maxLength="1024">
-			<requestFocus/>
-		</EditText>
-		<!-- ignore paddingEnd on old versions and missing paddingStart -->
-		<ImageView
-			tools:ignore="UnusedAttribute,RtlSymmetry"
-			android:id="@+id/remove_argument"
-			android:contentDescription="@string/remove_argument"
-			android:layout_width="40dp"
-			android:layout_height="56dp"
-			android:paddingEnd="16dp"
-			android:paddingRight="16dp"
-			android:paddingTop="16dp"
-			android:paddingBottom="16dp"
-			android:src="@drawable/ic_edit_remove"
-			android:visibility="gone"/>
+			android:orientation="horizontal"
+			android:visibility="gone">
+			<TextView
+				tools:ignore="UnusedAttribute"
+				android:id="@+id/cancel_editing"
+				android:layout_width="0dp"
+				android:layout_height="wrap_content"
+				android:layout_weight="1"
+				android:padding="16dp"
+				android:drawablePadding="8dp"
+				android:drawableStart="@drawable/ic_edit_cancel"
+				android:drawableLeft="@drawable/ic_edit_cancel"
+				android:text="@string/cancel_editing"/>
+			<TextView
+				tools:ignore="UnusedAttribute"
+				android:id="@+id/remove_argument"
+				android:layout_width="0dp"
+				android:layout_height="wrap_content"
+				android:layout_weight="1"
+				android:padding="16dp"
+				android:drawablePadding="8dp"
+				android:drawableEnd="@drawable/ic_edit_remove"
+				android:drawableRight="@drawable/ic_edit_remove"
+				android:gravity="end"
+				android:text="@string/remove_argument"/>
+		</LinearLayout>
+		<LinearLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:orientation="horizontal">
+			<EditText
+				android:id="@+id/argument"
+				android:background="@android:color/transparent"
+				android:layout_width="0dp"
+				android:layout_height="wrap_content"
+				android:layout_weight="1"
+				android:layout_margin="16dp"
+				android:inputType="textShortMessage|textAutoCorrect|textCapSentences"
+				android:imeOptions="actionDone|flagNoExtractUi"
+				android:hint="@string/enter_argument"
+				android:maxLines="1"
+				android:maxLength="1024">
+				<requestFocus/>
+			</EditText>
+			<!-- ignore paddingEnd on old versions and missing paddingStart -->
+			<ImageView
+				tools:ignore="UnusedAttribute,RtlSymmetry"
+				android:id="@+id/enter_argument"
+				android:contentDescription="@string/enter_argument"
+				android:layout_width="40dp"
+				android:layout_height="56dp"
+				android:paddingEnd="16dp"
+				android:paddingRight="16dp"
+				android:paddingTop="16dp"
+				android:paddingBottom="16dp"
+				android:src="@drawable/ic_edit_enter"/>
+		</LinearLayout>
 	</LinearLayout>
 </RelativeLayout>
