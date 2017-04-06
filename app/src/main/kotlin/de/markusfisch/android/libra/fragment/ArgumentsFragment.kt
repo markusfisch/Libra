@@ -24,6 +24,7 @@ import android.widget.EditText
 class ArgumentsFragment(): Fragment() {
 	companion object {
 		private val ISSUE_ID = "issue_id"
+		private val ARGUMENTS_ID = "argumentId"
 
 		fun newInstance(issueId: Long): ArgumentsFragment {
 			val args = Bundle()
@@ -123,7 +124,18 @@ class ArgumentsFragment(): Fragment() {
 			}
 		}
 
+		if (state != null) {
+			val id = state.getLong(ARGUMENTS_ID, 0)
+			if (id > 0) {
+				editArgument(id)
+			}
+		}
+
 		return view
+	}
+
+	override fun onSaveInstanceState(outState: Bundle) {
+		outState.putLong(ARGUMENTS_ID, argumentId)
 	}
 
 	override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
