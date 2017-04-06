@@ -40,6 +40,7 @@
 		android:orientation="vertical">
 		<LinearLayout
 			android:id="@+id/edit_bar"
+			android:background="@color/background_edit_bar"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:orientation="horizontal"
@@ -51,6 +52,7 @@
 				android:layout_height="wrap_content"
 				android:layout_weight="1"
 				android:padding="16dp"
+				android:gravity="center_vertical"
 				android:drawablePadding="8dp"
 				android:drawableStart="@drawable/ic_edit_cancel"
 				android:drawableLeft="@drawable/ic_edit_cancel"
@@ -62,10 +64,10 @@
 				android:layout_height="wrap_content"
 				android:layout_weight="1"
 				android:padding="16dp"
+				android:gravity="end|center_vertical"
 				android:drawablePadding="8dp"
 				android:drawableEnd="@drawable/ic_edit_remove"
 				android:drawableRight="@drawable/ic_edit_remove"
-				android:gravity="end"
 				android:text="@string/remove_argument"/>
 		</LinearLayout>
 		<LinearLayout
