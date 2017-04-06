@@ -1,5 +1,5 @@
 <resources>
-	<string name="issues">Entscheidungen</string>
+	<string name="issues">Fragen</string>
 	<string name="arguments">Pro und Contra</string>
 	<string name="recommendation">Empfehlung</string>
 	<string name="just_now">Gerade eben</string>
@@ -10,11 +10,11 @@
 	<string name="enter_argument">Argument eingeben</string>
 	<string name="remove_argument">Löschen</string>
 	<string name="really_remove_argument">Argument löschen?</string>
-	<string name="really_remove_issue">Entscheidung löschen?</string>
+	<string name="really_remove_issue">Frage löschen?</string>
 	<string name="cancel_editing">Abbrechen</string>
 	<string name="sort_arguments">Argumente sortieren</string>
-	<string name="remove_issue">Entscheidung entfernen</string>
-	<string name="no_issues_saved">Keine Entscheidungen gespeichert.</string>
+	<string name="remove_issue">Frage entfernen</string>
+	<string name="no_issues_saved">Keine Fragen gespeichert.</string>
 	<string name="enter_name">Gib\' einen neuen Namen ein</string>
 	<string name="enter_name_hint">Um was geht es?</string>
 </resources>
