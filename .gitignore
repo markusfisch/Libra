@@ -1,6 +1,7 @@
 *.swp
 .gradle
 .idea
+infer-out
 build
 local.properties
 gradle.properties
