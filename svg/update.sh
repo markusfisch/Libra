@@ -124,7 +124,8 @@ svg/ic_issue_no.svg
 svg/ic_edit_cancel.svg
 svg/ic_edit_enter.svg
 svg/ic_edit_remove.svg
-svg/ic_empty_list.svg 174x128
+svg/ic_empty_arguments.svg 174x128
+svg/ic_empty_issues.svg 200x175
 svg/ic_splash.svg 128
 svg/scale_bar.svg 102x68
 svg/scale_frame.svg 96x142

@@ -23,7 +23,7 @@
 			android:layout_height="wrap_content"
 			android:layout_centerInParent="true"
 			android:drawablePadding="8dp"
-			android:drawableTop="@drawable/ic_empty_list"
+			android:drawableTop="@drawable/ic_empty_arguments"
 			android:paddingLeft="32dp"
 			android:paddingStart="32dp"
 			android:paddingRight="32dp"
