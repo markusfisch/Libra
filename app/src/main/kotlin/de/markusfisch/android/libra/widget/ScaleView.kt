@@ -8,18 +8,66 @@ import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import android.graphics.Matrix
 import android.graphics.Paint
+import android.graphics.PixelFormat
 import android.support.v4.content.ContextCompat
-import android.view.View
+import android.view.SurfaceHolder
+import android.view.SurfaceView
 
-class ScaleView(context: Context): View(context) {
-	var leftWeight: Int = 0
-	var rightWeight: Int = 0
+class ScaleView(context: Context): SurfaceView(context) {
+	companion object {
+		private fun calculateBalance(left: Float, right: Float): Double {
+			val min: Float = Math.max(1f, Math.min(left, right))
+			val balance: Float = right - left
+			var factor: Float
+			if (balance == 0f) {
+				factor = 0f
+			} else if (balance > 0f) {
+				factor = Math.min(min, balance)
+			} else {
+				factor = Math.max(-min, balance)
+			}
+			factor /= min
+			return (.9f * factor).toDouble()
+		}
 
+		private fun linear(
+				time: Long,
+				begin: Double,
+				change: Double,
+				duration: Long): Double {
+			return change.toFloat() * time / duration + begin
+		}
+	}
+
+	private val animationTime = 300L
+	private val animationRunnable: Runnable = Runnable {
+		while (running) {
+			val now = Math.min(
+					System.currentTimeMillis() - animationStart,
+					animationTime)
+
+			radians = linear(
+					now,
+					radiansBegin,
+					radiansChange,
+					animationTime)
+
+			lockCanvasAndDraw()
+
+			if (now >= animationTime) {
+				break
+			}
+		}
+		running = false
+	}
 	private val radPerDeg = 6.283f / 360f
+	private val surfaceHolder = getHolder()
 	private val pnt = Paint(Paint.ANTI_ALIAS_FLAG)
 	private val mat = Matrix()
 	private val topMargin: Int
+	private val bottomMargin: Int
 	private val transparentColor: Int
+	private val backgroundColor: Int
 	private val yesColor: Int
 	private val yesString: String
 	private val maybeColor: Int
@@ -37,17 +85,28 @@ class ScaleView(context: Context): View(context) {
 	private val pan: Bitmap
 	private val panMidX: Float
 
-	private var width: Float = 0f
-	private var height: Float = 0f
+	private var width = 0f
+	private var height = 0f
+	private var running = false
+	private var thread: Thread? = null
+	private var animationStart = 0L
+	private var radians = 0.0
+	private var radiansBegin = 0.0
+	private var radiansChange = 0.0
+	private var noWeights = false
 
 	init {
 		val res = context.getResources()
 		val dp = res.getDisplayMetrics().density
 
+		pnt.setFilterBitmap(true)
 		pnt.setTextSize(12f * dp)
 		topMargin = Math.round(32f * dp)
+		bottomMargin = Math.round(8f * dp)
 
 		transparentColor = 0x40000000.toInt()
+		backgroundColor = ContextCompat.getColor(context,
+				R.color.background_window)
 		yesColor = ContextCompat.getColor(context, R.color.yes)
 		yesString = context.getString(R.string.yes)
 		maybeColor = ContextCompat.getColor(context, R.color.maybe)
@@ -71,47 +130,93 @@ class ScaleView(context: Context): View(context) {
 		pan = BitmapFactory.decodeResource(res, R.drawable.scale_pan)
 		val panWidth = pan.getWidth()
 		panMidX = Math.round(panWidth * .5f).toFloat()
+
+		initSurfaceHolder()
 	}
 
 	fun setWeights(left: Int, right: Int) {
-		leftWeight = left
-		rightWeight = right
+		if (left < 0 || right < 0) {
+			noWeights = true
+			radians = 0.0
+			lockCanvasAndDraw()
+		} else {
+			noWeights = false
+			radiansBegin = radians
+			radiansChange = calculateBalance(
+					left.toFloat(),
+					right.toFloat()) - radiansBegin
+			startAnimation()
+		}
 	}
 
 	override fun onMeasure(widthSpec: Int, heightSpec: Int) {
-		setMeasuredDimension(widthSpec, topMargin + frameHeight)
+		setMeasuredDimension(widthSpec,
+				topMargin + frameHeight + bottomMargin)
 	}
 
-	override fun onLayout(
-			changed: Boolean,
-			left: Int,
-			top: Int,
-			right: Int,
-			bottom: Int) {
-		super.onLayout(changed, left, top, right, bottom)
-		width = (right - left).toFloat()
-		height = (bottom - top).toFloat()
+	private fun initSurfaceHolder() {
+		surfaceHolder.setFormat(PixelFormat.TRANSPARENT)
+		surfaceHolder.addCallback(object : SurfaceHolder.Callback {
+			override fun surfaceChanged(
+					holder: SurfaceHolder,
+					format: Int,
+					width: Int,
+					height: Int) {
+				this@ScaleView.width = width.toFloat()
+				this@ScaleView.height = height.toFloat()
+				lockCanvasAndDraw()
+			}
+
+			override fun surfaceCreated(holder: SurfaceHolder) {
+			}
+
+			override fun surfaceDestroyed(holder: SurfaceHolder) {
+				cancelAnimation()
+			}
+		})
 	}
 
-	override fun onDraw(canvas: Canvas) {
-		canvas.drawColor(0)
+	private fun cancelAnimation() {
+		for (it in 0..100) {
+			try {
+				thread?.join()
+				break
+			} catch (e: InterruptedException) {
+				// try again
+			}
+		}
+	}
+
+	private fun startAnimation() {
+		if (running) {
+			cancelAnimation()
+		}
+		running = true
+		animationStart = System.currentTimeMillis()
+		thread = Thread(animationRunnable)
+		thread?.start()
+	}
+
+	private fun lockCanvasAndDraw() {
+		val canvas = surfaceHolder.lockCanvas()
+		if (canvas != null) {
+			drawScale(canvas)
+			surfaceHolder.unlockCanvasAndPost(canvas)
+		}
+	}
+
+	private fun drawScale(canvas: Canvas) {
+		canvas.drawColor(backgroundColor)
 
 		val centerX = Math.round(width / 2f).toFloat()
 		val top = topMargin.toFloat()
 
-		var bitmapPaint: Paint? = null
-		var alphaMod = 0xff000000.toInt()
-		val radians: Double = if (leftWeight > -1) {
-			// It's important to use a null paint for drawBitmap()
-			// when drawing transparent PNG's with no alpha value.
-			// Using 0xffffffff gives jagged edges because that's
-			// multiplied with the PNG's alpha channel.
-			calculateBalance()
-		} else {
+		val alphaMod = if (noWeights) {
 			pnt.setColor(transparentColor)
-			alphaMod = transparentColor
-			bitmapPaint = pnt
-			0.0
+			transparentColor
+		} else {
+			pnt.setColor(0xffffffff.toInt())
+			0xff000000.toInt()
 		}
 
 		val textPad = top * .5f
@@ -126,7 +231,7 @@ class ScaleView(context: Context): View(context) {
 		canvas.drawText(yesString, centerX + frameMidX, top + textPad, pnt)
 
 		mat.setTranslate(centerX - frameMidX, top)
-		canvas.drawBitmap(frame, mat, bitmapPaint)
+		canvas.drawBitmap(frame, mat, pnt)
 
 		val topAxis = top + frameAxis
 		val rx = centerX + scaleRadius * Math.cos(radians).toFloat()
@@ -135,30 +240,13 @@ class ScaleView(context: Context): View(context) {
 		val ly = topAxis + scaleRadius * Math.sin(radians + Math.PI).toFloat()
 
 		mat.setTranslate(lx - panMidX, ly)
-		canvas.drawBitmap(pan, mat, bitmapPaint)
+		canvas.drawBitmap(pan, mat, pnt)
 
 		mat.setTranslate(rx - panMidX, ry)
-		canvas.drawBitmap(pan, mat, bitmapPaint)
+		canvas.drawBitmap(pan, mat, pnt)
 
 		mat.setTranslate(centerX - scaleMidX, topAxis - scaleMidY)
 		mat.postRotate(radians.toFloat() / radPerDeg, centerX, topAxis)
-		canvas.drawBitmap(scale, mat, bitmapPaint)
-	}
-
-	private fun calculateBalance(): Double {
-		val min: Float = Math.max(1f, Math.min(
-				leftWeight.toFloat(),
-				rightWeight.toFloat()))
-		val balance: Float = (rightWeight - leftWeight).toFloat()
-		var factor: Float
-		if (balance == 0f) {
-			factor = 0f
-		} else if (balance > 0f) {
-			factor = Math.min(min, balance)
-		} else {
-			factor = Math.max(-min, balance)
-		}
-		factor /= min
-		return (.9f * factor).toDouble()
+		canvas.drawBitmap(scale, mat, pnt)
 	}
 }
