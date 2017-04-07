@@ -67,7 +67,6 @@ class ArgumentsFragment(): Fragment() {
 		}
 
 		override fun onDestroyActionMode(mode: ActionMode) {
-			actionMode = null
 			resetInput()
 		}
 	}
@@ -140,8 +139,6 @@ class ArgumentsFragment(): Fragment() {
 		listView.setAdapter(adapter)
 		listView.setOnItemLongClickListener { parent, view, position, id ->
 			if (!listView.isWeighing && actionMode == null) {
-				actionMode = getActivity().startActionMode(
-						actionModeCallback)
 				view.setSelected(true)
 				editArgument(id)
 				true
@@ -245,6 +242,7 @@ class ArgumentsFragment(): Fragment() {
 	private fun editArgument(id: Long) {
 		argumentId = id
 		editText.setText(LibraApp.data.getArgumentText(id))
+		actionMode = getActivity()?.startActionMode(actionModeCallback)
 	}
 
 	private fun askToRemoveIssue(context: Context) {
@@ -268,6 +266,8 @@ class ArgumentsFragment(): Fragment() {
 	}
 
 	private fun resetInput() {
+		actionMode?.finish()
+		actionMode = null
 		editText.setText("")
 		argumentId = 0
 	}
