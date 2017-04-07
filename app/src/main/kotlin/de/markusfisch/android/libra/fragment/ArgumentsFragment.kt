@@ -12,6 +12,7 @@ import android.content.Context
 import android.database.Cursor
 import android.support.v4.app.Fragment
 import android.os.Bundle
+import android.view.ActionMode
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
@@ -36,11 +37,46 @@ class ArgumentsFragment(): Fragment() {
 		}
 	}
 
+	private val actionModeCallback = object : ActionMode.Callback {
+		override fun onCreateActionMode(
+				mode: ActionMode,
+				menu: Menu): Boolean {
+			mode.getMenuInflater().inflate(
+					R.menu.fragment_arguments_edit,
+					menu)
+			return true
+		}
+
+		override fun onPrepareActionMode(
+				mode: ActionMode,
+				menu: Menu): Boolean {
+			return false
+		}
+
+		override fun onActionItemClicked(
+				mode: ActionMode,
+				item: MenuItem): Boolean {
+			return when (item.getItemId()) {
+				R.id.remove_argument -> {
+					askToRemoveArgument(getActivity(), argumentId)
+					mode.finish()
+					true
+				}
+				else -> false
+			}
+		}
+
+		override fun onDestroyActionMode(mode: ActionMode) {
+			actionMode = null
+			resetInput()
+		}
+	}
+
 	private lateinit var adapter: ArgumentsAdapter
 	private lateinit var listView: ArgumentListView
 	private lateinit var editText: EditText
-	private lateinit var editBar: View
 	private lateinit var scaleView: ScaleView
+	private var actionMode: ActionMode? = null
 	private var argumentId: Long = 0
 	private var issueId: Long = 0
 
@@ -80,8 +116,6 @@ class ArgumentsFragment(): Fragment() {
 				container,
 				false)
 
-		editBar = view.findViewById(R.id.edit_bar)
-
 		editText = view.findViewById(R.id.argument) as EditText
 		editText.setOnEditorActionListener { v, actionId, event ->
 			when (actionId) {
@@ -97,17 +131,6 @@ class ArgumentsFragment(): Fragment() {
 		val enterButton = view.findViewById(R.id.enter_argument)
 		enterButton.setOnClickListener { v -> saveArgument() }
 
-		val cancelButton = view.findViewById(R.id.cancel_editing)
-		cancelButton.setOnClickListener { v -> resetInput() }
-
-		val removeButton = view.findViewById(R.id.remove_argument)
-		removeButton.setOnClickListener { v ->
-			if (argumentId > 0) {
-				askToRemoveArgument(activity, argumentId)
-				resetInput()
-			}
-		}
-
 		scaleView = ScaleView(activity)
 		updateScale(cursor)
 
@@ -116,7 +139,10 @@ class ArgumentsFragment(): Fragment() {
 		listView.setEmptyView(view.findViewById(R.id.no_arguments))
 		listView.setAdapter(adapter)
 		listView.setOnItemLongClickListener { parent, view, position, id ->
-			if (!listView.isWeighing) {
+			if (!listView.isWeighing && actionMode == null) {
+				actionMode = getActivity().startActionMode(
+						actionModeCallback)
+				view.setSelected(true)
 				editArgument(id)
 				true
 			} else {
@@ -204,6 +230,7 @@ class ArgumentsFragment(): Fragment() {
 				.setMessage(R.string.really_remove_argument)
 				.setPositiveButton(android.R.string.ok, { dialog, id ->
 					removeArgument(argId)
+					resetInput()
 				})
 				.setNegativeButton(android.R.string.cancel, { dialog, id ->
 				})
@@ -218,7 +245,6 @@ class ArgumentsFragment(): Fragment() {
 	private fun editArgument(id: Long) {
 		argumentId = id
 		editText.setText(LibraApp.data.getArgumentText(id))
-		editBar.setVisibility(View.VISIBLE)
 	}
 
 	private fun askToRemoveIssue(context: Context) {
@@ -244,7 +270,6 @@ class ArgumentsFragment(): Fragment() {
 	private fun resetInput() {
 		editText.setText("")
 		argumentId = 0
-		editBar.setVisibility(View.GONE)
 	}
 
 	private fun getItemPosition(id: Long): Int {
