@@ -1,5 +1,9 @@
 # Change Log
 
+## 1.2.0
+* Animate scale
+* Moved cancel & delete in contextual action mode menu
+
 ## 1.1.0
 * Added an explicit save button for argument input
 * Moved cancel & delete icons in a bar above argument input
