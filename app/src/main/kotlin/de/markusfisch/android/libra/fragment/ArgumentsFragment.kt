@@ -94,13 +94,13 @@ class ArgumentsFragment(): Fragment() {
 			inflater: LayoutInflater,
 			container: ViewGroup?,
 			state: Bundle?): View {
-		var args = getArguments()
+		val args = getArguments()
 		if (args != null) {
 			issueId = args.getLong(ISSUE_ID, 0)
 		}
 
 		val activity = getActivity()
-		var title = LibraApp.data.getIssueName(issueId)
+		val title = LibraApp.data.getIssueName(issueId)
 		if (title.isEmpty()) {
 			activity.setTitle(R.string.arguments)
 		} else {
