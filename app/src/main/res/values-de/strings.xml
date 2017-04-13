@@ -14,6 +14,7 @@
 	<string name="cancel_editing">Abbrechen</string>
 	<string name="sort_arguments">Argumente sortieren</string>
 	<string name="remove_issue">Frage entfernen</string>
+	<string name="edit_issue">Name bearbeiten</string>
 	<string name="no_issues_saved">Keine Fragen gespeichert.</string>
 	<string name="enter_name">Gib\' einen neuen Namen ein</string>
 	<string name="enter_name_hint">Um was geht es?</string>

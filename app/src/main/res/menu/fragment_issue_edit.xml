@@ -1,0 +1,14 @@
+<menu
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:material="http://schemas.android.com/apk/res-auto">
+	<item
+		android:id="@+id/edit_issue"
+		android:title="@string/edit_issue"
+		android:icon="@drawable/ic_action_edit"
+		material:showAsAction="ifRoom"/>
+	<item
+		android:id="@+id/remove_issue"
+		android:title="@string/remove_issue"
+		android:icon="@drawable/ic_action_remove"
+		material:showAsAction="ifRoom"/>
+</menu>

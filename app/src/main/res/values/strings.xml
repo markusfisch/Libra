@@ -14,6 +14,7 @@
 	<string name="cancel_editing">Cancel</string>
 	<string name="sort_arguments">Sort arguments</string>
 	<string name="remove_issue">Remove issue</string>
+	<string name="edit_issue">Edit issues name</string>
 	<string name="no_issues_saved">No issues yet.</string>
 	<string name="enter_name">Enter a new name</string>
 	<string name="enter_name_hint">What\'s this about?</string>

@@ -7,17 +7,63 @@ import de.markusfisch.android.libra.database.DataSource
 import de.markusfisch.android.libra.R
 
 import android.app.AlertDialog
+import android.content.Context
 import android.database.Cursor
 import android.support.v4.app.Fragment
 import android.os.Bundle
+import android.view.ActionMode
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.ListView
 
 class IssuesFragment(): Fragment() {
+	private val actionModeCallback = object : ActionMode.Callback {
+		override fun onCreateActionMode(
+				mode: ActionMode,
+				menu: Menu): Boolean {
+			mode.getMenuInflater().inflate(
+					R.menu.fragment_issue_edit,
+					menu)
+			return true
+		}
+
+		override fun onPrepareActionMode(
+				mode: ActionMode,
+				menu: Menu): Boolean {
+			return false
+		}
+
+		override fun onActionItemClicked(
+				mode: ActionMode,
+				item: MenuItem): Boolean {
+			return when (item.getItemId()) {
+				R.id.edit_issue -> {
+					askForIssueName(issue.id, getItemText(issue.position))
+					closeActionMode()
+					true
+				}
+				R.id.remove_issue -> {
+					askToRemoveIssue(getActivity(), issue.id)
+					closeActionMode()
+					true
+				}
+				else -> false
+			}
+		}
+
+		override fun onDestroyActionMode(mode: ActionMode) {
+			closeActionMode()
+		}
+	}
+
+	private val issue = Issue(0L, 0)
+
 	private lateinit var adapter: IssuesAdapter
+	private var actionMode: ActionMode? = null
 
 	override fun onCreateView(
 			inflater: LayoutInflater,
@@ -39,7 +85,13 @@ class IssuesFragment(): Fragment() {
 			showArguments(id)
 		}
 		listView.setOnItemLongClickListener { parent, view, position, id ->
-			askForIssueName(id, adapter.getItem(position) as Cursor?)
+			view.setSelected(true)
+			issue.id = id
+			issue.position = position
+			if (actionMode == null) {
+				actionMode = activity.startActionMode(
+						actionModeCallback)
+			}
 			true
 		}
 
@@ -52,17 +104,44 @@ class IssuesFragment(): Fragment() {
 	}
 
 	private fun showArguments(id: Long) {
+		closeActionMode()
 		replaceFragment(getFragmentManager(),
 				ArgumentsFragment.newInstance(id))
 	}
 
-	private fun askForIssueName(issueId: Long, cursor: Cursor?) {
+	private fun closeActionMode() {
+		actionMode?.finish()
+		actionMode = null
+		adapter.notifyDataSetChanged()
+	}
+
+	private fun askToRemoveIssue(context: Context, issueId: Long) {
+		AlertDialog.Builder(context)
+				.setMessage(R.string.really_remove_issue)
+				.setPositiveButton(android.R.string.ok, { dialog, id ->
+					removeIssue(issueId)
+				})
+				.setNegativeButton(android.R.string.cancel, { dialog, id -> })
+				.show()
+	}
+
+	private fun removeIssue(issueId: Long) {
+		LibraApp.data.removeIssue(issueId)
+		updateList()
+	}
+
+	private fun getItemText(position: Int): String? {
+		var cursor = adapter.getItem(position) as Cursor?
+		return cursor?.getString(cursor.getColumnIndex(
+				DataSource.ISSUES_NAME))
+	}
+
+	private fun askForIssueName(issueId: Long, text: String?) {
 		val context = getActivity()
 		val view = LayoutInflater.from(context).inflate(
 				R.layout.dialog_enter_name, null)
 		val nameView = view.findViewById(R.id.name) as EditText
-		nameView.setText(cursor?.getString(cursor.getColumnIndex(
-				DataSource.ISSUES_NAME)))
+		nameView.setText(text)
 		AlertDialog.Builder(context)
 				.setView(view)
 				.setPositiveButton(android.R.string.ok, { dialog, id ->
@@ -75,6 +154,12 @@ class IssuesFragment(): Fragment() {
 
 	private fun updateIssueName(id: Long, name: String) {
 		LibraApp.data.updateIssueName(id, name)
+		updateList()
+	}
+
+	private fun updateList() {
 		adapter.changeCursor(LibraApp.data.getIssues())
 	}
+
+	private data class Issue(var id: Long, var position: Int)
 }

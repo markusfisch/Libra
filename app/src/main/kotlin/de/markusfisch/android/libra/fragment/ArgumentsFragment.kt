@@ -7,6 +7,7 @@ import de.markusfisch.android.libra.widget.ArgumentListView
 import de.markusfisch.android.libra.widget.ScaleView
 import de.markusfisch.android.libra.R
 
+import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
 import android.database.Cursor
@@ -42,7 +43,7 @@ class ArgumentsFragment(): Fragment() {
 				mode: ActionMode,
 				menu: Menu): Boolean {
 			mode.getMenuInflater().inflate(
-					R.menu.fragment_arguments_edit,
+					R.menu.fragment_argument_edit,
 					menu)
 			return true
 		}
@@ -59,7 +60,7 @@ class ArgumentsFragment(): Fragment() {
 			return when (item.getItemId()) {
 				R.id.remove_argument -> {
 					askToRemoveArgument(getActivity(), argumentId)
-					mode.finish()
+					closeActionMode()
 					true
 				}
 				else -> false
@@ -67,7 +68,7 @@ class ArgumentsFragment(): Fragment() {
 		}
 
 		override fun onDestroyActionMode(mode: ActionMode) {
-			resetInput()
+			closeActionMode()
 		}
 	}
 
@@ -138,9 +139,9 @@ class ArgumentsFragment(): Fragment() {
 		listView.setEmptyView(view.findViewById(R.id.no_arguments))
 		listView.setAdapter(adapter)
 		listView.setOnItemLongClickListener { parent, view, position, id ->
-			if (!listView.isWeighing && actionMode == null) {
+			if (!listView.isWeighing) {
 				view.setSelected(true)
-				editArgument(id)
+				editArgument(activity, id)
 				true
 			} else {
 				false
@@ -150,7 +151,7 @@ class ArgumentsFragment(): Fragment() {
 		if (state != null) {
 			val id = state.getLong(ARGUMENTS_ID, 0)
 			if (id > 0) {
-				editArgument(id)
+				editArgument(activity, id)
 			}
 		}
 
@@ -169,10 +170,6 @@ class ArgumentsFragment(): Fragment() {
 		return when (item.getItemId()) {
 			R.id.sort_arguments -> {
 				sortArguments()
-				true
-			}
-			R.id.remove_issue-> {
-				askToRemoveIssue(getActivity())
 				true
 			}
 			else -> super.onOptionsItemSelected(item)
@@ -216,7 +213,7 @@ class ArgumentsFragment(): Fragment() {
 		} else {
 			id = LibraApp.data.insertArgument(issueId, text, 0)
 		}
-		resetInput()
+		closeActionMode()
 		reloadList()
 		listView.setSelection(getItemPosition(id))
 		return true
@@ -227,7 +224,7 @@ class ArgumentsFragment(): Fragment() {
 				.setMessage(R.string.really_remove_argument)
 				.setPositiveButton(android.R.string.ok, { dialog, id ->
 					removeArgument(argId)
-					resetInput()
+					closeActionMode()
 				})
 				.setNegativeButton(android.R.string.cancel, { dialog, id ->
 				})
@@ -239,25 +236,12 @@ class ArgumentsFragment(): Fragment() {
 		reloadList()
 	}
 
-	private fun editArgument(id: Long) {
+	private fun editArgument(activity: Activity, id: Long) {
 		argumentId = id
 		editText.setText(LibraApp.data.getArgumentText(id))
-		actionMode = getActivity()?.startActionMode(actionModeCallback)
-	}
-
-	private fun askToRemoveIssue(context: Context) {
-		AlertDialog.Builder(context)
-				.setMessage(R.string.really_remove_issue)
-				.setPositiveButton(android.R.string.ok, { dialog, id ->
-					removeIssue()
-				})
-				.setNegativeButton(android.R.string.cancel, { dialog, id -> })
-				.show()
-	}
-
-	private fun removeIssue() {
-		LibraApp.data.removeIssue(issueId)
-		getFragmentManager().popBackStack()
+		if (actionMode == null) {
+			actionMode = activity.startActionMode(actionModeCallback)
+		}
 	}
 
 	private fun sortArguments() {
@@ -265,11 +249,12 @@ class ArgumentsFragment(): Fragment() {
 		reloadList()
 	}
 
-	private fun resetInput() {
+	private fun closeActionMode() {
 		actionMode?.finish()
 		actionMode = null
 		editText.setText("")
 		argumentId = 0
+		adapter.notifyDataSetChanged()
 	}
 
 	private fun getItemPosition(id: Long): Int {
