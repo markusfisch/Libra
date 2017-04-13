@@ -33,7 +33,7 @@
 	</RelativeLayout>
 	<LinearLayout
 		android:id="@+id/argument_editor"
-		android:background="@color/background_enter_argument"
+		android:background="@drawable/background_enter_argument"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:layout_alignParentBottom="true"

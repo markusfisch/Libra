@@ -5,6 +5,7 @@
 	<color name="background_window">#fafafa</color>
 	<color name="background_action_mode">#c2c2c2</color>
 	<color name="background_enter_argument">#fff</color>
+	<color name="separator_enter_argument">#eee</color>
 	<color name="selector">#1000</color>
 	<color name="yes">#55d400</color>
 	<color name="maybe">#ffcc00</color>
