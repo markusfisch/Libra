@@ -1,5 +1,9 @@
 # Change Log
 
+## 1.3.0
+* Contextual action menu to edit/remove issues
+* Highlight selected list items
+
 ## 1.2.0
 * Animate scale
 * Moved cancel & delete in contextual action mode menu
