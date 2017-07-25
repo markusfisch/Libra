@@ -11,8 +11,8 @@ import kotlinx.android.synthetic.main.toolbar.toolbar
 
 class MainActivity(): AppCompatActivity() {
 	override fun onSupportNavigateUp(): Boolean {
-		val fm = getSupportFragmentManager()
-		if (fm.getBackStackEntryCount() > 0) {
+		val fm = supportFragmentManager
+		if (fm.backStackEntryCount > 0) {
 			fm.popBackStack()
 		} else {
 			finish()
@@ -20,26 +20,26 @@ class MainActivity(): AppCompatActivity() {
 		return true
 	}
 
-	protected override fun onCreate(state: Bundle?) {
-		super<AppCompatActivity>.onCreate(state)
+	override fun onCreate(state: Bundle?) {
+		super.onCreate(state)
 		setContentView(R.layout.activity_main)
 		initToolbar()
 
 		if (state == null) {
-			setFragment(getSupportFragmentManager(), IssuesFragment())
+			setFragment(supportFragmentManager, IssuesFragment())
 		}
 	}
 
 	private fun initToolbar() {
 		setSupportActionBar(toolbar)
-		getSupportFragmentManager().addOnBackStackChangedListener {
+		supportFragmentManager.addOnBackStackChangedListener {
 			updateUpArrow()
 		}
 		updateUpArrow()
 	}
 
 	private fun updateUpArrow() {
-		getSupportActionBar()?.setDisplayHomeAsUpEnabled(
-				getSupportFragmentManager().getBackStackEntryCount() > 0)
+		supportActionBar?.setDisplayHomeAsUpEnabled(
+				supportFragmentManager.backStackEntryCount > 0)
 	}
 }

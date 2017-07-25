@@ -28,25 +28,25 @@ class ArgumentListView: ListView {
 
 	constructor(context: Context, attrs: AttributeSet, defStyle: Int):
 			super(context, attrs, defStyle) {
-		touchSlop = ViewConfiguration.get(context).getScaledTouchSlop()
+		touchSlop = ViewConfiguration.get(context).scaledTouchSlop
 	}
 
 	constructor(context: Context, attrs: AttributeSet):
-			this(context, attrs, 0) {}
+			this(context, attrs, 0)
 
 	override fun onTouchEvent(event: MotionEvent): Boolean {
-		when (event.getActionMasked()) {
+		when (event.actionMasked) {
 			MotionEvent.ACTION_DOWN -> {
-				downX = event.getX()
-				downY = event.getY()
+				downX = event.x
+				downY = event.y
 				argumentView = findView(event)
 				argumentView?.onTouchDown(event)
 				downWeight = argumentView?.weight
 				mode = Mode.NONE
 			}
 			MotionEvent.ACTION_MOVE -> {
-				val dx = Math.abs(downX - event.getX())
-				val dy = Math.abs(downY - event.getY())
+				val dx = Math.abs(downX - event.x)
+				val dy = Math.abs(downY - event.y)
 				if (mode == Mode.NONE && dx + dy >= touchSlop) {
 					if (dx > dy) {
 						mode = Mode.WEIGHING
@@ -75,11 +75,11 @@ class ArgumentListView: ListView {
 	private fun findView(event: MotionEvent): ArgumentView? {
 		val listViewCoords = IntArray(2)
 		getLocationOnScreen(listViewCoords)
-		val x = event.getRawX().toInt() - listViewCoords[0]
-		val y = event.getRawY().toInt() - listViewCoords[1]
-		val childCount = getChildCount() - 1
+		val x = event.rawX.toInt() - listViewCoords[0]
+		val y = event.rawY.toInt() - listViewCoords[1]
+		val childCount = childCount - 1
 		for (it in 0..childCount) {
-			var child = getChildAt(it)
+			val child = getChildAt(it)
 			child?.getHitRect(rect)
 			if (child is ArgumentView && rect.contains(x, y)) {
 				return child

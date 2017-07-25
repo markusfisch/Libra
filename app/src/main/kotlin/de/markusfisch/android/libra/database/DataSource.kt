@@ -57,7 +57,7 @@ class DataSource() {
 
 	fun open(context: Context): Boolean {
 		return try {
-			db = OpenHelper(context).getWritableDatabase()
+			db = OpenHelper(context).writableDatabase
 			true
 		} catch (e: SQLException) {
 			false

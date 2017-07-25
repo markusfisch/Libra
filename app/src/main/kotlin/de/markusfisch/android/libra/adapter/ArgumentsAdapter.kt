@@ -24,7 +24,7 @@ class ArgumentsAdapter(context: Context, cursor: Cursor):
 			context: Context,
 			cursor: Cursor,
 			parent: ViewGroup): View  {
-		return LayoutInflater.from(parent.getContext()).inflate(
+		return LayoutInflater.from(parent.context).inflate(
 				R.layout.item_argument, parent, false)
 	}
 
@@ -34,15 +34,15 @@ class ArgumentsAdapter(context: Context, cursor: Cursor):
 			cursor: Cursor) {
 		val holder = getViewHolder(view)
 		holder.argumentView.id = cursor.getLong(idIndex)
-		holder.argumentView.setText(cursor.getString(textIndex))
+		holder.argumentView.text = cursor.getString(textIndex)
 		holder.argumentView.weight = cursor.getInt(weightIndex)
 	}
 
 	private fun getViewHolder(view: View): ViewHolder {
-		var holder = view.getTag() as ViewHolder?
+		var holder = view.tag as ViewHolder?
 		if (holder == null) {
 			holder = ViewHolder(view.findViewById(R.id.text) as ArgumentView)
-			view.setTag(holder)
+			view.tag = holder
 		}
 		return holder
 	}

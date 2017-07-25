@@ -61,7 +61,7 @@ class ScaleView(context: Context): SurfaceView(context) {
 		running = false
 	}
 	private val radPerDeg = 6.283f / 360f
-	private val surfaceHolder = getHolder()
+	private val surfaceHolder = holder
 	private val pnt = Paint(Paint.ANTI_ALIAS_FLAG)
 	private val mat = Matrix()
 	private val topMargin: Int
@@ -96,14 +96,15 @@ class ScaleView(context: Context): SurfaceView(context) {
 	private var noWeights = false
 
 	init {
-		val res = context.getResources()
-		val dp = res.getDisplayMetrics().density
+		val res = context.resources
+		val dp = res.displayMetrics.density
 
-		pnt.setFilterBitmap(true)
-		pnt.setTextSize(12f * dp)
+		pnt.isFilterBitmap = true
+		pnt.textSize = 12f * dp
 		topMargin = Math.round(32f * dp)
 		bottomMargin = Math.round(8f * dp)
 
+		// toInt() is required or Kotlin thinks it's a Long
 		transparentColor = 0x40000000.toInt()
 		backgroundColor = ContextCompat.getColor(context,
 				R.color.background_window)
@@ -115,20 +116,20 @@ class ScaleView(context: Context): SurfaceView(context) {
 		noString = context.getString(R.string.no)
 
 		frame = BitmapFactory.decodeResource(res, R.drawable.scale_frame)
-		val frameWidth = frame.getWidth()
-		frameHeight = frame.getHeight()
+		val frameWidth = frame.width
+		frameHeight = frame.height
 		frameMidX = Math.round(frameWidth * .5f).toFloat()
 		frameAxis = Math.round(frameHeight * .4f).toFloat()
 
 		scale = BitmapFactory.decodeResource(res, R.drawable.scale_bar)
-		val scaleWidth = scale.getWidth()
-		val scaleHeight = scale.getHeight()
+		val scaleWidth = scale.width
+		val scaleHeight = scale.height
 		scaleMidX = Math.round(scaleWidth * .5f).toFloat()
 		scaleMidY = Math.round(scaleHeight * .5f).toFloat()
 		scaleRadius = Math.round(scaleWidth * .48f).toFloat()
 
 		pan = BitmapFactory.decodeResource(res, R.drawable.scale_pan)
-		val panWidth = pan.getWidth()
+		val panWidth = pan.width
 		panMidX = Math.round(panWidth * .5f).toFloat()
 
 		initSurfaceHolder()
@@ -212,22 +213,22 @@ class ScaleView(context: Context): SurfaceView(context) {
 		val top = topMargin.toFloat()
 
 		val alphaMod = if (noWeights) {
-			pnt.setColor(transparentColor)
+			pnt.color = transparentColor
 			transparentColor
 		} else {
-			pnt.setColor(0xffffffff.toInt())
+			pnt.color = 0xffffffff.toInt()
 			0xff000000.toInt()
 		}
 
 		val textPad = top * .5f
-		pnt.setColor(noColor and 0xffffff or alphaMod)
+		pnt.color = noColor and 0xffffff or alphaMod
 		canvas.drawText(noString,
 				centerX - frameMidX - pnt.measureText(noString),
 				top + textPad,
 				pnt)
-		pnt.setColor(maybeColor and 0xffffff or alphaMod)
+		pnt.color = maybeColor and 0xffffff or alphaMod
 		canvas.drawText(maybeString, centerX, top - textPad * .5f, pnt)
-		pnt.setColor(yesColor and 0xffffff or alphaMod)
+		pnt.color = yesColor and 0xffffff or alphaMod
 		canvas.drawText(yesString, centerX + frameMidX, top + textPad, pnt)
 
 		mat.setTranslate(centerX - frameMidX, top)

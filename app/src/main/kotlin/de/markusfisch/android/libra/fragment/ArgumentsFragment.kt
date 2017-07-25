@@ -11,6 +11,7 @@ import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
 import android.database.Cursor
+import android.os.Build
 import android.support.v4.app.Fragment
 import android.os.Bundle
 import android.view.ActionMode
@@ -23,7 +24,7 @@ import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 
-class ArgumentsFragment(): Fragment() {
+class ArgumentsFragment : Fragment() {
 	companion object {
 		private val ISSUE_ID = "issue_id"
 		private val ARGUMENTS_ID = "argumentId"
@@ -33,7 +34,7 @@ class ArgumentsFragment(): Fragment() {
 			args.putLong(ISSUE_ID, issueId)
 
 			val fragment = ArgumentsFragment()
-			fragment.setArguments(args)
+			fragment.arguments = args
 			return fragment
 		}
 	}
@@ -42,9 +43,11 @@ class ArgumentsFragment(): Fragment() {
 		override fun onCreateActionMode(
 				mode: ActionMode,
 				menu: Menu): Boolean {
-			mode.getMenuInflater().inflate(
-					R.menu.fragment_argument_edit,
-					menu)
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+				mode.menuInflater.inflate(
+                        R.menu.fragment_argument_edit,
+                        menu)
+			}
 			return true
 		}
 
@@ -57,9 +60,9 @@ class ArgumentsFragment(): Fragment() {
 		override fun onActionItemClicked(
 				mode: ActionMode,
 				item: MenuItem): Boolean {
-			return when (item.getItemId()) {
+			return when (item.itemId) {
 				R.id.remove_argument -> {
-					askToRemoveArgument(getActivity(), argumentId)
+					askToRemoveArgument(activity, argumentId)
 					closeActionMode()
 					true
 				}
@@ -95,17 +98,15 @@ class ArgumentsFragment(): Fragment() {
 			inflater: LayoutInflater,
 			container: ViewGroup?,
 			state: Bundle?): View {
-		val args = getArguments()
-		if (args != null) {
-			issueId = args.getLong(ISSUE_ID, 0)
+		if (arguments != null) {
+			issueId = arguments.getLong(ISSUE_ID, 0)
 		}
 
-		val activity = getActivity()
 		val title = LibraApp.data.getIssueName(issueId)
 		if (title.isEmpty()) {
 			activity.setTitle(R.string.arguments)
 		} else {
-			activity.setTitle(title)
+			activity.title = title
 		}
 
 		val cursor = LibraApp.data.getArguments(issueId)
@@ -117,7 +118,7 @@ class ArgumentsFragment(): Fragment() {
 				false)
 
 		editText = view.findViewById(R.id.argument) as EditText
-		editText.setOnEditorActionListener { v, actionId, event ->
+		editText.setOnEditorActionListener { _, actionId, _ ->
 			when (actionId) {
 				EditorInfo.IME_ACTION_GO,
 				EditorInfo.IME_ACTION_SEND,
@@ -129,18 +130,18 @@ class ArgumentsFragment(): Fragment() {
 		}
 
 		val enterButton = view.findViewById(R.id.enter_argument)
-		enterButton.setOnClickListener { v -> saveArgument() }
+		enterButton.setOnClickListener { _ -> saveArgument() }
 
 		scaleView = ScaleView(activity)
 		updateScale(cursor)
 
 		listView = view.findViewById(R.id.arguments) as ArgumentListView
 		listView.addHeaderView(scaleView, null, false)
-		listView.setEmptyView(view.findViewById(R.id.no_arguments))
-		listView.setAdapter(adapter)
-		listView.setOnItemLongClickListener { parent, view, position, id ->
+		listView.emptyView = view.findViewById(R.id.no_arguments)
+		listView.adapter = adapter
+		listView.setOnItemLongClickListener { _, v, _, id ->
 			if (!listView.isWeighing) {
-				view.setSelected(true)
+				v.isSelected = true
 				editArgument(activity, id)
 				true
 			} else {
@@ -167,7 +168,7 @@ class ArgumentsFragment(): Fragment() {
 	}
 
 	override fun onOptionsItemSelected(item: MenuItem): Boolean {
-		return when (item.getItemId()) {
+		return when (item.itemId) {
 			R.id.sort_arguments -> {
 				sortArguments()
 				true
@@ -202,11 +203,11 @@ class ArgumentsFragment(): Fragment() {
 	}
 
 	private fun saveArgument(): Boolean {
-		val text = editText.getText().toString()
-		if (text.trim().length < 1) {
+		val text = editText.text.toString()
+		if (text.trim().isEmpty()) {
 			return false
 		}
-		var id: Long
+		val id: Long
 		if (argumentId > 0) {
 			LibraApp.data.updateArgumentText(argumentId, text)
 			id = argumentId
@@ -222,11 +223,11 @@ class ArgumentsFragment(): Fragment() {
 	private fun askToRemoveArgument(context: Context, argId: Long) {
 		AlertDialog.Builder(context)
 				.setMessage(R.string.really_remove_argument)
-				.setPositiveButton(android.R.string.ok, { dialog, id ->
+				.setPositiveButton(android.R.string.ok, { _, _ ->
 					removeArgument(argId)
 					closeActionMode()
 				})
-				.setNegativeButton(android.R.string.cancel, { dialog, id ->
+				.setNegativeButton(android.R.string.cancel, { _, _ ->
 				})
 				.show()
 	}
@@ -240,7 +241,9 @@ class ArgumentsFragment(): Fragment() {
 		argumentId = id
 		editText.setText(LibraApp.data.getArgumentText(id))
 		if (actionMode == null) {
-			actionMode = activity.startActionMode(actionModeCallback)
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+				actionMode = activity.startActionMode(actionModeCallback)
+			}
 		}
 	}
 
@@ -250,7 +253,9 @@ class ArgumentsFragment(): Fragment() {
 	}
 
 	private fun closeActionMode() {
-		actionMode?.finish()
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+			actionMode?.finish()
+		}
 		actionMode = null
 		editText.setText("")
 		argumentId = 0
@@ -258,7 +263,7 @@ class ArgumentsFragment(): Fragment() {
 	}
 
 	private fun getItemPosition(id: Long): Int {
-		var i = adapter.getCount()
+		var i = adapter.count
 		while (i-- > 0) {
 			if (adapter.getItemId(i) == id) {
 				return i

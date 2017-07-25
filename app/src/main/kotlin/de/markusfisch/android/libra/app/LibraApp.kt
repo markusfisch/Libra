@@ -4,7 +4,7 @@ import de.markusfisch.android.libra.database.DataSource
 
 import android.app.Application
 
-class LibraApp(): Application() {
+class LibraApp: Application() {
 	companion object {
 		val data = DataSource()
 	}

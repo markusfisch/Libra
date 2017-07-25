@@ -42,7 +42,7 @@ class IssuesAdapter(context: Context, cursor: Cursor):
 			context: Context,
 			cursor: Cursor) {
 		val holder = getViewHolder(view)
-		var icon: Int = when (Recommendation.getRecommendation(
+		val icon: Int = when (Recommendation.getRecommendation(
 				cursor.getInt(negativeIndex),
 				cursor.getInt(positiveIndex))) {
 			Recommendation.YES -> R.drawable.ic_issue_yes

@@ -20,13 +20,13 @@ class ArgumentView: TextView {
 	var id: Long = 0
 	var weight: Int = 0
 		set(value) {
-			setGravity(if (value < 0) {
-					Gravity.LEFT
-				} else if (value > 0) {
-					Gravity.RIGHT
-				} else {
-					Gravity.CENTER_HORIZONTAL
-				})
+			gravity = if (value < 0) {
+				Gravity.LEFT
+			} else if (value > 0) {
+				Gravity.RIGHT
+			} else {
+				Gravity.CENTER_HORIZONTAL
+			}
 			field = value
 		}
 
@@ -49,28 +49,28 @@ class ArgumentView: TextView {
 
 	constructor(context: Context, attrs: AttributeSet, defStyle: Int):
 			super(context, attrs, defStyle) {
-		val res = context.getResources()
-		val dp = res.getDisplayMetrics().density
+		val res = context.resources
+		val dp = res.displayMetrics.density
 		padding = dp * 4
 		positiveColor = ContextCompat.getColor(context, R.color.yes)
 		negativeColor = ContextCompat.getColor(context, R.color.no)
 		barColor = ContextCompat.getColor(context, R.color.weight_bar)
 		swipeLeft = BitmapFactory.decodeResource(res, R.drawable.swipe_left)
 		swipeRight = BitmapFactory.decodeResource(res, R.drawable.swipe_right)
-		swipeWidth = swipeLeft.getWidth()
-		swipeHeight = swipeLeft.getHeight()
+		swipeWidth = swipeLeft.width
+		swipeHeight = swipeLeft.height
 	}
 
 	constructor(context: Context, attrs: AttributeSet):
-			this(context, attrs, 0) {}
+			this(context, attrs, 0)
 
 	fun onTouchDown(event: MotionEvent) {
-		savedX = event.getX()
+		savedX = event.x
 		savedWeight = weight
 	}
 
 	fun onTouchMove(event: MotionEvent) {
-		val mod = Math.round((event.getX() - savedX) * 2f / block)
+		val mod = Math.round((event.x - savedX) * 2f / block)
 		weight = Math.max(-10, Math.min(10, savedWeight + mod))
 		invalidate()
 	}
@@ -101,9 +101,9 @@ class ArgumentView: TextView {
 	}
 
 	override fun onDraw(canvas: Canvas) {
-		var top = height - padding * 3f
-		var bottom = height - padding * 2f
-		paint.setColor(barColor)
+		val top = height - padding * 3f
+		val bottom = height - padding * 2f
+		paint.color = barColor
 		canvas.drawRect(
 				padding,
 				top,
@@ -131,8 +131,8 @@ class ArgumentView: TextView {
 
 	private fun drawWeightBar(canvas: Canvas, top: Float, bottom: Float) {
 		var x: Float
-		var step: Float
-		var color: Int
+		val step: Float
+		val color: Int
 		if (weight > 0) {
 			x = center
 			step = block
@@ -143,7 +143,7 @@ class ArgumentView: TextView {
 			color = negativeColor
 		}
 
-		paint.setColor(color)
+		paint.color = color
 		for (it in 1..Math.abs(weight % 11)) {
 			canvas.drawRect(
 					x,
@@ -161,9 +161,9 @@ class ArgumentView: TextView {
 	}
 
 	private fun getArgumentsFragment(): ArgumentsFragment? {
-		val activity = getContext()
+		val activity = context
 		if (activity is AppCompatActivity) {
-			val fragment = activity.getSupportFragmentManager()
+			val fragment = activity.supportFragmentManager
 					.findFragmentById(R.id.content_frame)
 			if (fragment is ArgumentsFragment) {
 				return fragment
