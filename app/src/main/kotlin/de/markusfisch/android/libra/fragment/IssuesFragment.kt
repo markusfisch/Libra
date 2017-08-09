@@ -9,10 +9,10 @@ import de.markusfisch.android.libra.R
 import android.app.AlertDialog
 import android.content.Context
 import android.database.Cursor
-import android.os.Build
 import android.support.v4.app.Fragment
+import android.support.v7.app.AppCompatDelegate
+import android.support.v7.view.ActionMode
 import android.os.Bundle
-import android.view.ActionMode
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
@@ -26,11 +26,9 @@ class IssuesFragment: Fragment() {
 		override fun onCreateActionMode(
 				mode: ActionMode,
 				menu: Menu): Boolean {
-			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-				mode.menuInflater.inflate(
-                        R.menu.fragment_issue_edit,
-                        menu)
-			}
+			mode.menuInflater.inflate(
+					R.menu.fragment_issue_edit,
+					menu)
 			return true
 		}
 
@@ -90,10 +88,9 @@ class IssuesFragment: Fragment() {
 			v.isSelected = true
 			issue.id = id
 			issue.position = position
-			if (actionMode == null &&
-                    Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-                actionMode = activity.startActionMode(
-                        actionModeCallback)
+			if (actionMode == null) {
+				actionMode = AppCompatDelegate.create(activity, null)
+						.startSupportActionMode(actionModeCallback)
 			}
 			true
 		}
@@ -113,9 +110,7 @@ class IssuesFragment: Fragment() {
 	}
 
 	private fun closeActionMode() {
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-			actionMode?.finish()
-		}
+		actionMode?.finish()
 		actionMode = null
 		adapter.notifyDataSetChanged()
 	}

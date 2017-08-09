@@ -11,10 +11,10 @@ import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
 import android.database.Cursor
-import android.os.Build
 import android.support.v4.app.Fragment
+import android.support.v7.app.AppCompatDelegate
+import android.support.v7.view.ActionMode
 import android.os.Bundle
-import android.view.ActionMode
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
@@ -43,11 +43,9 @@ class ArgumentsFragment : Fragment() {
 		override fun onCreateActionMode(
 				mode: ActionMode,
 				menu: Menu): Boolean {
-			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-				mode.menuInflater.inflate(
-                        R.menu.fragment_argument_edit,
-                        menu)
-			}
+			mode.menuInflater.inflate(
+					R.menu.fragment_argument_edit,
+					menu)
 			return true
 		}
 
@@ -241,9 +239,8 @@ class ArgumentsFragment : Fragment() {
 		argumentId = id
 		editText.setText(LibraApp.data.getArgumentText(id))
 		if (actionMode == null) {
-			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-				actionMode = activity.startActionMode(actionModeCallback)
-			}
+			actionMode = AppCompatDelegate.create(activity, null)
+					.startSupportActionMode(actionModeCallback)
 		}
 	}
 
@@ -253,9 +250,7 @@ class ArgumentsFragment : Fragment() {
 	}
 
 	private fun closeActionMode() {
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-			actionMode?.finish()
-		}
+		actionMode?.finish()
 		actionMode = null
 		editText.setText("")
 		argumentId = 0
