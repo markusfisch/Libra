@@ -58,7 +58,6 @@ class ScaleView(context: Context): SurfaceView(context) {
 				break
 			}
 		}
-		running = false
 	}
 	private val radPerDeg = 6.283f / 360f
 	private val pnt = Paint(Paint.ANTI_ALIAS_FLAG)
@@ -171,15 +170,17 @@ class ScaleView(context: Context): SurfaceView(context) {
 			}
 
 			override fun surfaceDestroyed(holder: SurfaceHolder) {
-				cancelAnimation()
+				stopAnimation()
 			}
 		})
 	}
 
-	private fun cancelAnimation() {
+	private fun stopAnimation() {
+		running = false
 		for (it in 0..100) {
 			try {
 				thread?.join()
+				thread = null
 				break
 			} catch (e: InterruptedException) {
 				// try again
@@ -188,13 +189,17 @@ class ScaleView(context: Context): SurfaceView(context) {
 	}
 
 	private fun startAnimation() {
-		if (running) {
-			cancelAnimation()
+		if (width > 0) {
+			if (running) {
+				stopAnimation()
+			}
+			running = true
+			animationStart = System.currentTimeMillis()
+			thread = Thread(animationRunnable)
+			thread?.start()
+		} else {
+			postDelayed(Runnable { startAnimation() }, 100)
 		}
-		running = true
-		animationStart = System.currentTimeMillis()
-		thread = Thread(animationRunnable)
-		thread?.start()
 	}
 
 	private fun lockCanvasAndDraw() {
