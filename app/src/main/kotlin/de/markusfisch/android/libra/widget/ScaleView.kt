@@ -61,7 +61,6 @@ class ScaleView(context: Context): SurfaceView(context) {
 		running = false
 	}
 	private val radPerDeg = 6.283f / 360f
-	private val surfaceHolder = holder
 	private val pnt = Paint(Paint.ANTI_ALIAS_FLAG)
 	private val mat = Matrix()
 	private val topMargin: Int
@@ -156,8 +155,8 @@ class ScaleView(context: Context): SurfaceView(context) {
 	}
 
 	private fun initSurfaceHolder() {
-		surfaceHolder.setFormat(PixelFormat.TRANSPARENT)
-		surfaceHolder.addCallback(object : SurfaceHolder.Callback {
+		holder.setFormat(PixelFormat.TRANSPARENT)
+		holder.addCallback(object : SurfaceHolder.Callback {
 			override fun surfaceChanged(
 					holder: SurfaceHolder,
 					format: Int,
@@ -199,10 +198,12 @@ class ScaleView(context: Context): SurfaceView(context) {
 	}
 
 	private fun lockCanvasAndDraw() {
-		val canvas = surfaceHolder.lockCanvas()
-		if (canvas != null) {
-			drawScale(canvas)
-			surfaceHolder.unlockCanvasAndPost(canvas)
+		if (holder.getSurface().isValid()) {
+			val canvas = holder.lockCanvas()
+			if (canvas != null) {
+				drawScale(canvas)
+				holder.unlockCanvasAndPost(canvas)
+			}
 		}
 	}
 
