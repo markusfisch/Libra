@@ -11,6 +11,7 @@
 		<shape android:shape="rectangle">
 			<stroke android:width="1px"
 				android:color="@color/separator_enter_argument"/>
+			<solid android:color="@android:color/transparent"/>
 		</shape>
 	</item>
 </layer-list>
