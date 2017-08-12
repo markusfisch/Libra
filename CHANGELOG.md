@@ -1,5 +1,11 @@
 # Change Log
 
+## 1.3.1
+* Fixed initialization of scale view
+* Fixed using contextual action mode before Honeycomb
+* Fixed input background before Honeycomb
+* Fixed soft keyboard not opening before Honeycomb
+
 ## 1.3.0
 * Contextual action menu to edit/remove issues
 * Highlight selected list items
