@@ -10,7 +10,7 @@ import android.app.AlertDialog
 import android.content.Context
 import android.database.Cursor
 import android.support.v4.app.Fragment
-import android.support.v7.app.AppCompatDelegate
+import android.support.v7.app.AppCompatActivity
 import android.support.v7.view.ActionMode
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -88,9 +88,10 @@ class IssuesFragment: Fragment() {
 			v.isSelected = true
 			issue.id = id
 			issue.position = position
-			if (actionMode == null) {
-				actionMode = AppCompatDelegate.create(activity, null)
-						.startSupportActionMode(actionModeCallback)
+			val a = activity
+			if (actionMode == null && a is AppCompatActivity) {
+				actionMode = a.getDelegate().startSupportActionMode(
+						actionModeCallback)
 			}
 			true
 		}
