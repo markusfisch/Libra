@@ -148,9 +148,31 @@ class ScaleView(context: Context): SurfaceView(context) {
 		}
 	}
 
-	override fun onMeasure(widthSpec: Int, heightSpec: Int) {
-		setMeasuredDimension(widthSpec,
-				topMargin + frameHeight + bottomMargin)
+	override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
+		val desiredWidth = getSuggestedMinimumWidth() +
+				getPaddingLeft() + getPaddingRight()
+		var desiredHeight = topMargin + frameHeight + bottomMargin
+
+		setMeasuredDimension(
+				measureDimension(desiredWidth, widthMeasureSpec),
+				measureDimension(desiredHeight, heightMeasureSpec))
+	}
+
+	private fun measureDimension(desiredSize: Int, measureSpec: Int): Int {
+		val specMode = MeasureSpec.getMode(measureSpec)
+		val specSize = MeasureSpec.getSize(measureSpec)
+		var result: Int
+
+		if (specMode == MeasureSpec.EXACTLY) {
+			result = specSize
+		} else {
+			result = desiredSize
+			if (specMode == MeasureSpec.AT_MOST) {
+				result = Math.min(result, specSize)
+			}
+		}
+
+		return result
 	}
 
 	private fun initSurfaceHolder() {
