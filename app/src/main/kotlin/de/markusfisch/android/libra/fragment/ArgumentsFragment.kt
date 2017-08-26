@@ -115,7 +115,7 @@ class ArgumentsFragment : Fragment() {
 				container,
 				false)
 
-		editText = view.findViewById(R.id.argument) as EditText
+		editText = view.findViewById(R.id.argument)
 		editText.setOnEditorActionListener { _, actionId, _ ->
 			when (actionId) {
 				EditorInfo.IME_ACTION_GO,
@@ -127,13 +127,13 @@ class ArgumentsFragment : Fragment() {
 			}
 		}
 
-		val enterButton = view.findViewById(R.id.enter_argument)
+		val enterButton: View = view.findViewById(R.id.enter_argument)
 		enterButton.setOnClickListener { _ -> saveArgument() }
 
 		scaleView = ScaleView(activity)
 		updateScale(cursor)
 
-		listView = view.findViewById(R.id.arguments) as ArgumentListView
+		listView = view.findViewById(R.id.arguments)
 		listView.addHeaderView(scaleView, null, false)
 		listView.emptyView = view.findViewById(R.id.no_arguments)
 		listView.adapter = adapter

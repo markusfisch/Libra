@@ -78,7 +78,7 @@ class IssuesFragment: Fragment() {
 				container,
 				false)
 
-		val listView = view.findViewById(R.id.issues) as ListView
+		val listView: ListView = view.findViewById(R.id.issues)
 		listView.emptyView = view.findViewById(R.id.no_issues)
 		listView.adapter = adapter
 		listView.setOnItemClickListener { _, _, _, id ->
@@ -96,7 +96,7 @@ class IssuesFragment: Fragment() {
 			true
 		}
 
-		val addButton = view.findViewById(R.id.add)
+		val addButton: View = view.findViewById(R.id.add)
 		addButton.setOnClickListener { _ ->
 			showArguments(LibraApp.data.insertIssue())
 		}
@@ -141,7 +141,7 @@ class IssuesFragment: Fragment() {
 		val context = activity
 		val view = LayoutInflater.from(context).inflate(
 				R.layout.dialog_enter_name, null)
-		val nameView = view.findViewById(R.id.name) as EditText
+		val nameView: EditText = view.findViewById(R.id.name)
 		nameView.setText(text)
 		AlertDialog.Builder(context)
 				.setView(view)

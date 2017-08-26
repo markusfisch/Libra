@@ -64,9 +64,9 @@ class IssuesAdapter(context: Context, cursor: Cursor):
 		var holder = view.getTag() as ViewHolder?
 		if (holder == null) {
 			holder = ViewHolder(
-					view.findViewById(R.id.icon) as ImageView,
-					view.findViewById(R.id.name) as TextView,
-					view.findViewById(R.id.created) as TextView)
+					view.findViewById(R.id.icon),
+					view.findViewById(R.id.name),
+					view.findViewById(R.id.created))
 			view.setTag(holder)
 		}
 		return holder
