@@ -1,5 +1,8 @@
 # Change Log
 
+## 1.3.2
+* Replaced rastered icons with vector drawables
+
 ## 1.3.1
 * Fixed initialization of scale view
 * Fixed using contextual action mode before Honeycomb
