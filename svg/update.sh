@@ -114,15 +114,6 @@ EOF
 
 # drawable SVGs to PNGs
 update app/src/main/res/drawable << EOF
-svg/ic_action_add.svg
-svg/ic_action_edit.svg
-svg/ic_action_remove.svg
-svg/ic_action_sort.svg
-svg/ic_issue_incomplete.svg
-svg/ic_issue_yes.svg
-svg/ic_issue_maybe.svg
-svg/ic_issue_no.svg
-svg/ic_edit_enter.svg
 svg/ic_empty_arguments.svg 174x128
 svg/ic_empty_issues.svg 200x175
 svg/ic_splash.svg 128
