@@ -127,7 +127,7 @@ class ArgumentsFragment : Fragment() {
 			}
 		}
 
-		val enterButton: View = view.findViewById(R.id.enter_argument)
+		val enterButton = view.findViewById<View>(R.id.enter_argument)
 		enterButton.setOnClickListener { _ -> saveArgument() }
 
 		scaleView = ScaleView(activity)
