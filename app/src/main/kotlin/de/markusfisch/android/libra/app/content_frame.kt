@@ -6,12 +6,12 @@ import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentTransaction
 
-fun setFragment(fm: FragmentManager, fragment: Fragment) {
-	getTransaction(fm, fragment).commit()
+fun setFragment(fm: FragmentManager?, fragment: Fragment) {
+	fm?.let { getTransaction(fm, fragment).commit() }
 }
 
-fun replaceFragment(fm: FragmentManager, fragment: Fragment) {
-	getTransaction(fm, fragment).addToBackStack(null).commit()
+fun addFragment(fm: FragmentManager?, fragment: Fragment) {
+	fm?.let { getTransaction(fm, fragment).addToBackStack(null).commit() }
 }
 
 private fun getTransaction(

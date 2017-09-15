@@ -2,7 +2,7 @@ package de.markusfisch.android.libra.fragment
 
 import de.markusfisch.android.libra.adapter.IssuesAdapter
 import de.markusfisch.android.libra.app.LibraApp
-import de.markusfisch.android.libra.app.replaceFragment
+import de.markusfisch.android.libra.app.addFragment
 import de.markusfisch.android.libra.database.DataSource
 import de.markusfisch.android.libra.R
 
@@ -106,7 +106,7 @@ class IssuesFragment: Fragment() {
 
 	private fun showArguments(id: Long) {
 		closeActionMode()
-		replaceFragment(fragmentManager,
+		addFragment(fragmentManager,
 				ArgumentsFragment.newInstance(id))
 	}
 
