@@ -12,6 +12,9 @@ lint:
 infer: clean
 	infer -- ./gradlew assembleDebug
 
+sonarqube:
+	./gradlew sonarqube
+
 release: lint
 	@./gradlew \
 		assembleRelease \
