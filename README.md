@@ -1,7 +1,5 @@
 # Libra
 
-<a href="https://travis-ci.org/markusfisch/Libra"><img src="https://api.travis-ci.org/markusfisch/Libra.svg" alt="Travis-ci"/></a>
-
 Android app that helps making hard decisions. Works like this:
 
 1. Write down all pros and cons of an issue
