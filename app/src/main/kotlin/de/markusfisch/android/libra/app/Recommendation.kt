@@ -9,14 +9,14 @@ enum class Recommendation {
 	companion object {
 		fun getRecommendation(negative: Int, positive: Int): Recommendation {
 			val ng = Math.abs(negative)
-			if (positive == 0 && negative == 0) {
-				return INCOMPLETE
+			return if (positive == 0 && negative == 0) {
+				INCOMPLETE
 			} else if (positive >= ng * 2) {
-				return YES
+				YES
 			} else if (positive > ng) {
-				return MAYBE
+				MAYBE
 			} else {
-				return NO
+				NO
 			}
 		}
 	}

@@ -24,39 +24,29 @@ import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 
 class ArgumentsFragment : Fragment() {
-	companion object {
-		private val ISSUE_ID = "issue_id"
-		private val ARGUMENTS_ID = "argumentId"
-
-		fun newInstance(issueId: Long): ArgumentsFragment {
-			val args = Bundle()
-			args.putLong(ISSUE_ID, issueId)
-
-			val fragment = ArgumentsFragment()
-			fragment.arguments = args
-			return fragment
-		}
-	}
-
 	private val actionModeCallback = object : ActionMode.Callback {
 		override fun onCreateActionMode(
-				mode: ActionMode,
-				menu: Menu): Boolean {
+			mode: ActionMode,
+			menu: Menu
+		): Boolean {
 			mode.menuInflater.inflate(
-					R.menu.fragment_argument_edit,
-					menu)
+				R.menu.fragment_argument_edit,
+				menu
+			)
 			return true
 		}
 
 		override fun onPrepareActionMode(
-				mode: ActionMode,
-				menu: Menu): Boolean {
+			mode: ActionMode,
+			menu: Menu
+		): Boolean {
 			return false
 		}
 
 		override fun onActionItemClicked(
-				mode: ActionMode,
-				item: MenuItem): Boolean {
+			mode: ActionMode,
+			item: MenuItem
+		): Boolean {
 			return when (item.itemId) {
 				R.id.remove_argument -> {
 					askToRemoveArgument(activity, argumentId)
@@ -92,9 +82,10 @@ class ArgumentsFragment : Fragment() {
 	}
 
 	override fun onCreateView(
-			inflater: LayoutInflater,
-			container: ViewGroup?,
-			state: Bundle?): View {
+		inflater: LayoutInflater,
+		container: ViewGroup?,
+		state: Bundle?
+	): View {
 		if (arguments != null) {
 			issueId = arguments.getLong(ISSUE_ID, 0)
 		}
@@ -110,9 +101,10 @@ class ArgumentsFragment : Fragment() {
 		adapter = ArgumentsAdapter(activity, cursor)
 
 		val view = inflater.inflate(
-				R.layout.fragment_arguments,
-				container,
-				false)
+			R.layout.fragment_arguments,
+			container,
+			false
+		)
 
 		editText = view.findViewById(R.id.argument)
 		editText.setOnEditorActionListener { _, actionId, _ ->
@@ -185,13 +177,13 @@ class ArgumentsFragment : Fragment() {
 
 		do {
 			val weight = cursor.getInt(weightIndex)
-			if (weight > 0) {
-				positive += weight
-			} else if (weight < 0) {
-				negative += -weight
-			} else {
-				scaleView.setWeights(-1, -1)
-				return
+			when {
+				weight > 0 -> positive += weight
+				weight < 0 -> negative += -weight
+				else -> {
+					scaleView.setWeights(-1, -1)
+					return
+				}
 			}
 		} while (cursor.moveToNext())
 
@@ -205,11 +197,11 @@ class ArgumentsFragment : Fragment() {
 			return false
 		}
 		val id: Long
-		if (argumentId > 0) {
+		id = if (argumentId > 0) {
 			LibraApp.data.updateArgumentText(argumentId, text)
-			id = argumentId
+			argumentId
 		} else {
-			id = LibraApp.data.insertArgument(issueId, text, 0)
+			LibraApp.data.insertArgument(issueId, text, 0)
 		}
 		closeActionMode()
 		reloadList()
@@ -219,14 +211,14 @@ class ArgumentsFragment : Fragment() {
 
 	private fun askToRemoveArgument(context: Context, argId: Long) {
 		AlertDialog.Builder(context)
-				.setMessage(R.string.really_remove_argument)
-				.setPositiveButton(android.R.string.ok, { _, _ ->
-					removeArgument(argId)
-					closeActionMode()
-				})
-				.setNegativeButton(android.R.string.cancel, { _, _ ->
-				})
-				.show()
+			.setMessage(R.string.really_remove_argument)
+			.setPositiveButton(android.R.string.ok, { _, _ ->
+				removeArgument(argId)
+				closeActionMode()
+			})
+			.setNegativeButton(android.R.string.cancel, { _, _ ->
+			})
+			.show()
 	}
 
 	private fun removeArgument(id: Long) {
@@ -239,8 +231,9 @@ class ArgumentsFragment : Fragment() {
 		editText.setText(LibraApp.data.getArgumentText(id))
 		val a = activity
 		if (actionMode == null && a is AppCompatActivity) {
-			actionMode = a.getDelegate().startSupportActionMode(
-					actionModeCallback)
+			actionMode = a.delegate.startSupportActionMode(
+				actionModeCallback
+			)
 		}
 	}
 
@@ -265,5 +258,19 @@ class ArgumentsFragment : Fragment() {
 			}
 		}
 		return -1
+	}
+
+	companion object {
+		private const val ISSUE_ID = "issue_id"
+		private const val ARGUMENTS_ID = "argumentId"
+
+		fun newInstance(issueId: Long): ArgumentsFragment {
+			val args = Bundle()
+			args.putLong(ISSUE_ID, issueId)
+
+			val fragment = ArgumentsFragment()
+			fragment.arguments = args
+			return fragment
+		}
 	}
 }

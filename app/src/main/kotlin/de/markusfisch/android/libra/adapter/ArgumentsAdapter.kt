@@ -11,27 +11,33 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.CursorAdapter
 
-class ArgumentsAdapter(context: Context, cursor: Cursor):
-		CursorAdapter(context, cursor, false) {
+class ArgumentsAdapter(context: Context, cursor: Cursor) :
+	CursorAdapter(context, cursor, false) {
 	private val idIndex = cursor.getColumnIndex(
-			DataSource.ARGUMENTS_ID)
+		DataSource.ARGUMENTS_ID
+	)
 	private val textIndex = cursor.getColumnIndex(
-			DataSource.ARGUMENTS_TEXT)
+		DataSource.ARGUMENTS_TEXT
+	)
 	private val weightIndex = cursor.getColumnIndex(
-			DataSource.ARGUMENTS_WEIGHT)
+		DataSource.ARGUMENTS_WEIGHT
+	)
 
 	override fun newView(
-			context: Context,
-			cursor: Cursor,
-			parent: ViewGroup): View  {
+		context: Context,
+		cursor: Cursor,
+		parent: ViewGroup
+	): View {
 		return LayoutInflater.from(parent.context).inflate(
-				R.layout.item_argument, parent, false)
+			R.layout.item_argument, parent, false
+		)
 	}
 
 	override fun bindView(
-			view: View,
-			context: Context,
-			cursor: Cursor) {
+		view: View,
+		context: Context,
+		cursor: Cursor
+	) {
 		val holder = getViewHolder(view)
 		holder.argumentView.id = cursor.getLong(idIndex)
 		holder.argumentView.text = cursor.getString(textIndex)

@@ -13,44 +13,21 @@ import android.support.v4.content.ContextCompat
 import android.view.SurfaceHolder
 import android.view.SurfaceView
 
-class ScaleView(context: Context): SurfaceView(context) {
-	companion object {
-		private fun calculateBalance(left: Float, right: Float): Double {
-			val min: Float = Math.max(1f, Math.min(left, right))
-			val balance: Float = right - left
-			var factor: Float
-			if (balance == 0f) {
-				factor = 0f
-			} else if (balance > 0f) {
-				factor = Math.min(min, balance)
-			} else {
-				factor = Math.max(-min, balance)
-			}
-			factor /= min
-			return (.9f * factor).toDouble()
-		}
-
-		private fun linear(
-				time: Long,
-				begin: Double,
-				change: Double,
-				duration: Long): Double {
-			return change.toFloat() * time / duration + begin
-		}
-	}
-
+class ScaleView(context: Context) : SurfaceView(context) {
 	private val animationTime = 300L
 	private val animationRunnable: Runnable = Runnable {
 		while (running) {
 			val now = Math.min(
-					System.currentTimeMillis() - animationStart,
-					animationTime)
+				System.currentTimeMillis() - animationStart,
+				animationTime
+			)
 
 			radians = linear(
-					now,
-					radiansBegin,
-					radiansChange,
-					animationTime)
+				now,
+				radiansBegin,
+				radiansChange,
+				animationTime
+			)
 
 			lockCanvasAndDraw()
 
@@ -104,8 +81,10 @@ class ScaleView(context: Context): SurfaceView(context) {
 
 		// toInt() is required or Kotlin thinks it's a Long
 		transparentColor = 0x40000000.toInt()
-		backgroundColor = ContextCompat.getColor(context,
-				R.color.background_window)
+		backgroundColor = ContextCompat.getColor(
+			context,
+			R.color.background_window
+		)
 		yesColor = ContextCompat.getColor(context, R.color.yes)
 		yesString = context.getString(R.string.yes)
 		maybeColor = ContextCompat.getColor(context, R.color.maybe)
@@ -142,20 +121,21 @@ class ScaleView(context: Context): SurfaceView(context) {
 			noWeights = false
 			radiansBegin = radians
 			radiansChange = calculateBalance(
-					left.toFloat(),
-					right.toFloat()) - radiansBegin
+				left.toFloat(),
+				right.toFloat()
+			) - radiansBegin
 			startAnimation()
 		}
 	}
 
 	override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
-		val desiredWidth = getSuggestedMinimumWidth() +
-				getPaddingLeft() + getPaddingRight()
-		var desiredHeight = topMargin + frameHeight + bottomMargin
+		val desiredWidth = suggestedMinimumWidth + paddingLeft + paddingRight
+		val desiredHeight = topMargin + frameHeight + bottomMargin
 
 		setMeasuredDimension(
-				measureDimension(desiredWidth, widthMeasureSpec),
-				measureDimension(desiredHeight, heightMeasureSpec))
+			measureDimension(desiredWidth, widthMeasureSpec),
+			measureDimension(desiredHeight, heightMeasureSpec)
+		)
 	}
 
 	private fun measureDimension(desiredSize: Int, measureSpec: Int): Int {
@@ -179,10 +159,11 @@ class ScaleView(context: Context): SurfaceView(context) {
 		holder.setFormat(PixelFormat.TRANSPARENT)
 		holder.addCallback(object : SurfaceHolder.Callback {
 			override fun surfaceChanged(
-					holder: SurfaceHolder,
-					format: Int,
-					width: Int,
-					height: Int) {
+				holder: SurfaceHolder,
+				format: Int,
+				width: Int,
+				height: Int
+			) {
 				this@ScaleView.width = width.toFloat()
 				this@ScaleView.height = height.toFloat()
 				lockCanvasAndDraw()
@@ -220,12 +201,12 @@ class ScaleView(context: Context): SurfaceView(context) {
 			thread = Thread(animationRunnable)
 			thread?.start()
 		} else {
-			postDelayed(Runnable { startAnimation() }, 100)
+			postDelayed({ startAnimation() }, 100)
 		}
 	}
 
 	private fun lockCanvasAndDraw() {
-		if (holder.getSurface().isValid()) {
+		if (holder.surface.isValid) {
 			val canvas = holder.lockCanvas()
 			if (canvas != null) {
 				drawScale(canvas)
@@ -250,10 +231,12 @@ class ScaleView(context: Context): SurfaceView(context) {
 
 		val textPad = top * .5f
 		pnt.color = noColor and 0xffffff or alphaMod
-		canvas.drawText(noString,
-				centerX - frameMidX - pnt.measureText(noString),
-				top + textPad,
-				pnt)
+		canvas.drawText(
+			noString,
+			centerX - frameMidX - pnt.measureText(noString),
+			top + textPad,
+			pnt
+		)
 		pnt.color = maybeColor and 0xffffff or alphaMod
 		canvas.drawText(maybeString, centerX, top - textPad * .5f, pnt)
 		pnt.color = yesColor and 0xffffff or alphaMod
@@ -277,5 +260,31 @@ class ScaleView(context: Context): SurfaceView(context) {
 		mat.setTranslate(centerX - scaleMidX, topAxis - scaleMidY)
 		mat.postRotate(radians.toFloat() / radPerDeg, centerX, topAxis)
 		canvas.drawBitmap(scale, mat, pnt)
+	}
+
+	companion object {
+		private fun calculateBalance(left: Float, right: Float): Double {
+			val min: Float = Math.max(1f, Math.min(left, right))
+			val balance: Float = right - left
+			var factor: Float
+			factor = if (balance == 0f) {
+				0f
+			} else if (balance > 0f) {
+				Math.min(min, balance)
+			} else {
+				Math.max(-min, balance)
+			}
+			factor /= min
+			return (.9f * factor).toDouble()
+		}
+
+		private fun linear(
+			time: Long,
+			begin: Double,
+			change: Double,
+			duration: Long
+		): Double {
+			return change.toFloat() * time / duration + begin
+		}
 	}
 }

@@ -7,9 +7,9 @@ import android.view.MotionEvent
 import android.view.ViewConfiguration
 import android.widget.ListView
 
-class ArgumentListView: ListView {
+class ArgumentListView : ListView {
 	var isWeighing = false
-			private set
+		private set
 
 	private enum class Mode {
 		NONE,
@@ -26,12 +26,12 @@ class ArgumentListView: ListView {
 	private var argumentView: ArgumentView? = null
 	private var mode = Mode.NONE
 
-	constructor(context: Context, attrs: AttributeSet, defStyle: Int):
+	constructor(context: Context, attrs: AttributeSet, defStyle: Int) :
 			super(context, attrs, defStyle) {
 		touchSlop = ViewConfiguration.get(context).scaledTouchSlop
 	}
 
-	constructor(context: Context, attrs: AttributeSet):
+	constructor(context: Context, attrs: AttributeSet) :
 			this(context, attrs, 0)
 
 	override fun onTouchEvent(event: MotionEvent): Boolean {
@@ -48,10 +48,10 @@ class ArgumentListView: ListView {
 				val dx = Math.abs(downX - event.x)
 				val dy = Math.abs(downY - event.y)
 				if (mode == Mode.NONE && dx + dy >= touchSlop) {
-					if (dx > dy) {
-						mode = Mode.WEIGHING
+					mode = if (dx > dy) {
+						Mode.WEIGHING
 					} else {
-						mode = Mode.SCROLLING
+						Mode.SCROLLING
 					}
 				}
 				if (mode == Mode.WEIGHING) {

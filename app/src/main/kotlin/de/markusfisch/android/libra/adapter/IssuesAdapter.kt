@@ -16,35 +16,43 @@ import android.widget.TextView
 
 import java.util.Date
 
-class IssuesAdapter(context: Context, cursor: Cursor):
-		CursorAdapter(context, cursor, false) {
+class IssuesAdapter(context: Context, cursor: Cursor) :
+	CursorAdapter(context, cursor, false) {
 	private val dateFormat = DateFormat.getLongDateFormat(context)
-	private val res = context.getResources()
+	private val res = context.resources
 	private val nameIndex = cursor.getColumnIndex(
-			DataSource.ISSUES_NAME)
+		DataSource.ISSUES_NAME
+	)
 	private val createdIndex = cursor.getColumnIndex(
-			DataSource.ISSUES_CREATED_TIMESTAMP)
+		DataSource.ISSUES_CREATED_TIMESTAMP
+	)
 	private val negativeIndex = cursor.getColumnIndex(
-			DataSource.ISSUES_NEGATIVE)
+		DataSource.ISSUES_NEGATIVE
+	)
 	private val positiveIndex = cursor.getColumnIndex(
-			DataSource.ISSUES_POSITIVE)
+		DataSource.ISSUES_POSITIVE
+	)
 
 	override fun newView(
-			context: Context,
-			cursor: Cursor,
-			parent: ViewGroup): View  {
-		return LayoutInflater.from(parent.getContext()).inflate(
-				R.layout.item_issue, parent, false)
+		context: Context,
+		cursor: Cursor,
+		parent: ViewGroup
+	): View {
+		return LayoutInflater.from(parent.context).inflate(
+			R.layout.item_issue, parent, false
+		)
 	}
 
 	override fun bindView(
-			view: View,
-			context: Context,
-			cursor: Cursor) {
+		view: View,
+		context: Context,
+		cursor: Cursor
+	) {
 		val holder = getViewHolder(view)
 		val icon: Int = when (Recommendation.getRecommendation(
-				cursor.getInt(negativeIndex),
-				cursor.getInt(positiveIndex))) {
+			cursor.getInt(negativeIndex),
+			cursor.getInt(positiveIndex)
+		)) {
 			Recommendation.YES -> R.drawable.ic_issue_yes
 			Recommendation.MAYBE -> R.drawable.ic_issue_maybe
 			Recommendation.NO -> R.drawable.ic_issue_no
@@ -56,18 +64,19 @@ class IssuesAdapter(context: Context, cursor: Cursor):
 		if (name == null || name.isEmpty()) {
 			name = dateFormat.format(Date(time * 1000L))
 		}
-		holder.nameView.setText(name)
-		holder.createdView.setText(getHumanTime(time))
+		holder.nameView.text = name
+		holder.createdView.text = getHumanTime(time)
 	}
 
 	private fun getViewHolder(view: View): ViewHolder {
-		var holder = view.getTag() as ViewHolder?
+		var holder = view.tag as ViewHolder?
 		if (holder == null) {
 			holder = ViewHolder(
-					view.findViewById(R.id.icon),
-					view.findViewById(R.id.name),
-					view.findViewById(R.id.created))
-			view.setTag(holder)
+				view.findViewById(R.id.icon),
+				view.findViewById(R.id.name),
+				view.findViewById(R.id.created)
+			)
+			view.tag = holder
 		}
 		return holder
 	}
@@ -77,30 +86,39 @@ class IssuesAdapter(context: Context, cursor: Cursor):
 		val hour = 3600
 		val day = hour * 24
 
-		if (since < 60L) {
-			return res.getString(R.string.just_now)
-		} else if (since < hour) {
-			val minutes = since.toInt() / 60
-			return res.getQuantityString(R.plurals.minutes_ago,
+		when {
+			since < 60L -> return res.getString(R.string.just_now)
+			since < hour -> {
+				val minutes = since.toInt() / 60
+				return res.getQuantityString(
+					R.plurals.minutes_ago,
 					minutes,
-					minutes)
-		} else if (since < hour * 24L) {
-			val hours = (since / hour).toInt()
-			return res.getQuantityString(R.plurals.hours_ago,
+					minutes
+				)
+			}
+			since < hour * 24L -> {
+				val hours = (since / hour).toInt()
+				return res.getQuantityString(
+					R.plurals.hours_ago,
 					hours,
-					hours)
-		} else if (since < hour * 72L) {
-			val days = (since / day).toInt()
-			return res.getQuantityString(R.plurals.days_ago,
+					hours
+				)
+			}
+			since < hour * 72L -> {
+				val days = (since / day).toInt()
+				return res.getQuantityString(
+					R.plurals.days_ago,
 					days,
-					days)
+					days
+				)
+			}
+			else -> return dateFormat.format(Date(time * 1000L))
 		}
-
-		return dateFormat.format(Date(time * 1000L))
 	}
 
 	private data class ViewHolder(
-			val iconView: ImageView,
-			val nameView: TextView,
-			val createdView: TextView)
+		val iconView: ImageView,
+		val nameView: TextView,
+		val createdView: TextView
+	)
 }

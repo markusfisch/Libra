@@ -4,13 +4,13 @@ import de.markusfisch.android.libra.database.DataSource
 
 import android.app.Application
 
-class LibraApp: Application() {
-	companion object {
-		val data = DataSource()
-	}
-
+class LibraApp : Application() {
 	override fun onCreate() {
 		super.onCreate()
 		data.open(this)
+	}
+
+	companion object {
+		val data = DataSource()
 	}
 }

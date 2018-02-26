@@ -1,5 +1,6 @@
 package de.markusfisch.android.libra.app
 
+import android.annotation.SuppressLint
 import de.markusfisch.android.libra.R
 
 import android.support.v4.app.Fragment
@@ -14,8 +15,10 @@ fun addFragment(fm: FragmentManager?, fragment: Fragment) {
 	fm?.let { getTransaction(fm, fragment).addToBackStack(null).commit() }
 }
 
+@SuppressLint("CommitTransaction")
 private fun getTransaction(
-		fm: FragmentManager,
-		fragment: Fragment): FragmentTransaction {
+	fm: FragmentManager,
+	fragment: Fragment
+): FragmentTransaction {
 	return fm.beginTransaction().replace(R.id.content_frame, fragment)
 }

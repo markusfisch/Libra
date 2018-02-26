@@ -16,16 +16,14 @@ import android.view.Gravity
 import android.view.MotionEvent
 import android.widget.TextView
 
-class ArgumentView: TextView {
+class ArgumentView : TextView {
 	var id: Long = 0
 	var weight: Int = 0
 		set(value) {
-			gravity = if (value < 0) {
-				Gravity.LEFT
-			} else if (value > 0) {
-				Gravity.RIGHT
-			} else {
-				Gravity.CENTER_HORIZONTAL
+			gravity = when {
+				value < 0 -> Gravity.LEFT
+				value > 0 -> Gravity.RIGHT
+				else -> Gravity.CENTER_HORIZONTAL
 			}
 			field = value
 		}
@@ -47,7 +45,7 @@ class ArgumentView: TextView {
 	private var savedX: Float = -1f
 	private var savedWeight: Int = 0
 
-	constructor(context: Context, attrs: AttributeSet, defStyle: Int):
+	constructor(context: Context, attrs: AttributeSet, defStyle: Int) :
 			super(context, attrs, defStyle) {
 		val res = context.resources
 		val dp = res.displayMetrics.density
@@ -61,7 +59,7 @@ class ArgumentView: TextView {
 		swipeHeight = swipeLeft.height
 	}
 
-	constructor(context: Context, attrs: AttributeSet):
+	constructor(context: Context, attrs: AttributeSet) :
 			this(context, attrs, 0)
 
 	fun onTouchDown(event: MotionEvent) {
@@ -88,11 +86,12 @@ class ArgumentView: TextView {
 	}
 
 	override fun onLayout(
-			changed: Boolean,
-			left: Int,
-			top: Int,
-			right: Int,
-			bottom: Int) {
+		changed: Boolean,
+		left: Int,
+		top: Int,
+		right: Int,
+		bottom: Int
+	) {
 		super.onLayout(changed, left, top, right, bottom)
 		width = (right - left).toFloat()
 		height = (bottom - top).toFloat()
@@ -105,11 +104,12 @@ class ArgumentView: TextView {
 		val bottom = height - padding * 2f
 		paint.color = barColor
 		canvas.drawRect(
-				padding,
-				top,
-				width - padding,
-				bottom,
-				paint)
+			padding,
+			top,
+			width - padding,
+			bottom,
+			paint
+		)
 
 		if (weight == 0) {
 			drawArrows(canvas)
@@ -123,9 +123,8 @@ class ArgumentView: TextView {
 	private fun drawArrows(canvas: Canvas) {
 		val pad = padding * 4
 		val y = (height - swipeHeight) / 2
-		val left = pad
 		val right = width - swipeWidth - pad
-		canvas.drawBitmap(swipeLeft, left, y, null)
+		canvas.drawBitmap(swipeLeft, pad, y, null)
 		canvas.drawBitmap(swipeRight, right, y, null)
 	}
 
@@ -146,11 +145,12 @@ class ArgumentView: TextView {
 		paint.color = color
 		for (it in 1..Math.abs(weight % 11)) {
 			canvas.drawRect(
-					x,
-					top,
-					x + block - padding,
-					bottom,
-					paint)
+				x,
+				top,
+				x + block - padding,
+				bottom,
+				paint
+			)
 			x += step
 		}
 	}
@@ -164,7 +164,7 @@ class ArgumentView: TextView {
 		val activity = context
 		if (activity is AppCompatActivity) {
 			val fragment = activity.supportFragmentManager
-					.findFragmentById(R.id.content_frame)
+				.findFragmentById(R.id.content_frame)
 			if (fragment is ArgumentsFragment) {
 				return fragment
 			}

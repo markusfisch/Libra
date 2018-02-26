@@ -21,26 +21,30 @@ import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.ListView
 
-class IssuesFragment: Fragment() {
+class IssuesFragment : Fragment() {
 	private val actionModeCallback = object : ActionMode.Callback {
 		override fun onCreateActionMode(
-				mode: ActionMode,
-				menu: Menu): Boolean {
+			mode: ActionMode,
+			menu: Menu
+		): Boolean {
 			mode.menuInflater.inflate(
-					R.menu.fragment_issue_edit,
-					menu)
+				R.menu.fragment_issue_edit,
+				menu
+			)
 			return true
 		}
 
 		override fun onPrepareActionMode(
-				mode: ActionMode,
-				menu: Menu): Boolean {
+			mode: ActionMode,
+			menu: Menu
+		): Boolean {
 			return false
 		}
 
 		override fun onActionItemClicked(
-				mode: ActionMode,
-				item: MenuItem): Boolean {
+			mode: ActionMode,
+			item: MenuItem
+		): Boolean {
 			return when (item.itemId) {
 				R.id.edit_issue -> {
 					askForIssueName(issue.id, getItemText(issue.position))
@@ -67,16 +71,18 @@ class IssuesFragment: Fragment() {
 	private var actionMode: ActionMode? = null
 
 	override fun onCreateView(
-			inflater: LayoutInflater,
-			container: ViewGroup?,
-			state: Bundle?): View {
+		inflater: LayoutInflater,
+		container: ViewGroup?,
+		state: Bundle?
+	): View {
 		activity.setTitle(R.string.issues)
 		adapter = IssuesAdapter(activity, LibraApp.data.getIssues())
 
 		val view = inflater.inflate(
-				R.layout.fragment_issues,
-				container,
-				false)
+			R.layout.fragment_issues,
+			container,
+			false
+		)
 
 		val listView = view.findViewById<ListView>(R.id.issues)
 		listView.emptyView = view.findViewById(R.id.no_issues)
@@ -90,8 +96,9 @@ class IssuesFragment: Fragment() {
 			issue.position = position
 			val a = activity
 			if (actionMode == null && a is AppCompatActivity) {
-				actionMode = a.getDelegate().startSupportActionMode(
-						actionModeCallback)
+				actionMode = a.delegate.startSupportActionMode(
+					actionModeCallback
+				)
 			}
 			true
 		}
@@ -106,8 +113,10 @@ class IssuesFragment: Fragment() {
 
 	private fun showArguments(id: Long) {
 		closeActionMode()
-		addFragment(fragmentManager,
-				ArgumentsFragment.newInstance(id))
+		addFragment(
+			fragmentManager,
+			ArgumentsFragment.newInstance(id)
+		)
 	}
 
 	private fun closeActionMode() {
@@ -118,12 +127,12 @@ class IssuesFragment: Fragment() {
 
 	private fun askToRemoveIssue(context: Context, issueId: Long) {
 		AlertDialog.Builder(context)
-				.setMessage(R.string.really_remove_issue)
-				.setPositiveButton(android.R.string.ok, { _, _ ->
-					removeIssue(issueId)
-				})
-				.setNegativeButton(android.R.string.cancel, { _, _ -> })
-				.show()
+			.setMessage(R.string.really_remove_issue)
+			.setPositiveButton(android.R.string.ok, { _, _ ->
+				removeIssue(issueId)
+			})
+			.setNegativeButton(android.R.string.cancel, { _, _ -> })
+			.show()
 	}
 
 	private fun removeIssue(issueId: Long) {
@@ -133,24 +142,30 @@ class IssuesFragment: Fragment() {
 
 	private fun getItemText(position: Int): String? {
 		val cursor = adapter.getItem(position) as Cursor?
-		return cursor?.getString(cursor.getColumnIndex(
-				DataSource.ISSUES_NAME))
+		return cursor?.getString(
+			cursor.getColumnIndex(
+				DataSource.ISSUES_NAME
+			)
+		)
 	}
 
 	private fun askForIssueName(issueId: Long, text: String?) {
 		val context = activity
 		val view = LayoutInflater.from(context).inflate(
-				R.layout.dialog_enter_name, null)
+			R.layout.dialog_enter_name, null
+		)
 		val nameView = view.findViewById<EditText>(R.id.name)
 		nameView.setText(text)
 		AlertDialog.Builder(context)
-				.setView(view)
-				.setPositiveButton(android.R.string.ok, { _, _ ->
-					updateIssueName(issueId,
-							nameView.text.toString())
-				})
-				.setNegativeButton(android.R.string.cancel, { _, _ -> })
-				.show()
+			.setView(view)
+			.setPositiveButton(android.R.string.ok, { _, _ ->
+				updateIssueName(
+					issueId,
+					nameView.text.toString()
+				)
+			})
+			.setNegativeButton(android.R.string.cancel, { _, _ -> })
+			.show()
 	}
 
 	private fun updateIssueName(id: Long, name: String) {

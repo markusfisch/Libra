@@ -11,48 +11,7 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-class DataSource() {
-	companion object {
-		val ISSUES = "issues"
-		val ISSUES_ID = "_id"
-		val ISSUES_NAME = "name"
-		val ISSUES_CREATED = "created"
-		val ISSUES_CREATED_TIMESTAMP = "created_timestamp"
-		val ISSUES_NEGATIVE = "negative"
-		val ISSUES_POSITIVE = "positive"
-
-		val ARGUMENTS = "arguments"
-		val ARGUMENTS_ID = "_id"
-		val ARGUMENTS_ISSUE = "fk_issue"
-		val ARGUMENTS_TEXT = "text"
-		val ARGUMENTS_WEIGHT = "weight"
-		val ARGUMENTS_ORDER = "sort_order"
-
-		private fun createIssues(db: SQLiteDatabase) {
-			db.execSQL("DROP TABLE IF EXISTS $ISSUES")
-			db.execSQL("""CREATE TABLE $ISSUES (
-					$ISSUES_ID INTEGER PRIMARY KEY AUTOINCREMENT,
-					$ISSUES_NAME TEXT,
-					$ISSUES_CREATED DATETIME)""")
-		}
-
-		private fun createArguments(db: SQLiteDatabase) {
-			db.execSQL("DROP TABLE IF EXISTS $ARGUMENTS")
-			db.execSQL("""CREATE TABLE $ARGUMENTS (
-					$ARGUMENTS_ID INTEGER PRIMARY KEY AUTOINCREMENT,
-					$ARGUMENTS_ISSUE INTEGER,
-					$ARGUMENTS_TEXT TEXT NOT NULL,
-					$ARGUMENTS_WEIGHT INTEGER,
-					$ARGUMENTS_ORDER INTEGER)""")
-		}
-
-		private fun now(): String {
-			return SimpleDateFormat(
-					"yyyy-MM-dd HH:mm:ss",
-					Locale.US).format(Date())
-		}
-	}
-
+class DataSource {
 	private lateinit var db: SQLiteDatabase
 
 	fun open(context: Context): Boolean {
@@ -65,7 +24,8 @@ class DataSource() {
 	}
 
 	fun getIssues(): Cursor {
-		return db.rawQuery("""SELECT
+		return db.rawQuery(
+			"""SELECT
 				d.$ISSUES_ID,
 				d.$ISSUES_NAME,
 				strftime('%s', d.$ISSUES_CREATED, 'utc')
@@ -79,14 +39,17 @@ class DataSource() {
 					WHERE a.$ARGUMENTS_ISSUE = d.$ISSUES_ID AND
 						a.$ARGUMENTS_WEIGHT > 0) AS $ISSUES_POSITIVE
 				FROM $ISSUES AS d
-				ORDER BY d.$ISSUES_CREATED DESC""", null)
+				ORDER BY d.$ISSUES_CREATED DESC""", null
+		)
 	}
 
 	fun getIssueName(id: Long): String {
-		return queryStringColumn("""SELECT
+		return queryStringColumn(
+			"""SELECT
 				$ISSUES_NAME
 				FROM $ISSUES
-				WHERE $ISSUES_ID = $id""", ISSUES_NAME)
+				WHERE $ISSUES_ID = $id""", ISSUES_NAME
+		)
 	}
 
 	fun insertIssue(): Long {
@@ -107,21 +70,25 @@ class DataSource() {
 	}
 
 	fun getArguments(issueId: Long): Cursor {
-		return db.rawQuery("""SELECT
+		return db.rawQuery(
+			"""SELECT
 				$ARGUMENTS_ID,
 				$ARGUMENTS_TEXT,
 				$ARGUMENTS_WEIGHT,
 				$ARGUMENTS_ORDER
 				FROM $ARGUMENTS
 				WHERE $ARGUMENTS_ISSUE = $issueId
-				ORDER BY $ARGUMENTS_ORDER, $ARGUMENTS_ID""", null)
+				ORDER BY $ARGUMENTS_ORDER, $ARGUMENTS_ID""", null
+		)
 	}
 
 	fun getArgumentText(id: Long): String {
-		return queryStringColumn("""SELECT
+		return queryStringColumn(
+			"""SELECT
 				$ARGUMENTS_TEXT
 				FROM $ARGUMENTS
-				WHERE $ARGUMENTS_ID = $id""", ARGUMENTS_TEXT)
+				WHERE $ARGUMENTS_ID = $id""", ARGUMENTS_TEXT
+		)
 	}
 
 	fun insertArgument(issueId: Long, text: String, weight: Int): Long {
@@ -152,9 +119,11 @@ class DataSource() {
 	fun sortArguments(issueId: Long) {
 		// execSQL() instead of update() because we can't use column
 		// names in ContentValues; another leaking abstraction
-		db.execSQL("""UPDATE $ARGUMENTS
+		db.execSQL(
+			"""UPDATE $ARGUMENTS
 				SET $ARGUMENTS_ORDER = $ARGUMENTS_WEIGHT
-				WHERE $ARGUMENTS_ISSUE = $issueId""")
+				WHERE $ARGUMENTS_ISSUE = $issueId"""
+		)
 	}
 
 	private fun queryStringColumn(query: String, column: String): String {
@@ -173,17 +142,64 @@ class DataSource() {
 		return text ?: ""
 	}
 
-	private class OpenHelper(context: Context):
-			SQLiteOpenHelper(context, "arguments.db", null, 1) {
+	private class OpenHelper(context: Context) :
+		SQLiteOpenHelper(context, "arguments.db", null, 1) {
 		override fun onCreate(db: SQLiteDatabase) {
 			createIssues(db)
 			createArguments(db)
 		}
 
 		override fun onUpgrade(
-				db: SQLiteDatabase,
-				oldVersion: Int,
-				newVersion: Int) {
+			db: SQLiteDatabase,
+			oldVersion: Int,
+			newVersion: Int
+		) {
+		}
+	}
+
+	companion object {
+		const val ISSUES = "issues"
+		const val ISSUES_ID = "_id"
+		const val ISSUES_NAME = "name"
+		const val ISSUES_CREATED = "created"
+		const val ISSUES_CREATED_TIMESTAMP = "created_timestamp"
+		const val ISSUES_NEGATIVE = "negative"
+		const val ISSUES_POSITIVE = "positive"
+
+		const val ARGUMENTS = "arguments"
+		const val ARGUMENTS_ID = "_id"
+		const val ARGUMENTS_ISSUE = "fk_issue"
+		const val ARGUMENTS_TEXT = "text"
+		const val ARGUMENTS_WEIGHT = "weight"
+		const val ARGUMENTS_ORDER = "sort_order"
+
+		private fun createIssues(db: SQLiteDatabase) {
+			db.execSQL("DROP TABLE IF EXISTS $ISSUES")
+			db.execSQL(
+				"""CREATE TABLE $ISSUES (
+					$ISSUES_ID INTEGER PRIMARY KEY AUTOINCREMENT,
+					$ISSUES_NAME TEXT,
+					$ISSUES_CREATED DATETIME)"""
+			)
+		}
+
+		private fun createArguments(db: SQLiteDatabase) {
+			db.execSQL("DROP TABLE IF EXISTS $ARGUMENTS")
+			db.execSQL(
+				"""CREATE TABLE $ARGUMENTS (
+					$ARGUMENTS_ID INTEGER PRIMARY KEY AUTOINCREMENT,
+					$ARGUMENTS_ISSUE INTEGER,
+					$ARGUMENTS_TEXT TEXT NOT NULL,
+					$ARGUMENTS_WEIGHT INTEGER,
+					$ARGUMENTS_ORDER INTEGER)"""
+			)
+		}
+
+		private fun now(): String {
+			return SimpleDateFormat(
+				"yyyy-MM-dd HH:mm:ss",
+				Locale.US
+			).format(Date())
 		}
 	}
 }
