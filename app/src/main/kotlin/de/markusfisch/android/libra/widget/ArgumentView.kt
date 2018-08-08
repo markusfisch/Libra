@@ -15,7 +15,6 @@ import android.support.v7.widget.AppCompatTextView
 import android.util.AttributeSet
 import android.view.Gravity
 import android.view.MotionEvent
-import android.widget.TextView
 
 class ArgumentView : AppCompatTextView {
 	var id: Long = 0
