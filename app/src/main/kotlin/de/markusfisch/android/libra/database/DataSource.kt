@@ -3,7 +3,6 @@ package de.markusfisch.android.libra.database
 import android.content.ContentValues
 import android.content.Context
 import android.database.Cursor
-import android.database.SQLException
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 
@@ -14,13 +13,8 @@ import java.util.Locale
 class DataSource {
 	private lateinit var db: SQLiteDatabase
 
-	fun open(context: Context): Boolean {
-		return try {
-			db = OpenHelper(context).writableDatabase
-			true
-		} catch (e: SQLException) {
-			false
-		}
+	fun open(context: Context) {
+		db = OpenHelper(context).writableDatabase
 	}
 
 	fun getIssues(): Cursor {
@@ -194,12 +188,12 @@ class DataSource {
 					$ARGUMENTS_ORDER INTEGER)"""
 			)
 		}
-
-		private fun now(): String {
-			return SimpleDateFormat(
-				"yyyy-MM-dd HH:mm:ss",
-				Locale.US
-			).format(Date())
-		}
 	}
+}
+
+fun now(): String {
+	return SimpleDateFormat(
+		"yyyy-MM-dd HH:mm:ss",
+		Locale.US
+	).format(Date())
 }

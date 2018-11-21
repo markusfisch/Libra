@@ -1,5 +1,6 @@
 package de.markusfisch.android.libra.widget
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Rect
 import android.util.AttributeSet
@@ -34,6 +35,7 @@ class ArgumentListView : ListView {
 	constructor(context: Context, attrs: AttributeSet) :
 			this(context, attrs, 0)
 
+	@SuppressLint("ClickableViewAccessibility")
 	override fun onTouchEvent(event: MotionEvent): Boolean {
 		when (event.actionMasked) {
 			MotionEvent.ACTION_DOWN -> {

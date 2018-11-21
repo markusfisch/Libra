@@ -80,7 +80,7 @@ class ScaleView(context: Context) : SurfaceView(context) {
 		bottomMargin = Math.round(8f * dp)
 
 		// toInt() is required or Kotlin thinks it's a Long
-		transparentColor = 0x40000000.toInt()
+		transparentColor = 0x40000000
 		backgroundColor = ContextCompat.getColor(
 			context,
 			R.color.background_window
@@ -266,13 +266,10 @@ class ScaleView(context: Context) : SurfaceView(context) {
 		private fun calculateBalance(left: Float, right: Float): Double {
 			val min: Float = Math.max(1f, Math.min(left, right))
 			val balance: Float = right - left
-			var factor: Float
-			factor = if (balance == 0f) {
-				0f
-			} else if (balance > 0f) {
-				Math.min(min, balance)
-			} else {
-				Math.max(-min, balance)
+			var factor: Float = when {
+				balance == 0f -> 0f
+				balance > 0f -> Math.min(min, balance)
+				else -> Math.max(-min, balance)
 			}
 			factor /= min
 			return (.9f * factor).toDouble()

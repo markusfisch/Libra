@@ -119,7 +119,7 @@ class ArgumentsFragment : Fragment() {
 		}
 
 		val enterButton = view.findViewById<View>(R.id.enter_argument)
-		enterButton.setOnClickListener { _ -> saveArgument() }
+		enterButton.setOnClickListener { saveArgument() }
 
 		scaleView = ScaleView(activity)
 		updateScale(cursor)
@@ -212,12 +212,12 @@ class ArgumentsFragment : Fragment() {
 	private fun askToRemoveArgument(context: Context, argId: Long) {
 		AlertDialog.Builder(context)
 			.setMessage(R.string.really_remove_argument)
-			.setPositiveButton(android.R.string.ok, { _, _ ->
+			.setPositiveButton(android.R.string.ok) { _, _ ->
 				removeArgument(argId)
 				closeActionMode()
-			})
-			.setNegativeButton(android.R.string.cancel, { _, _ ->
-			})
+			}
+			.setNegativeButton(android.R.string.cancel) { _, _ ->
+			}
 			.show()
 	}
 

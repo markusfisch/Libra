@@ -104,7 +104,7 @@ class IssuesFragment : Fragment() {
 		}
 
 		val addButton = view.findViewById<View>(R.id.add)
-		addButton.setOnClickListener { _ ->
+		addButton.setOnClickListener {
 			showArguments(LibraApp.data.insertIssue())
 		}
 
@@ -128,10 +128,10 @@ class IssuesFragment : Fragment() {
 	private fun askToRemoveIssue(context: Context, issueId: Long) {
 		AlertDialog.Builder(context)
 			.setMessage(R.string.really_remove_issue)
-			.setPositiveButton(android.R.string.ok, { _, _ ->
+			.setPositiveButton(android.R.string.ok) { _, _ ->
 				removeIssue(issueId)
-			})
-			.setNegativeButton(android.R.string.cancel, { _, _ -> })
+			}
+			.setNegativeButton(android.R.string.cancel) { _, _ -> }
 			.show()
 	}
 
@@ -158,13 +158,13 @@ class IssuesFragment : Fragment() {
 		nameView.setText(text)
 		AlertDialog.Builder(context)
 			.setView(view)
-			.setPositiveButton(android.R.string.ok, { _, _ ->
+			.setPositiveButton(android.R.string.ok) { _, _ ->
 				updateIssueName(
 					issueId,
 					nameView.text.toString()
 				)
-			})
-			.setNegativeButton(android.R.string.cancel, { _, _ -> })
+			}
+			.setNegativeButton(android.R.string.cancel) { _, _ -> }
 			.show()
 	}
 
