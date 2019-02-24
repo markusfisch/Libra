@@ -1,0 +1,21 @@
+<resources>
+	<string name="issues">Problemen</string>
+	<string name="arguments">Voor- en nadelen</string>
+	<string name="recommendation">Aanbeveling</string>
+	<string name="just_now">Zojuist</string>
+    <string name="collect_arguments">Schrijf voor- en nadelen op.</string>
+	<string name="yes">Ja</string>
+	<string name="maybe">Misschien</string>
+	<string name="no">Nee</string>
+	<string name="enter_argument">Voer een argument in</string>
+	<string name="remove_argument">Verwijderen</string>
+	<string name="really_remove_argument">Wil je het argument verwijderen?</string>
+	<string name="really_remove_issue">Wil je het probleem verwijderen?</string>
+	<string name="cancel_editing">Annuleren</string>
+	<string name="sort_arguments">Argumenten sorteren</string>
+	<string name="remove_issue">Probleem verwijderen</string>
+	<string name="edit_issue">Naam van probleem wijzigen</string>
+	<string name="no_issues_saved">Nog geen problemen.</string>
+	<string name="enter_name">Voer een nieuwe naam in</string>
+	<string name="enter_name_hint">Waar gaat dit over?</string>
+</resources>
