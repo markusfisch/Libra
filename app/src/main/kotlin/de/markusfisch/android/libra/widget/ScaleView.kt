@@ -16,7 +16,7 @@ import android.view.SurfaceView
 class ScaleView(context: Context) : SurfaceView(context) {
 	private val animationTime = 300L
 	private val animationRunnable: Runnable = Runnable {
-		while (running) {
+		while (!Thread.currentThread().isInterrupted()) {
 			val now = Math.min(
 				System.currentTimeMillis() - animationStart,
 				animationTime
@@ -62,7 +62,6 @@ class ScaleView(context: Context) : SurfaceView(context) {
 
 	private var width = 0f
 	private var height = 0f
-	private var running = false
 	private var thread: Thread? = null
 	private var animationStart = 0L
 	private var radians = 0.0
@@ -179,24 +178,22 @@ class ScaleView(context: Context) : SurfaceView(context) {
 	}
 
 	private fun stopAnimation() {
-		running = false
-		for (it in 0..100) {
+		if (thread != null) {
+			thread?.interrupt()
 			try {
 				thread?.join()
-				thread = null
-				break
 			} catch (e: InterruptedException) {
-				// try again
+				// parent thread was interrupted
 			}
+			thread = null
 		}
 	}
 
 	private fun startAnimation() {
 		if (width > 0) {
-			if (running) {
+			if (thread?.isAlive() != null) {
 				stopAnimation()
 			}
-			running = true
 			animationStart = System.currentTimeMillis()
 			thread = Thread(animationRunnable)
 			thread?.start()
