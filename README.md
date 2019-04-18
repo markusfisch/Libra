@@ -8,7 +8,7 @@ Android app that helps making hard decisions. Works like this:
 
 Inspired by this [Time article][trick-for-decisions].
 
-<a href="https://play.google.com/store/apps/details?id=de.markusfisch.android.libra"><img alt="Get it on Google Play" src="https://play.google.com/intl/en_us/badges/images/apps/en-play-badge.png" height="45px"/></a>
+<a href="https://play.google.com/store/apps/details?id=de.markusfisch.android.libra"><img alt="Get it on Google Play" src="https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png" height="80"/></a>
 
 Wrote this app to get my feet wet with [Kotlin][kotlin].
 Still mixed feelings.
