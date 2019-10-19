@@ -15,6 +15,10 @@ import android.support.v7.widget.AppCompatTextView
 import android.util.AttributeSet
 import android.view.Gravity
 import android.view.MotionEvent
+import kotlin.math.abs
+import kotlin.math.max
+import kotlin.math.min
+import kotlin.math.roundToInt
 
 class ArgumentView : AppCompatTextView {
 	var id: Long = 0
@@ -68,8 +72,8 @@ class ArgumentView : AppCompatTextView {
 	}
 
 	fun onTouchMove(event: MotionEvent) {
-		val mod = Math.round((event.x - savedX) * 2f / block)
-		weight = Math.max(-10, Math.min(10, savedWeight + mod))
+		val mod = ((event.x - savedX) * 2f / block).roundToInt()
+		weight = max(-10, min(10, savedWeight + mod))
 		invalidate()
 	}
 
@@ -95,8 +99,8 @@ class ArgumentView : AppCompatTextView {
 		super.onLayout(changed, left, top, right, bottom)
 		width = (right - left).toFloat()
 		height = (bottom - top).toFloat()
-		center = Math.round(width / 2f).toFloat()
-		block = Math.round(center / 10f).toFloat()
+		center = (width / 2f).roundToInt().toFloat()
+		block = (center / 10f).roundToInt().toFloat()
 	}
 
 	override fun onDraw(canvas: Canvas) {
@@ -143,7 +147,7 @@ class ArgumentView : AppCompatTextView {
 		}
 
 		paint.color = color
-		for (it in 1..Math.abs(weight % 11)) {
+		for (it in 1..abs(weight % 11)) {
 			canvas.drawRect(
 				x,
 				top,

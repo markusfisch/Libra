@@ -7,6 +7,7 @@ import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.ViewConfiguration
 import android.widget.ListView
+import kotlin.math.abs
 
 class ArgumentListView : ListView {
 	var isWeighing = false
@@ -47,8 +48,8 @@ class ArgumentListView : ListView {
 				mode = Mode.NONE
 			}
 			MotionEvent.ACTION_MOVE -> {
-				val dx = Math.abs(downX - event.x)
-				val dy = Math.abs(downY - event.y)
+				val dx = abs(downX - event.x)
+				val dy = abs(downY - event.y)
 				if (mode == Mode.NONE && dx + dy >= touchSlop) {
 					mode = if (dx > dy) {
 						Mode.WEIGHING

@@ -9,7 +9,7 @@ import android.os.Bundle
 
 import kotlinx.android.synthetic.main.toolbar.toolbar
 
-class MainActivity() : AppCompatActivity() {
+class MainActivity : AppCompatActivity() {
 	override fun onSupportNavigateUp(): Boolean {
 		val fm = supportFragmentManager
 		if (fm.backStackEntryCount > 0) {

@@ -1,5 +1,6 @@
 package de.markusfisch.android.libra.fragment
 
+import android.annotation.SuppressLint
 import de.markusfisch.android.libra.adapter.IssuesAdapter
 import de.markusfisch.android.libra.app.db
 import de.markusfisch.android.libra.app.addFragment
@@ -149,6 +150,8 @@ class IssuesFragment : Fragment() {
 		)
 	}
 
+    // dialogs don't have a parent layout
+	@SuppressLint("InflateParams")
 	private fun askForIssueName(issueId: Long, text: String?) {
 		val context = activity
 		val view = LayoutInflater.from(context).inflate(

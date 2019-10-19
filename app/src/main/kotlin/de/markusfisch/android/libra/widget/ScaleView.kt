@@ -12,12 +12,13 @@ import android.graphics.PixelFormat
 import android.support.v4.content.ContextCompat
 import android.view.SurfaceHolder
 import android.view.SurfaceView
+import kotlin.math.*
 
 class ScaleView(context: Context) : SurfaceView(context) {
 	private val animationTime = 300L
 	private val animationRunnable: Runnable = Runnable {
-		while (!Thread.currentThread().isInterrupted()) {
-			val now = Math.min(
+		while (!Thread.currentThread().isInterrupted) {
+			val now = min(
 				System.currentTimeMillis() - animationStart,
 				animationTime
 			)
@@ -75,8 +76,8 @@ class ScaleView(context: Context) : SurfaceView(context) {
 
 		pnt.isFilterBitmap = true
 		pnt.textSize = 12f * dp
-		topMargin = Math.round(32f * dp)
-		bottomMargin = Math.round(8f * dp)
+		topMargin = (32f * dp).roundToInt()
+		bottomMargin = (8f * dp).roundToInt()
 
 		// toInt() is required or Kotlin thinks it's a Long
 		transparentColor = 0x40000000
@@ -94,19 +95,19 @@ class ScaleView(context: Context) : SurfaceView(context) {
 		frame = BitmapFactory.decodeResource(res, R.drawable.scale_frame)
 		val frameWidth = frame.width
 		frameHeight = frame.height
-		frameMidX = Math.round(frameWidth * .5f).toFloat()
-		frameAxis = Math.round(frameHeight * .4f).toFloat()
+		frameMidX = (frameWidth * .5f).roundToInt().toFloat()
+		frameAxis = (frameHeight * .4f).roundToInt().toFloat()
 
 		scale = BitmapFactory.decodeResource(res, R.drawable.scale_bar)
 		val scaleWidth = scale.width
 		val scaleHeight = scale.height
-		scaleMidX = Math.round(scaleWidth * .5f).toFloat()
-		scaleMidY = Math.round(scaleHeight * .5f).toFloat()
-		scaleRadius = Math.round(scaleWidth * .48f).toFloat()
+		scaleMidX = (scaleWidth * .5f).roundToInt().toFloat()
+		scaleMidY = (scaleHeight * .5f).roundToInt().toFloat()
+		scaleRadius = (scaleWidth * .48f).roundToInt().toFloat()
 
 		pan = BitmapFactory.decodeResource(res, R.drawable.scale_pan)
 		val panWidth = pan.width
-		panMidX = Math.round(panWidth * .5f).toFloat()
+		panMidX = (panWidth * .5f).roundToInt().toFloat()
 
 		initSurfaceHolder()
 	}
@@ -147,7 +148,7 @@ class ScaleView(context: Context) : SurfaceView(context) {
 		} else {
 			result = desiredSize
 			if (specMode == MeasureSpec.AT_MOST) {
-				result = Math.min(result, specSize)
+				result = min(result, specSize)
 			}
 		}
 
@@ -191,7 +192,7 @@ class ScaleView(context: Context) : SurfaceView(context) {
 
 	private fun startAnimation() {
 		if (width > 0) {
-			if (thread?.isAlive() != null) {
+			if (thread?.isAlive != null) {
 				stopAnimation()
 			}
 			animationStart = System.currentTimeMillis()
@@ -215,7 +216,7 @@ class ScaleView(context: Context) : SurfaceView(context) {
 	private fun drawScale(canvas: Canvas) {
 		canvas.drawColor(backgroundColor)
 
-		val centerX = Math.round(width / 2f).toFloat()
+		val centerX = (width / 2f).roundToInt().toFloat()
 		val top = topMargin.toFloat()
 
 		val alphaMod = if (noWeights) {
@@ -243,10 +244,10 @@ class ScaleView(context: Context) : SurfaceView(context) {
 		canvas.drawBitmap(frame, mat, pnt)
 
 		val topAxis = top + frameAxis
-		val rx = centerX + scaleRadius * Math.cos(radians).toFloat()
-		val ry = topAxis + scaleRadius * Math.sin(radians).toFloat()
-		val lx = centerX + scaleRadius * Math.cos(radians + Math.PI).toFloat()
-		val ly = topAxis + scaleRadius * Math.sin(radians + Math.PI).toFloat()
+		val rx = centerX + scaleRadius * cos(radians).toFloat()
+		val ry = topAxis + scaleRadius * sin(radians).toFloat()
+		val lx = centerX + scaleRadius * cos(radians + Math.PI).toFloat()
+		val ly = topAxis + scaleRadius * sin(radians + Math.PI).toFloat()
 
 		mat.setTranslate(lx - panMidX, ly)
 		canvas.drawBitmap(pan, mat, pnt)
@@ -258,27 +259,25 @@ class ScaleView(context: Context) : SurfaceView(context) {
 		mat.postRotate(radians.toFloat() / radPerDeg, centerX, topAxis)
 		canvas.drawBitmap(scale, mat, pnt)
 	}
+}
 
-	companion object {
-		private fun calculateBalance(left: Float, right: Float): Double {
-			val min: Float = Math.max(1f, Math.min(left, right))
-			val balance: Float = right - left
-			var factor: Float = when {
-				balance == 0f -> 0f
-				balance > 0f -> Math.min(min, balance)
-				else -> Math.max(-min, balance)
-			}
-			factor /= min
-			return (.9f * factor).toDouble()
-		}
-
-		private fun linear(
-			time: Long,
-			begin: Double,
-			change: Double,
-			duration: Long
-		): Double {
-			return change.toFloat() * time / duration + begin
-		}
+private fun calculateBalance(left: Float, right: Float): Double {
+	val min: Float = max(1f, min(left, right))
+	val balance: Float = right - left
+	var factor: Float = when {
+		balance == 0f -> 0f
+		balance > 0f -> min(min, balance)
+		else -> max(-min, balance)
 	}
+	factor /= min
+	return (.9f * factor).toDouble()
+}
+
+private fun linear(
+	time: Long,
+	begin: Double,
+	change: Double,
+	duration: Long
+): Double {
+	return change.toFloat() * time / duration + begin
 }
