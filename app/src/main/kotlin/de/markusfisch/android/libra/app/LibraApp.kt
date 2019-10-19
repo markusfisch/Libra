@@ -1,6 +1,6 @@
 package de.markusfisch.android.libra.app
 
-import de.markusfisch.android.libra.database.DataSource
+import de.markusfisch.android.libra.database.Database
 
 import android.app.Application
 
@@ -11,6 +11,6 @@ class LibraApp : Application() {
 	}
 
 	companion object {
-		val data = DataSource()
+		val data = Database()
 	}
 }

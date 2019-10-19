@@ -10,7 +10,7 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-class DataSource {
+class Database {
 	private lateinit var db: SQLiteDatabase
 
 	fun open(context: Context) {

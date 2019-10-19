@@ -1,6 +1,6 @@
 package de.markusfisch.android.libra.adapter
 
-import de.markusfisch.android.libra.database.DataSource
+import de.markusfisch.android.libra.database.Database
 import de.markusfisch.android.libra.widget.ArgumentView
 import de.markusfisch.android.libra.R
 
@@ -14,13 +14,13 @@ import android.widget.CursorAdapter
 class ArgumentsAdapter(context: Context, cursor: Cursor) :
 	CursorAdapter(context, cursor, false) {
 	private val idIndex = cursor.getColumnIndex(
-		DataSource.ARGUMENTS_ID
+		Database.ARGUMENTS_ID
 	)
 	private val textIndex = cursor.getColumnIndex(
-		DataSource.ARGUMENTS_TEXT
+		Database.ARGUMENTS_TEXT
 	)
 	private val weightIndex = cursor.getColumnIndex(
-		DataSource.ARGUMENTS_WEIGHT
+		Database.ARGUMENTS_WEIGHT
 	)
 
 	override fun newView(

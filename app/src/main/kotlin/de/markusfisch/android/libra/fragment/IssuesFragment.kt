@@ -3,7 +3,7 @@ package de.markusfisch.android.libra.fragment
 import de.markusfisch.android.libra.adapter.IssuesAdapter
 import de.markusfisch.android.libra.app.LibraApp
 import de.markusfisch.android.libra.app.addFragment
-import de.markusfisch.android.libra.database.DataSource
+import de.markusfisch.android.libra.database.Database
 import de.markusfisch.android.libra.R
 
 import android.app.AlertDialog
@@ -144,7 +144,7 @@ class IssuesFragment : Fragment() {
 		val cursor = adapter.getItem(position) as Cursor?
 		return cursor?.getString(
 			cursor.getColumnIndex(
-				DataSource.ISSUES_NAME
+				Database.ISSUES_NAME
 			)
 		)
 	}

@@ -1,7 +1,7 @@
 package de.markusfisch.android.libra.adapter
 
 import de.markusfisch.android.libra.app.Recommendation
-import de.markusfisch.android.libra.database.DataSource
+import de.markusfisch.android.libra.database.Database
 import de.markusfisch.android.libra.R
 
 import android.content.Context
@@ -21,16 +21,16 @@ class IssuesAdapter(context: Context, cursor: Cursor) :
 	private val dateFormat = DateFormat.getLongDateFormat(context)
 	private val res = context.resources
 	private val nameIndex = cursor.getColumnIndex(
-		DataSource.ISSUES_NAME
+		Database.ISSUES_NAME
 	)
 	private val createdIndex = cursor.getColumnIndex(
-		DataSource.ISSUES_CREATED_TIMESTAMP
+		Database.ISSUES_CREATED_TIMESTAMP
 	)
 	private val negativeIndex = cursor.getColumnIndex(
-		DataSource.ISSUES_NEGATIVE
+		Database.ISSUES_NEGATIVE
 	)
 	private val positiveIndex = cursor.getColumnIndex(
-		DataSource.ISSUES_POSITIVE
+		Database.ISSUES_POSITIVE
 	)
 
 	override fun newView(
