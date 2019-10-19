@@ -1,7 +1,7 @@
 package de.markusfisch.android.libra.fragment
 
 import de.markusfisch.android.libra.adapter.ArgumentsAdapter
-import de.markusfisch.android.libra.app.LibraApp
+import de.markusfisch.android.libra.app.db
 import de.markusfisch.android.libra.database.Database
 import de.markusfisch.android.libra.widget.ArgumentListView
 import de.markusfisch.android.libra.widget.ScaleView
@@ -71,7 +71,7 @@ class ArgumentsFragment : Fragment() {
 	private var issueId: Long = 0
 
 	fun reloadList() {
-		val cursor = LibraApp.data.getArguments(issueId)
+		val cursor = db.getArguments(issueId)
 		adapter.changeCursor(cursor)
 		updateScale(cursor)
 	}
@@ -90,14 +90,14 @@ class ArgumentsFragment : Fragment() {
 			issueId = arguments.getLong(ISSUE_ID, 0)
 		}
 
-		val title = LibraApp.data.getIssueName(issueId)
+		val title = db.getIssueName(issueId)
 		if (title.isEmpty()) {
 			activity.setTitle(R.string.arguments)
 		} else {
 			activity.title = title
 		}
 
-		val cursor = LibraApp.data.getArguments(issueId)
+		val cursor = db.getArguments(issueId)
 		adapter = ArgumentsAdapter(activity, cursor)
 
 		val view = inflater.inflate(
@@ -198,10 +198,10 @@ class ArgumentsFragment : Fragment() {
 		}
 		val id: Long
 		id = if (argumentId > 0) {
-			LibraApp.data.updateArgumentText(argumentId, text)
+			db.updateArgumentText(argumentId, text)
 			argumentId
 		} else {
-			LibraApp.data.insertArgument(issueId, text, 0)
+			db.insertArgument(issueId, text, 0)
 		}
 		closeActionMode()
 		reloadList()
@@ -222,13 +222,13 @@ class ArgumentsFragment : Fragment() {
 	}
 
 	private fun removeArgument(id: Long) {
-		LibraApp.data.removeArgument(id)
+		db.removeArgument(id)
 		reloadList()
 	}
 
 	private fun editArgument(id: Long) {
 		argumentId = id
-		editText.setText(LibraApp.data.getArgumentText(id))
+		editText.setText(db.getArgumentText(id))
 		val a = activity
 		if (actionMode == null && a is AppCompatActivity) {
 			actionMode = a.delegate.startSupportActionMode(
@@ -238,7 +238,7 @@ class ArgumentsFragment : Fragment() {
 	}
 
 	private fun sortArguments() {
-		LibraApp.data.sortArguments(issueId)
+		db.sortArguments(issueId)
 		reloadList()
 	}
 

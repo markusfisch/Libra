@@ -1,6 +1,6 @@
 package de.markusfisch.android.libra.widget
 
-import de.markusfisch.android.libra.app.LibraApp
+import de.markusfisch.android.libra.app.db
 import de.markusfisch.android.libra.fragment.ArgumentsFragment
 import de.markusfisch.android.libra.R
 
@@ -156,7 +156,7 @@ class ArgumentView : AppCompatTextView {
 	}
 
 	private fun storeWeight() {
-		LibraApp.data.updateArgumentWeight(id, weight)
+		db.updateArgumentWeight(id, weight)
 		getArgumentsFragment()?.reloadList()
 	}
 

@@ -1,7 +1,7 @@
 package de.markusfisch.android.libra.fragment
 
 import de.markusfisch.android.libra.adapter.IssuesAdapter
-import de.markusfisch.android.libra.app.LibraApp
+import de.markusfisch.android.libra.app.db
 import de.markusfisch.android.libra.app.addFragment
 import de.markusfisch.android.libra.database.Database
 import de.markusfisch.android.libra.R
@@ -76,7 +76,7 @@ class IssuesFragment : Fragment() {
 		state: Bundle?
 	): View {
 		activity.setTitle(R.string.issues)
-		adapter = IssuesAdapter(activity, LibraApp.data.getIssues())
+		adapter = IssuesAdapter(activity, db.getIssues())
 
 		val view = inflater.inflate(
 			R.layout.fragment_issues,
@@ -105,7 +105,7 @@ class IssuesFragment : Fragment() {
 
 		val addButton = view.findViewById<View>(R.id.add)
 		addButton.setOnClickListener {
-			showArguments(LibraApp.data.insertIssue())
+			showArguments(db.insertIssue())
 		}
 
 		return view
@@ -136,7 +136,7 @@ class IssuesFragment : Fragment() {
 	}
 
 	private fun removeIssue(issueId: Long) {
-		LibraApp.data.removeIssue(issueId)
+		db.removeIssue(issueId)
 		updateList()
 	}
 
@@ -169,12 +169,12 @@ class IssuesFragment : Fragment() {
 	}
 
 	private fun updateIssueName(id: Long, name: String) {
-		LibraApp.data.updateIssueName(id, name)
+		db.updateIssueName(id, name)
 		updateList()
 	}
 
 	private fun updateList() {
-		adapter.changeCursor(LibraApp.data.getIssues())
+		adapter.changeCursor(db.getIssues())
 	}
 
 	private data class Issue(var id: Long, var position: Int)
