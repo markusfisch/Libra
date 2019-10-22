@@ -1,5 +1,6 @@
 package de.markusfisch.android.libra.widget
 
+import android.annotation.SuppressLint
 import de.markusfisch.android.libra.app.db
 import de.markusfisch.android.libra.fragment.ArgumentsFragment
 import de.markusfisch.android.libra.R
@@ -23,6 +24,8 @@ import kotlin.math.roundToInt
 class ArgumentView : AppCompatTextView {
 	var id: Long = 0
 	var weight: Int = 0
+		// this gravity depends on design, not reading direction
+		@SuppressLint("RtlHardcoded")
 		set(value) {
 			gravity = when {
 				value < 0 -> Gravity.LEFT
