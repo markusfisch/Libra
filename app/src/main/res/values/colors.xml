@@ -1,12 +1,12 @@
 <resources>
-	<color name="primary">#f2f2f2</color>
-	<color name="primary_dark">#c2c2c2</color>
+	<color name="primary">#e8e8e8</color>
+	<color name="primary_dark">#e8e8e8</color>
 	<color name="accent">#1a1a1a</color>
-	<color name="background_window">#fafafa</color>
-	<color name="background_action_mode">#c2c2c2</color>
+	<color name="background_window">#f5f5f5</color>
+	<color name="background_action_mode">#e8e8e8</color>
 	<color name="background_enter_argument">#fff</color>
-	<color name="separator_enter_argument">#eee</color>
-	<color name="selector">#1000</color>
+	<color name="separator_enter_argument">#e0e0e0</color>
+	<color name="selector">#fff</color>
 	<color name="yes">#55d400</color>
 	<color name="maybe">#ffcc00</color>
 	<color name="no">#ff6600</color>
