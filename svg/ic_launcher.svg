@@ -26,9 +26,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.84375"
-     inkscape:cx="131.06162"
-     inkscape:cy="96"
+     inkscape:zoom="1.639886"
+     inkscape:cx="-3.9999959"
+     inkscape:cy="96.000013"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -57,7 +57,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -66,12 +66,6 @@
      id="layer1"
      inkscape:groupmode="layer"
      inkscape:label="Ebene 1">
-    <circle
-       r="88"
-       cy="957.3623"
-       cx="96.000008"
-       id="circle4764"
-       style="fill:#b3b3b3;fill-opacity:1;stroke:none;stroke-width:4;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
     <circle
        style="fill:#f9f9f9;fill-opacity:1;stroke:none;stroke-width:4;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        id="circle4766"
