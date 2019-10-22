@@ -79,7 +79,6 @@ class ScaleView(context: Context) : SurfaceView(context) {
 		topMargin = (32f * dp).roundToInt()
 		bottomMargin = (8f * dp).roundToInt()
 
-		// toInt() is required or Kotlin thinks it's a Long
 		transparentColor = 0x40000000
 		backgroundColor = ContextCompat.getColor(
 			context,
@@ -223,6 +222,7 @@ class ScaleView(context: Context) : SurfaceView(context) {
 			pnt.color = transparentColor
 			transparentColor
 		} else {
+			// toInt() is required here or Kotlin thinks it's a Long
 			pnt.color = 0xffffffff.toInt()
 			0xff000000.toInt()
 		}
