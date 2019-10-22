@@ -52,7 +52,8 @@
 			android:imeOptions="actionDone|flagNoExtractUi"
 			android:hint="@string/enter_argument"
 			android:maxLines="1"
-			android:maxLength="1024"/>
+			android:maxLength="1024"
+			android:importantForAutofill="no"/>
 		<!-- ignore paddingEnd on old versions and missing paddingStart -->
 		<ImageView
 			tools:ignore="UnusedAttribute,RtlSymmetry"
