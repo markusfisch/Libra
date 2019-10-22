@@ -10,11 +10,10 @@ import android.graphics.Matrix
 import android.graphics.Paint
 import android.graphics.PixelFormat
 import android.support.v4.content.ContextCompat
-import android.view.SurfaceHolder
-import android.view.SurfaceView
+import android.view.View
 import kotlin.math.*
 
-class ScaleView(context: Context) : SurfaceView(context) {
+class ScaleView(context: Context) : View(context) {
 	private val animationTime = 300L
 	private val animationRunnable: Runnable = Runnable {
 		while (!Thread.currentThread().isInterrupted) {
@@ -30,9 +29,12 @@ class ScaleView(context: Context) : SurfaceView(context) {
 				animationTime
 			)
 
-			lockCanvasAndDraw()
+			invalidate()
 
-			if (now >= animationTime) {
+			if (
+				radiansChange == .0 ||
+				now >= animationTime
+			) {
 				break
 			}
 		}
@@ -61,8 +63,6 @@ class ScaleView(context: Context) : SurfaceView(context) {
 	private val pan: Bitmap
 	private val panMidX: Float
 
-	private var width = 0f
-	private var height = 0f
 	private var thread: Thread? = null
 	private var animationStart = 0L
 	private var radians = 0.0
@@ -107,15 +107,13 @@ class ScaleView(context: Context) : SurfaceView(context) {
 		pan = BitmapFactory.decodeResource(res, R.drawable.scale_pan)
 		val panWidth = pan.width
 		panMidX = (panWidth * .5f).roundToInt().toFloat()
-
-		initSurfaceHolder()
 	}
 
 	fun setWeights(left: Int, right: Int) {
 		if (left < 0 || right < 0) {
 			noWeights = true
 			radians = 0.0
-			lockCanvasAndDraw()
+			invalidate()
 		} else {
 			noWeights = false
 			radiansBegin = radians
@@ -154,27 +152,13 @@ class ScaleView(context: Context) : SurfaceView(context) {
 		return result
 	}
 
-	private fun initSurfaceHolder() {
-		holder.setFormat(PixelFormat.TRANSPARENT)
-		holder.addCallback(object : SurfaceHolder.Callback {
-			override fun surfaceChanged(
-				holder: SurfaceHolder,
-				format: Int,
-				width: Int,
-				height: Int
-			) {
-				this@ScaleView.width = width.toFloat()
-				this@ScaleView.height = height.toFloat()
-				lockCanvasAndDraw()
-			}
+	override fun onDraw(canvas: Canvas) {
+		drawScale(canvas)
+	}
 
-			override fun surfaceCreated(holder: SurfaceHolder) {
-			}
-
-			override fun surfaceDestroyed(holder: SurfaceHolder) {
-				stopAnimation()
-			}
-		})
+	override fun onDetachedFromWindow() {
+		super.onDetachedFromWindow()
+		stopAnimation()
 	}
 
 	private fun stopAnimation() {
@@ -190,32 +174,18 @@ class ScaleView(context: Context) : SurfaceView(context) {
 	}
 
 	private fun startAnimation() {
-		if (width > 0) {
-			if (thread?.isAlive != null) {
-				stopAnimation()
-			}
-			animationStart = System.currentTimeMillis()
-			thread = Thread(animationRunnable)
-			thread?.start()
-		} else {
-			postDelayed({ startAnimation() }, 100)
+		if (thread?.isAlive != null) {
+			stopAnimation()
 		}
-	}
-
-	private fun lockCanvasAndDraw() {
-		if (holder.surface.isValid) {
-			val canvas = holder.lockCanvas()
-			if (canvas != null) {
-				drawScale(canvas)
-				holder.unlockCanvasAndPost(canvas)
-			}
-		}
+		animationStart = System.currentTimeMillis()
+		thread = Thread(animationRunnable)
+		thread?.start()
 	}
 
 	private fun drawScale(canvas: Canvas) {
 		canvas.drawColor(backgroundColor)
 
-		val centerX = (width / 2f).roundToInt().toFloat()
+		val centerX = (canvas.width / 2f).roundToInt().toFloat()
 		val top = topMargin.toFloat()
 
 		val alphaMod = if (noWeights) {
