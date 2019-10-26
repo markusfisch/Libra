@@ -1,5 +1,13 @@
 # Change Log
 
+## 1.4.0
+* Rename to Decisions
+* Replace swiping over list items with SeekBar
+* New icon design
+* Add Dutch translation
+* Improve animation
+* Improve UI colors
+
 ## 1.3.2
 * Replaced rastered icons with vector drawables
 
