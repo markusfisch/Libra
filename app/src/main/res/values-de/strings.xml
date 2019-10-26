@@ -3,7 +3,7 @@
 	<string name="arguments">Pro und Contra</string>
 	<string name="recommendation">Empfehlung</string>
 	<string name="just_now">Gerade eben</string>
-	<string name="collect_arguments">Schreibe alle Pros und Contras auf.</string>
+	<string name="find_arguments">Schreibe alle Pros und Contras auf.</string>
 	<string name="yes">Ja</string>
 	<string name="maybe">Vielleicht</string>
 	<string name="no">Nein</string>
@@ -16,6 +16,6 @@
 	<string name="remove_issue">Frage entfernen</string>
 	<string name="edit_issue">Name bearbeiten</string>
 	<string name="no_issues_saved">Keine Fragen gespeichert.</string>
-	<string name="enter_name">Gib\' einen neuen Namen ein</string>
+	<string name="enter_name">Gib einen neuen Namen ein</string>
 	<string name="enter_name_hint">Um was geht es?</string>
 </resources>

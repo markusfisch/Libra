@@ -3,7 +3,7 @@
 	<string name="arguments">Pros and cons</string>
 	<string name="recommendation">Recommendation</string>
 	<string name="just_now">Just now</string>
-	<string name="collect_arguments">Write down pros and cons.</string>
+	<string name="find_arguments">Write down pros and cons.</string>
 	<string name="yes">Yes</string>
 	<string name="maybe">Maybe</string>
 	<string name="no">No</string>
@@ -17,5 +17,5 @@
 	<string name="edit_issue">Edit issues name</string>
 	<string name="no_issues_saved">No issues yet.</string>
 	<string name="enter_name">Enter a new name</string>
-	<string name="enter_name_hint">What\'s this about?</string>
+	<string name="enter_name_hint">What\'s it about?</string>
 </resources>
