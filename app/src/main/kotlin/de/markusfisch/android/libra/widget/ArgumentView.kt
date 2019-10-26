@@ -73,11 +73,14 @@ class ArgumentView : AppCompatTextView {
 	}
 
 	override fun onDraw(canvas: Canvas) {
-		drawWeights(canvas)
+		drawWeight(canvas)
 		super.onDraw(canvas)
 	}
 
-	private fun drawWeights(canvas: Canvas) {
+	private fun drawWeight(canvas: Canvas) {
+		if (weight == 0) {
+			return
+		}
 		val x: Int
 		paint.color = if (weight > 0) {
 			x = positiveX
