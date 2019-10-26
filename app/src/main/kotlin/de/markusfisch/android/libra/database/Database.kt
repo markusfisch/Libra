@@ -45,8 +45,8 @@ class Database {
 			"""SELECT
 				$ISSUES_NAME
 				FROM $ISSUES
-				WHERE $ISSUES_ID = $id""",
-			null
+				WHERE $ISSUES_ID = ?""",
+			arrayOf("$id")
 		)?.use {
 			if (it.moveToFirst()) {
 				it.getString(it.getColumnIndex(ISSUES_NAME))
@@ -63,14 +63,15 @@ class Database {
 	}
 
 	fun removeIssue(id: Long) {
-		db.delete(ARGUMENTS, "$ARGUMENTS_ISSUE = $id", null)
-		db.delete(ISSUES, "$ISSUES_ID = $id", null)
+		val args = arrayOf("$id")
+		db.delete(ARGUMENTS, "$ARGUMENTS_ISSUE = ?", args)
+		db.delete(ISSUES, "$ISSUES_ID = ?", args)
 	}
 
 	fun updateIssueName(id: Long, name: String) {
 		val cv = ContentValues()
 		cv.put(ISSUES_NAME, name)
-		db.update(ISSUES, cv, "$ISSUES_ID = $id", null)
+		db.update(ISSUES, cv, "$ISSUES_ID = ?", arrayOf("$id"))
 	}
 
 	fun getArguments(issueId: Long): Cursor {
@@ -81,9 +82,9 @@ class Database {
 				$ARGUMENTS_WEIGHT,
 				$ARGUMENTS_ORDER
 				FROM $ARGUMENTS
-				WHERE $ARGUMENTS_ISSUE = $issueId
+				WHERE $ARGUMENTS_ISSUE = ?
 				ORDER BY $ARGUMENTS_ORDER, $ARGUMENTS_ID""",
-			null
+			arrayOf("$issueId")
 		)
 	}
 
@@ -93,8 +94,8 @@ class Database {
 				$ARGUMENTS_TEXT,
 				$ARGUMENTS_WEIGHT
 				FROM $ARGUMENTS
-				WHERE $ARGUMENTS_ID = $id""",
-			null
+				WHERE $ARGUMENTS_ID = ?""",
+			arrayOf("$id")
 		)?.use {
 			if (it.moveToFirst()) {
 				Argument(
@@ -116,23 +117,24 @@ class Database {
 	}
 
 	fun removeArgument(id: Long) {
-		db.delete(ARGUMENTS, "$ARGUMENTS_ID = $id", null)
+		db.delete(ARGUMENTS, "$ARGUMENTS_ID = ?", arrayOf("$id"))
 	}
 
 	fun updateArgument(id: Long, text: String, weight: Int) {
 		val cv = ContentValues()
 		cv.put(ARGUMENTS_TEXT, text)
 		cv.put(ARGUMENTS_WEIGHT, weight)
-		db.update(ARGUMENTS, cv, "$ARGUMENTS_ID = $id", null)
+		db.update(ARGUMENTS, cv, "$ARGUMENTS_ID = ?", arrayOf("$id"))
 	}
 
 	fun sortArguments(issueId: Long) {
-		// execSQL() instead of update() because we can't use column
-		// names in ContentValues; another leaking abstraction
-		db.execSQL(
+		// rawQuery() instead of update() because we can't use column
+		// names in values of ContentValues; another leaking abstraction
+		db.rawQuery(
 			"""UPDATE $ARGUMENTS
 				SET $ARGUMENTS_ORDER = $ARGUMENTS_WEIGHT
-				WHERE $ARGUMENTS_ISSUE = $issueId"""
+				WHERE $ARGUMENTS_ISSUE = ?""",
+			arrayOf("$issueId")
 		)
 	}
 
