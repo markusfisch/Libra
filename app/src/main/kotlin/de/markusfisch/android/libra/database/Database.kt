@@ -11,6 +11,8 @@ import java.util.Date
 import java.util.Locale
 
 class Database {
+	data class Argument(val text: String, val weight: Int)
+
 	private lateinit var db: SQLiteDatabase
 
 	fun open(context: Context) {
@@ -33,7 +35,8 @@ class Database {
 					WHERE a.$ARGUMENTS_ISSUE = d.$ISSUES_ID AND
 						a.$ARGUMENTS_WEIGHT > 0) AS $ISSUES_POSITIVE
 				FROM $ISSUES AS d
-				ORDER BY d.$ISSUES_CREATED DESC""", null
+				ORDER BY d.$ISSUES_CREATED DESC""",
+			null
 		)
 	}
 
@@ -42,7 +45,8 @@ class Database {
 			"""SELECT
 				$ISSUES_NAME
 				FROM $ISSUES
-				WHERE $ISSUES_ID = $id""", ISSUES_NAME
+				WHERE $ISSUES_ID = $id""",
+			ISSUES_NAME
 		)
 	}
 
@@ -72,18 +76,29 @@ class Database {
 				$ARGUMENTS_ORDER
 				FROM $ARGUMENTS
 				WHERE $ARGUMENTS_ISSUE = $issueId
-				ORDER BY $ARGUMENTS_ORDER, $ARGUMENTS_ID""", null
+				ORDER BY $ARGUMENTS_ORDER, $ARGUMENTS_ID""",
+			null
 		)
 	}
 
-	fun getArgumentText(id: Long): String {
-		return queryStringColumn(
+	fun getArgument(id: Long): Argument? =
+		db.rawQuery(
 			"""SELECT
-				$ARGUMENTS_TEXT
+				$ARGUMENTS_TEXT,
+				$ARGUMENTS_WEIGHT
 				FROM $ARGUMENTS
-				WHERE $ARGUMENTS_ID = $id""", ARGUMENTS_TEXT
-		)
-	}
+				WHERE $ARGUMENTS_ID = $id""",
+			null
+		)?.use {
+			if (it.moveToFirst()) {
+				Argument(
+					it.getString(it.getColumnIndex(ARGUMENTS_TEXT)),
+					it.getInt(it.getColumnIndex(ARGUMENTS_WEIGHT))
+				)
+			} else {
+				null
+			}
+		}
 
 	fun insertArgument(issueId: Long, text: String, weight: Int): Long {
 		val cv = ContentValues()
@@ -98,14 +113,9 @@ class Database {
 		db.delete(ARGUMENTS, "$ARGUMENTS_ID = $id", null)
 	}
 
-	fun updateArgumentText(id: Long, text: String) {
+	fun updateArgument(id: Long, text: String, weight: Int) {
 		val cv = ContentValues()
 		cv.put(ARGUMENTS_TEXT, text)
-		db.update(ARGUMENTS, cv, "$ARGUMENTS_ID = $id", null)
-	}
-
-	fun updateArgumentWeight(id: Long, weight: Int) {
-		val cv = ContentValues()
 		cv.put(ARGUMENTS_WEIGHT, weight)
 		db.update(ARGUMENTS, cv, "$ARGUMENTS_ID = $id", null)
 	}
@@ -120,21 +130,14 @@ class Database {
 		)
 	}
 
-	private fun queryStringColumn(query: String, column: String): String {
-		val cursor: Cursor? = db.rawQuery(query, null)
-
-		if (cursor == null) {
-			return ""
-		} else if (!cursor.moveToFirst()) {
-			cursor.close()
-			return ""
-		}
-
-		val text: String? = cursor.getString(cursor.getColumnIndex(column))
-		cursor.close()
-
-		return text ?: ""
-	}
+	private fun queryStringColumn(query: String, column: String): String =
+		db.rawQuery(query, null)?.use {
+			if (it.moveToFirst()) {
+				it.getString(it.getColumnIndex(column))
+			} else {
+				null
+			}
+		} ?: ""
 
 	private class OpenHelper(context: Context) :
 		SQLiteOpenHelper(context, "arguments.db", null, 1) {

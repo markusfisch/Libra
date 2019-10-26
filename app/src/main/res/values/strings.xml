@@ -7,7 +7,7 @@
 	<string name="yes">Yes</string>
 	<string name="maybe">Maybe</string>
 	<string name="no">No</string>
-	<string name="enter_argument">Enter argument</string>
+	<string name="save_argument">Enter argument</string>
 	<string name="remove_argument">Remove</string>
 	<string name="really_remove_argument">Remove argument?</string>
 	<string name="really_remove_issue">Remove issue?</string>

@@ -120,6 +120,4 @@ svg/ic_splash.svg 128
 svg/scale_bar.svg 102x68
 svg/scale_frame.svg 96x142
 svg/scale_pan.svg 30x48
-svg/swipe_left.svg 120x24
-svg/swipe_right.svg 120x24
 EOF

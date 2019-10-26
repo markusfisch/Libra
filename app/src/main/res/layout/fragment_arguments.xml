@@ -1,70 +1,76 @@
-<LinearLayout
+<RelativeLayout
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:tools="http://schemas.android.com/tools"
 	android:layout_width="match_parent"
-	android:layout_height="match_parent"
-	android:orientation="vertical">
-	<FrameLayout
+	android:layout_height="match_parent">
+	<ListView
+		style="@style/Widget.AppCompat.ListView"
+		android:id="@+id/arguments"
 		android:layout_width="match_parent"
-		android:layout_height="0dp"
-		android:layout_weight="1">
-		<de.markusfisch.android.libra.widget.ArgumentListView
-			style="@style/Widget.AppCompat.ListView"
-			android:id="@+id/arguments"
-			android:layout_width="match_parent"
-			android:layout_height="match_parent"
-			android:choiceMode="singleChoice"
-			android:divider="@android:color/transparent"
-			android:dividerHeight="0px"/>
-		<RelativeLayout
-			android:id="@+id/no_arguments"
-			android:layout_width="match_parent"
-			android:layout_height="match_parent"
-			android:visibility="gone">
-			<TextView
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:layout_centerInParent="true"
-				android:drawablePadding="8dp"
-				android:drawableTop="@drawable/ic_empty_arguments"
-				android:paddingLeft="32dp"
-				android:paddingStart="32dp"
-				android:paddingRight="32dp"
-				android:paddingEnd="32dp"
-				android:gravity="center"
-				android:text="@string/collect_arguments"/>
-		</RelativeLayout>
-	</FrameLayout>
-	<LinearLayout
+		android:layout_height="match_parent"
+		android:layout_above="@+id/argument_editor"
+		android:choiceMode="singleChoice"
+		android:divider="@android:color/transparent"
+		android:dividerHeight="0px"/>
+	<TextView
+		android:id="@+id/no_arguments"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_centerInParent="true"
+		android:drawablePadding="8dp"
+		android:drawableTop="@drawable/ic_empty_arguments"
+		android:paddingLeft="32dp"
+		android:paddingStart="32dp"
+		android:paddingRight="32dp"
+		android:paddingEnd="32dp"
+		android:gravity="center"
+		android:visibility="gone"/>
+	<RelativeLayout
 		android:id="@+id/argument_editor"
-		android:background="@drawable/background_enter_argument"
+		android:background="@drawable/background_argument_editor"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:orientation="horizontal">
+		android:layout_alignParentBottom="true">
+		<SeekBar
+			style="@style/Widget.AppCompat.SeekBar.Discrete"
+			android:id="@+id/weight"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:paddingTop="16dp"
+			android:paddingBottom="16dp"
+			android:paddingLeft="24dp"
+			android:paddingStart="24dp"
+			android:paddingRight="24dp"
+			android:paddingEnd="24dp"
+			android:progress="10"
+			android:max="20"
+			android:progressDrawable="@android:color/transparent"/>
 		<EditText
 			android:id="@+id/argument"
 			android:background="@android:color/transparent"
-			android:layout_width="0dp"
+			android:layout_below="@+id/weight"
+			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:layout_weight="1"
+			android:layout_toLeftOf="@id/save_argument"
+			android:layout_toStartOf="@id/save_argument"
 			android:layout_margin="16dp"
 			android:inputType="textShortMessage|textAutoCorrect|textCapSentences"
 			android:imeOptions="actionDone|flagNoExtractUi"
-			android:hint="@string/enter_argument"
+			android:hint="@string/save_argument"
 			android:maxLines="1"
 			android:maxLength="1024"
 			android:importantForAutofill="no"/>
-		<!-- ignore paddingEnd on old versions and missing paddingStart -->
+		<!-- exclude paddingStart/Left because there's the EditText -->
 		<ImageView
 			tools:ignore="UnusedAttribute,RtlSymmetry"
-			android:id="@+id/enter_argument"
-			android:contentDescription="@string/enter_argument"
-			android:layout_width="40dp"
+			android:id="@+id/save_argument"
+			android:contentDescription="@string/save_argument"
+			android:layout_below="@+id/weight"
+			android:layout_width="56dp"
 			android:layout_height="56dp"
-			android:paddingEnd="16dp"
-			android:paddingRight="16dp"
-			android:paddingTop="16dp"
-			android:paddingBottom="16dp"
-			android:src="@drawable/ic_edit_enter"/>
-	</LinearLayout>
-</LinearLayout>
+			android:layout_alignParentRight="true"
+			android:layout_alignParentEnd="true"
+			android:padding="16dp"
+			android:src="@drawable/ic_save_argument"/>
+	</RelativeLayout>
+</RelativeLayout>

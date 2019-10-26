@@ -1,28 +1,22 @@
 package de.markusfisch.android.libra.widget
 
 import android.annotation.SuppressLint
-import de.markusfisch.android.libra.app.db
-import de.markusfisch.android.libra.fragment.ArgumentsFragment
 import de.markusfisch.android.libra.R
 
 import android.content.Context
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import android.graphics.Paint
+import android.graphics.Rect
 import android.support.v4.content.ContextCompat
-import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.AppCompatTextView
 import android.util.AttributeSet
 import android.view.Gravity
-import android.view.MotionEvent
 import kotlin.math.abs
-import kotlin.math.max
 import kotlin.math.min
 import kotlin.math.roundToInt
 
 class ArgumentView : AppCompatTextView {
-	var id: Long = 0
+	var id = 0L
 	var weight: Int = 0
 		// this gravity depends on design, not reading direction
 		@SuppressLint("RtlHardcoded")
@@ -36,61 +30,32 @@ class ArgumentView : AppCompatTextView {
 		}
 
 	private val paint: Paint = Paint(Paint.ANTI_ALIAS_FLAG)
+	private val textPaint: Paint = Paint(Paint.ANTI_ALIAS_FLAG)
 	private val padding: Float
+	private val spacing: Float
 	private val positiveColor: Int
 	private val negativeColor: Int
-	private val barColor: Int
-	private val swipeLeft: Bitmap
-	private val swipeRight: Bitmap
-	private val swipeWidth: Int
-	private val swipeHeight: Int
 
-	private var width: Float = 0f
-	private var height: Float = 0f
-	private var block: Float = 0f
-	private var center: Float = 0f
-	private var savedX: Float = -1f
-	private var savedWeight: Int = 0
+	private var width = 0f
+	private var height = 0f
+	private var base = 0f
+	private var center = 0f
+	private var radius = 0f
 
 	constructor(context: Context, attrs: AttributeSet, defStyle: Int) :
 			super(context, attrs, defStyle) {
 		val res = context.resources
 		val dp = res.displayMetrics.density
-		padding = dp * 4
+		textPaint.textSize = dp * 10f
+		textPaint.color = ContextCompat.getColor(context, R.color.background_window)
+		padding = dp * 16f
+		spacing = dp
 		positiveColor = ContextCompat.getColor(context, R.color.yes)
 		negativeColor = ContextCompat.getColor(context, R.color.no)
-		barColor = ContextCompat.getColor(context, R.color.weight_bar)
-		swipeLeft = BitmapFactory.decodeResource(res, R.drawable.swipe_left)
-		swipeRight = BitmapFactory.decodeResource(res, R.drawable.swipe_right)
-		swipeWidth = swipeLeft.width
-		swipeHeight = swipeLeft.height
 	}
 
 	constructor(context: Context, attrs: AttributeSet) :
 			this(context, attrs, 0)
-
-	fun onTouchDown(event: MotionEvent) {
-		savedX = event.x
-		savedWeight = weight
-	}
-
-	fun onTouchMove(event: MotionEvent) {
-		val mod = ((event.x - savedX) * 2f / block).roundToInt()
-		weight = max(-10, min(10, savedWeight + mod))
-		invalidate()
-	}
-
-	fun onTouchUp() {
-		if (weight != savedWeight) {
-			storeWeight()
-		}
-		invalidate()
-	}
-
-	fun onTouchCancel() {
-		weight = savedWeight
-		invalidate()
-	}
 
 	override fun onLayout(
 		changed: Boolean,
@@ -103,79 +68,38 @@ class ArgumentView : AppCompatTextView {
 		width = (right - left).toFloat()
 		height = (bottom - top).toFloat()
 		center = (width / 2f).roundToInt().toFloat()
-		block = (center / 10f).roundToInt().toFloat()
+		radius = (((center - padding * 2f) / 10f - spacing) / 2f).roundToInt().toFloat()
+		base = (height - padding - radius).roundToInt().toFloat()
 	}
 
 	override fun onDraw(canvas: Canvas) {
-		val top = height - padding * 3f
-		val bottom = height - padding * 2f
-		paint.color = barColor
-		canvas.drawRect(
-			padding,
-			top,
-			width - padding,
-			bottom,
-			paint
-		)
-
-		if (weight == 0) {
-			drawArrows(canvas)
-		} else {
-			drawWeightBar(canvas, top, bottom)
-		}
-
+		drawWeights(canvas)
 		super.onDraw(canvas)
 	}
 
-	private fun drawArrows(canvas: Canvas) {
-		val pad = padding * 4
-		val y = (height - swipeHeight) / 2
-		val right = width - swipeWidth - pad
-		canvas.drawBitmap(swipeLeft, pad, y, null)
-		canvas.drawBitmap(swipeRight, right, y, null)
-	}
-
-	private fun drawWeightBar(canvas: Canvas, top: Float, bottom: Float) {
+	private fun drawWeights(canvas: Canvas) {
 		var x: Float
-		val step: Float
-		val color: Int
-		if (weight > 0) {
-			x = center
-			step = block
-			color = positiveColor
+		var step = spacing + radius * 2f
+		paint.color = if (weight > 0) {
+			x = width - padding - radius
+			step = -step
+			positiveColor
 		} else {
-			x = center - block + padding
-			step = -block
-			color = negativeColor
+			x = padding + radius
+			negativeColor
 		}
-
-		paint.color = color
-		for (it in 1..abs(weight % 11)) {
-			canvas.drawRect(
-				x,
-				top,
-				x + block - padding,
-				bottom,
-				paint
+		val bounds = Rect()
+		for (it in 1..abs(min(weight, 10))) {
+			canvas.drawCircle(x, base, radius, paint)
+			val s = it.toString()
+			textPaint.getTextBounds(s, 0, s.length, bounds)
+			canvas.drawText(
+				s,
+				x - bounds.centerX(),
+				base - bounds.centerY(),
+				textPaint
 			)
 			x += step
 		}
-	}
-
-	private fun storeWeight() {
-		db.updateArgumentWeight(id, weight)
-		getArgumentsFragment()?.reloadList()
-	}
-
-	private fun getArgumentsFragment(): ArgumentsFragment? {
-		val activity = context
-		if (activity is AppCompatActivity) {
-			val fragment = activity.supportFragmentManager
-				.findFragmentById(R.id.content_frame)
-			if (fragment is ArgumentsFragment) {
-				return fragment
-			}
-		}
-		return null
 	}
 }

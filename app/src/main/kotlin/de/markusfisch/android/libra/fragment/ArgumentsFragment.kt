@@ -3,7 +3,6 @@ package de.markusfisch.android.libra.fragment
 import de.markusfisch.android.libra.adapter.ArgumentsAdapter
 import de.markusfisch.android.libra.app.db
 import de.markusfisch.android.libra.database.Database
-import de.markusfisch.android.libra.widget.ArgumentListView
 import de.markusfisch.android.libra.widget.ScaleView
 import de.markusfisch.android.libra.R
 
@@ -22,6 +21,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText
+import android.widget.ListView
+import android.widget.SeekBar
 
 class ArgumentsFragment : Fragment() {
 	private val actionModeCallback = object : ActionMode.Callback {
@@ -63,8 +64,9 @@ class ArgumentsFragment : Fragment() {
 	}
 
 	private lateinit var adapter: ArgumentsAdapter
-	private lateinit var listView: ArgumentListView
-	private lateinit var editText: EditText
+	private lateinit var listView: ListView
+	private lateinit var weightBar: SeekBar
+	private lateinit var argumentInput: EditText
 	private lateinit var scaleView: ScaleView
 	private var actionMode: ActionMode? = null
 	private var argumentId: Long = 0
@@ -106,8 +108,10 @@ class ArgumentsFragment : Fragment() {
 			false
 		)
 
-		editText = view.findViewById(R.id.argument)
-		editText.setOnEditorActionListener { _, actionId, _ ->
+		weightBar = view.findViewById(R.id.weight)
+
+		argumentInput = view.findViewById(R.id.argument)
+		argumentInput.setOnEditorActionListener { _, actionId, _ ->
 			when (actionId) {
 				EditorInfo.IME_ACTION_GO,
 				EditorInfo.IME_ACTION_SEND,
@@ -118,7 +122,7 @@ class ArgumentsFragment : Fragment() {
 			}
 		}
 
-		val enterButton = view.findViewById<View>(R.id.enter_argument)
+		val enterButton = view.findViewById<View>(R.id.save_argument)
 		enterButton.setOnClickListener { saveArgument() }
 
 		scaleView = ScaleView(activity)
@@ -128,14 +132,9 @@ class ArgumentsFragment : Fragment() {
 		listView.addHeaderView(scaleView, null, false)
 		listView.emptyView = view.findViewById(R.id.no_arguments)
 		listView.adapter = adapter
-		listView.setOnItemLongClickListener { _, v, _, id ->
-			if (!listView.isWeighing) {
-				v.isSelected = true
-				editArgument(id)
-				true
-			} else {
-				false
-			}
+		listView.setOnItemClickListener { _, v, _, id ->
+			v.isSelected = true
+			editArgument(id)
 		}
 
 		if (state != null) {
@@ -192,16 +191,16 @@ class ArgumentsFragment : Fragment() {
 	}
 
 	private fun saveArgument(): Boolean {
-		val text = editText.text.toString()
-		if (text.trim().isEmpty()) {
+		val text = argumentInput.text.toString().trim()
+		if (text.isEmpty()) {
 			return false
 		}
-		val id: Long
-		id = if (argumentId > 0) {
-			db.updateArgumentText(argumentId, text)
+		val weight = weightBar.progress - WEIGHT_BAR_SHIFT
+		val id = if (argumentId > 0) {
+			db.updateArgument(argumentId, text, weight)
 			argumentId
 		} else {
-			db.insertArgument(issueId, text, 0)
+			db.insertArgument(issueId, text, weight)
 		}
 		closeActionMode()
 		reloadList()
@@ -228,7 +227,10 @@ class ArgumentsFragment : Fragment() {
 
 	private fun editArgument(id: Long) {
 		argumentId = id
-		editText.setText(db.getArgumentText(id))
+		db.getArgument(id)?.let {
+			weightBar.progress = it.weight + WEIGHT_BAR_SHIFT
+			argumentInput.setText(it.text)
+		} ?: return
 		val a = activity
 		if (actionMode == null && a is AppCompatActivity) {
 			actionMode = a.delegate.startSupportActionMode(
@@ -245,7 +247,8 @@ class ArgumentsFragment : Fragment() {
 	private fun closeActionMode() {
 		actionMode?.finish()
 		actionMode = null
-		editText.setText("")
+		argumentInput.setText("")
+		weightBar.progress = WEIGHT_BAR_SHIFT
 		argumentId = 0
 		adapter.notifyDataSetChanged()
 	}
@@ -263,6 +266,7 @@ class ArgumentsFragment : Fragment() {
 	companion object {
 		private const val ISSUE_ID = "issue_id"
 		private const val ARGUMENTS_ID = "argumentId"
+		private const val WEIGHT_BAR_SHIFT = 10
 
 		fun newInstance(issueId: Long): ArgumentsFragment {
 			val args = Bundle()

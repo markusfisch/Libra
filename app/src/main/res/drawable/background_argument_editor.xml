@@ -1,7 +1,7 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
 	<item>
 		<shape android:shape="rectangle">
-			<solid android:color="@color/background_enter_argument"/>
+			<solid android:color="@color/background_argument_editor"/>
 		</shape>
 	</item>
 	<item android:top="0px"
@@ -10,7 +10,7 @@
 		android:right="-2px">
 		<shape android:shape="rectangle">
 			<stroke android:width="1px"
-				android:color="@color/separator_enter_argument"/>
+				android:color="@color/separator_argument_editor"/>
 			<solid android:color="@android:color/transparent"/>
 		</shape>
 	</item>
