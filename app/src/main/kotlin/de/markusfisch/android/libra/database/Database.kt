@@ -128,13 +128,12 @@ class Database {
 	}
 
 	fun sortArguments(issueId: Long) {
-		// rawQuery() instead of update() because we can't use column
+		// execSQL() instead of update() because we can't use column
 		// names in values of ContentValues; another leaking abstraction
-		db.rawQuery(
+		db.execSQL(
 			"""UPDATE $ARGUMENTS
 				SET $ARGUMENTS_ORDER = $ARGUMENTS_WEIGHT
-				WHERE $ARGUMENTS_ISSUE = ?""",
-			arrayOf("$issueId")
+				WHERE $ARGUMENTS_ISSUE = $issueId"""
 		)
 	}
 
