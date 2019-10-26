@@ -150,7 +150,7 @@ class IssuesFragment : Fragment() {
 		)
 	}
 
-    // dialogs don't have a parent layout
+	// dialogs don't have a parent layout
 	@SuppressLint("InflateParams")
 	private fun askForIssueName(issueId: Long, text: String?) {
 		val context = activity

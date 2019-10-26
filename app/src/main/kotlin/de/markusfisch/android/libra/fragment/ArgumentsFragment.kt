@@ -72,12 +72,6 @@ class ArgumentsFragment : Fragment() {
 	private var argumentId: Long = 0
 	private var issueId: Long = 0
 
-	fun reloadList() {
-		val cursor = db.getArguments(issueId)
-		adapter.changeCursor(cursor)
-		updateScale(cursor)
-	}
-
 	override fun onCreate(state: Bundle?) {
 		super.onCreate(state)
 		setHasOptionsMenu(true)
@@ -163,6 +157,12 @@ class ArgumentsFragment : Fragment() {
 			}
 			else -> super.onOptionsItemSelected(item)
 		}
+	}
+
+	private fun reloadList() {
+		val cursor = db.getArguments(issueId)
+		adapter.changeCursor(cursor)
+		updateScale(cursor)
 	}
 
 	private fun updateScale(cursor: Cursor) {

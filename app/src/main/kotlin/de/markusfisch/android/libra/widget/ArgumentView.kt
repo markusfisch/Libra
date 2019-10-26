@@ -87,7 +87,7 @@ class ArgumentView : AppCompatTextView {
 		canvas.drawCircle(
 			x.toFloat(),
 			base.toFloat(),
-			radius.toFloat() + (radius / 16f * abs(weight).toFloat()),
+			(radius + radius / 16f * abs(weight).toFloat()),
 			paint
 		)
 		val s = abs(min(weight, 10)).toString()
