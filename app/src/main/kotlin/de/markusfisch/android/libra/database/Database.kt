@@ -40,15 +40,21 @@ class Database {
 		)
 	}
 
-	fun getIssueName(id: Long): String {
-		return queryStringColumn(
+	fun getIssueName(id: Long) =
+		db.rawQuery(
 			"""SELECT
 				$ISSUES_NAME
 				FROM $ISSUES
 				WHERE $ISSUES_ID = $id""",
-			ISSUES_NAME
-		)
-	}
+			null
+		)?.use {
+			if (it.moveToFirst()) {
+				it.getString(it.getColumnIndex(ISSUES_NAME))
+			} else {
+				null
+			}
+		} ?: ""
+
 
 	fun insertIssue(): Long {
 		val cv = ContentValues()
@@ -129,15 +135,6 @@ class Database {
 				WHERE $ARGUMENTS_ISSUE = $issueId"""
 		)
 	}
-
-	private fun queryStringColumn(query: String, column: String): String =
-		db.rawQuery(query, null)?.use {
-			if (it.moveToFirst()) {
-				it.getString(it.getColumnIndex(column))
-			} else {
-				null
-			}
-		} ?: ""
 
 	private class OpenHelper(context: Context) :
 		SQLiteOpenHelper(context, "arguments.db", null, 1) {
