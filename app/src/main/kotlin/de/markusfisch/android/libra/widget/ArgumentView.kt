@@ -7,6 +7,7 @@ import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.Rect
+import android.graphics.Typeface
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.AppCompatTextView
 import android.util.AttributeSet
@@ -45,6 +46,7 @@ class ArgumentView : AppCompatTextView {
 		val res = context.resources
 		val dp = res.displayMetrics.density
 		textPaint.textSize = dp * 12f
+		textPaint.typeface = Typeface.DEFAULT_BOLD
 		textPaint.color = ContextCompat.getColor(context, R.color.background_window)
 		padding = (dp * 24f).roundToInt()
 		radius = (dp * 8f).roundToInt()
