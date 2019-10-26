@@ -197,15 +197,19 @@ class ArgumentsFragment : Fragment() {
 			return false
 		}
 		val weight = weightBar.progress - WEIGHT_BAR_SHIFT
-		val id = if (argumentId > 0) {
+		if (argumentId > 0) {
 			db.updateArgument(argumentId, text, weight)
-			argumentId
+			val state = listView.onSaveInstanceState()
+			reloadList()
+			listView.onRestoreInstanceState(state)
 		} else {
 			db.insertArgument(issueId, text, weight)
+			reloadList()
+			val pos = adapter.count
+			android.util.Log.d("mfdbg", "mfdbg: pos is $pos")
+			listView.smoothScrollToPosition(pos)
 		}
 		closeActionMode()
-		reloadList()
-		listView.setSelection(getItemPosition(id))
 		return true
 	}
 
@@ -252,16 +256,6 @@ class ArgumentsFragment : Fragment() {
 		weightBar.progress = WEIGHT_BAR_SHIFT
 		argumentId = 0
 		adapter.notifyDataSetChanged()
-	}
-
-	private fun getItemPosition(id: Long): Int {
-		var i = adapter.count
-		while (i-- > 0) {
-			if (adapter.getItemId(i) == id) {
-				return i
-			}
-		}
-		return -1
 	}
 
 	companion object {

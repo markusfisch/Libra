@@ -38,10 +38,11 @@ class ArgumentsAdapter(context: Context, cursor: Cursor) :
 		context: Context,
 		cursor: Cursor
 	) {
-		val holder = getViewHolder(view)
-		holder.argumentView.id = cursor.getLong(idIndex)
-		holder.argumentView.text = cursor.getString(textIndex)
-		holder.argumentView.weight = cursor.getInt(weightIndex)
+		getViewHolder(view).argumentView.apply {
+			id = cursor.getLong(idIndex)
+			text = cursor.getString(textIndex)
+			weight = cursor.getInt(weightIndex)
+		}
 	}
 
 	private fun getViewHolder(view: View): ViewHolder {
