@@ -112,7 +112,7 @@ class Database {
 		cv.put(ARGUMENTS_ISSUE, issueId)
 		cv.put(ARGUMENTS_TEXT, text)
 		cv.put(ARGUMENTS_WEIGHT, weight)
-		cv.put(ARGUMENTS_ORDER, 0)
+		cv.put(ARGUMENTS_ORDER, 999999)
 		return db.insert(ARGUMENTS, null, cv)
 	}
 
