@@ -133,7 +133,8 @@ class Database {
 		db.execSQL(
 			"""UPDATE $ARGUMENTS
 				SET $ARGUMENTS_ORDER = $ARGUMENTS_WEIGHT
-				WHERE $ARGUMENTS_ISSUE = $issueId"""
+				WHERE $ARGUMENTS_ISSUE = ?""",
+			arrayOf("$issueId")
 		)
 	}
 
