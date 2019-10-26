@@ -3,41 +3,20 @@ package de.markusfisch.android.libra.widget
 import de.markusfisch.android.libra.R
 
 import android.content.Context
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.graphics.Canvas
-import android.graphics.Matrix
-import android.graphics.Paint
+import android.graphics.*
 import android.support.v4.content.ContextCompat
 import android.view.View
+import android.view.animation.Animation
+import android.view.animation.Transformation
 import kotlin.math.*
 
 class ScaleView(context: Context) : View(context) {
-	private val animationTime = 300L
-	private val animationRunnable: Runnable = Runnable {
-		while (!Thread.currentThread().isInterrupted) {
-			val now = min(
-				System.currentTimeMillis() - animationStart,
-				animationTime
-			)
-
-			radians = linear(
-				now,
-				radiansBegin,
-				radiansChange,
-				animationTime
-			)
-
+	var radians = 0.0
+		set(value) {
 			invalidate()
-
-			if (
-				radiansChange == .0 ||
-				now >= animationTime
-			) {
-				break
-			}
+			field = value
 		}
-	}
+
 	private val radPerDeg = 6.283f / 360f
 	private val pnt = Paint(Paint.ANTI_ALIAS_FLAG)
 	private val mat = Matrix()
@@ -62,11 +41,6 @@ class ScaleView(context: Context) : View(context) {
 	private val pan: Bitmap
 	private val panMidX: Float
 
-	private var thread: Thread? = null
-	private var animationStart = 0L
-	private var radians = 0.0
-	private var radiansBegin = 0.0
-	private var radiansChange = 0.0
 	private var noWeights = false
 
 	init {
@@ -109,25 +83,24 @@ class ScaleView(context: Context) : View(context) {
 	}
 
 	fun setWeights(left: Int, right: Int) {
-		if (left < 0 || right < 0) {
-			noWeights = true
+		noWeights = if (left < 0 || right < 0) {
 			radians = 0.0
-			invalidate()
+			true
 		} else {
-			noWeights = false
-			radiansBegin = radians
-			radiansChange = calculateBalance(
+			val target = calculateBalance(
 				left.toFloat(),
 				right.toFloat()
-			) - radiansBegin
-			startAnimation()
+			)
+			if (target != radians) {
+				animation = ScaleAnimation(this, radians, target)
+			}
+			false
 		}
 	}
 
 	override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
 		val desiredWidth = suggestedMinimumWidth + paddingLeft + paddingRight
 		val desiredHeight = topMargin + frameHeight + bottomMargin
-
 		setMeasuredDimension(
 			measureDimension(desiredWidth, widthMeasureSpec),
 			measureDimension(desiredHeight, heightMeasureSpec)
@@ -137,54 +110,21 @@ class ScaleView(context: Context) : View(context) {
 	private fun measureDimension(desiredSize: Int, measureSpec: Int): Int {
 		val specMode = MeasureSpec.getMode(measureSpec)
 		val specSize = MeasureSpec.getSize(measureSpec)
-		var result: Int
-
-		if (specMode == MeasureSpec.EXACTLY) {
-			result = specSize
+		return if (specMode == MeasureSpec.EXACTLY) {
+			specSize
 		} else {
-			result = desiredSize
 			if (specMode == MeasureSpec.AT_MOST) {
-				result = min(result, specSize)
+				min(desiredSize, specSize)
+			} else {
+				desiredSize
 			}
 		}
-
-		return result
 	}
 
 	override fun onDraw(canvas: Canvas) {
-		drawScale(canvas)
-	}
-
-	override fun onDetachedFromWindow() {
-		super.onDetachedFromWindow()
-		stopAnimation()
-	}
-
-	private fun stopAnimation() {
-		if (thread != null) {
-			thread?.interrupt()
-			try {
-				thread?.join()
-			} catch (e: InterruptedException) {
-				// parent thread was interrupted
-			}
-			thread = null
-		}
-	}
-
-	private fun startAnimation() {
-		if (thread?.isAlive != null) {
-			stopAnimation()
-		}
-		animationStart = System.currentTimeMillis()
-		thread = Thread(animationRunnable)
-		thread?.start()
-	}
-
-	private fun drawScale(canvas: Canvas) {
 		canvas.drawColor(backgroundColor)
 
-		val centerX = (canvas.width / 2f).roundToInt().toFloat()
+		val centerX = (width / 2f).roundToInt().toFloat()
 		val top = topMargin.toFloat()
 
 		val alphaMod = if (noWeights) {
@@ -230,6 +170,24 @@ class ScaleView(context: Context) : View(context) {
 	}
 }
 
+private class ScaleAnimation(
+	val scaleView: ScaleView,
+	val fromRadians: Double,
+	val toRadians: Double
+) : Animation() {
+	init {
+		duration = 300L
+	}
+
+	override fun applyTransformation(
+		interpolatedTime: Float,
+		t: Transformation?
+	) {
+		scaleView.radians = fromRadians +
+				(toRadians - fromRadians) * interpolatedTime
+	}
+}
+
 private fun calculateBalance(left: Float, right: Float): Double {
 	val min: Float = max(1f, min(left, right))
 	val balance: Float = right - left
@@ -242,11 +200,3 @@ private fun calculateBalance(left: Float, right: Float): Double {
 	return (.9f * factor).toDouble()
 }
 
-private fun linear(
-	time: Long,
-	begin: Double,
-	change: Double,
-	duration: Long
-): Double {
-	return change.toFloat() * time / duration + begin
-}
