@@ -32,8 +32,8 @@
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:layout_alignParentBottom="true">
-		<SeekBar
-			style="@style/Widget.AppCompat.SeekBar.Discrete"
+		<de.markusfisch.android.libra.widget.WeightBar
+			style="@style/Widget.AppCompat.SeekBar"
 			android:id="@+id/weight"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
