@@ -92,7 +92,11 @@ class ScaleView(context: Context) : View(context) {
 				right.toFloat()
 			)
 			if (target != radians) {
-				animation = ScaleAnimation(this, radians, target)
+				if (visibility == VISIBLE) {
+					animation = ScaleAnimation(this, radians, target)
+				} else {
+					radians = target
+				}
 			}
 			false
 		}
