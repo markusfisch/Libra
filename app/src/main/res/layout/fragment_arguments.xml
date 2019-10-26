@@ -24,6 +24,7 @@
 		android:paddingRight="32dp"
 		android:paddingEnd="32dp"
 		android:gravity="center"
+		android:text="@string/find_arguments"
 		android:visibility="gone"/>
 	<RelativeLayout
 		android:id="@+id/argument_editor"

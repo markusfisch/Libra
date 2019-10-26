@@ -31,25 +31,23 @@ class ArgumentView : AppCompatTextView {
 
 	private val paint: Paint = Paint(Paint.ANTI_ALIAS_FLAG)
 	private val textPaint: Paint = Paint(Paint.ANTI_ALIAS_FLAG)
-	private val padding: Float
-	private val spacing: Float
+	private val padding: Int
+	private var radius: Int
 	private val positiveColor: Int
 	private val negativeColor: Int
 
-	private var width = 0f
-	private var height = 0f
-	private var base = 0f
-	private var center = 0f
-	private var radius = 0f
+	private var positiveX = 0
+	private var negativeX = 0
+	private var base = 0
 
 	constructor(context: Context, attrs: AttributeSet, defStyle: Int) :
 			super(context, attrs, defStyle) {
 		val res = context.resources
 		val dp = res.displayMetrics.density
-		textPaint.textSize = dp * 10f
+		textPaint.textSize = dp * 12f
 		textPaint.color = ContextCompat.getColor(context, R.color.background_window)
-		padding = dp * 16f
-		spacing = dp
+		padding = (dp * 24f).roundToInt()
+		radius = (dp * 8f).roundToInt()
 		positiveColor = ContextCompat.getColor(context, R.color.yes)
 		negativeColor = ContextCompat.getColor(context, R.color.no)
 	}
@@ -65,11 +63,11 @@ class ArgumentView : AppCompatTextView {
 		bottom: Int
 	) {
 		super.onLayout(changed, left, top, right, bottom)
-		width = (right - left).toFloat()
-		height = (bottom - top).toFloat()
-		center = (width / 2f).roundToInt().toFloat()
-		radius = (((center - padding * 2f) / 10f - spacing) / 2f).roundToInt().toFloat()
-		base = (height - padding - radius).roundToInt().toFloat()
+		val width = right - left
+		val height = bottom - top
+		positiveX = width - padding - radius
+		negativeX = padding + radius
+		base = height / 2
 	}
 
 	override fun onDraw(canvas: Canvas) {
@@ -78,28 +76,28 @@ class ArgumentView : AppCompatTextView {
 	}
 
 	private fun drawWeights(canvas: Canvas) {
-		var x: Float
-		var step = spacing + radius * 2f
+		val x: Int
 		paint.color = if (weight > 0) {
-			x = width - padding - radius
-			step = -step
+			x = positiveX
 			positiveColor
 		} else {
-			x = padding + radius
+			x = negativeX
 			negativeColor
 		}
+		canvas.drawCircle(
+			x.toFloat(),
+			base.toFloat(),
+			radius.toFloat() + (radius / 16f * abs(weight).toFloat()),
+			paint
+		)
+		val s = abs(min(weight, 10)).toString()
 		val bounds = Rect()
-		for (it in 1..abs(min(weight, 10))) {
-			canvas.drawCircle(x, base, radius, paint)
-			val s = it.toString()
-			textPaint.getTextBounds(s, 0, s.length, bounds)
-			canvas.drawText(
-				s,
-				x - bounds.centerX(),
-				base - bounds.centerY(),
-				textPaint
-			)
-			x += step
-		}
+		textPaint.getTextBounds(s, 0, s.length, bounds)
+		canvas.drawText(
+			s,
+			(x - bounds.centerX()).toFloat(),
+			(base - bounds.centerY()).toFloat(),
+			textPaint
+		)
 	}
 }

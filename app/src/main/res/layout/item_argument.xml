@@ -6,8 +6,8 @@
 	android:layout_height="wrap_content"
 	android:gravity="center"
 	android:paddingTop="16dp"
-	android:paddingBottom="34dp"
-	android:paddingLeft="16dp"
-	android:paddingStart="16dp"
-	android:paddingRight="16dp"
-	android:paddingEnd="16dp"/>
+	android:paddingBottom="16dp"
+	android:paddingLeft="54dp"
+	android:paddingStart="54dp"
+	android:paddingRight="54dp"
+	android:paddingEnd="54dp"/>
