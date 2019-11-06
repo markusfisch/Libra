@@ -26,9 +26,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.70710678"
-     inkscape:cx="95.999998"
-     inkscape:cy="8.098784"
+     inkscape:zoom="2.3864854"
+     inkscape:cx="96"
+     inkscape:cy="96"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -89,7 +89,7 @@
        id="path4755" />
     <path
        style="color:#000000;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:medium;line-height:normal;font-family:sans-serif;text-indent:0;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-style:solid;text-decoration-color:#000000;letter-spacing:normal;word-spacing:normal;text-transform:none;direction:ltr;block-progression:tb;writing-mode:lr-tb;baseline-shift:baseline;text-anchor:start;white-space:normal;clip-rule:nonzero;display:inline;overflow:visible;visibility:visible;opacity:1;isolation:auto;mix-blend-mode:normal;color-interpolation:sRGB;color-interpolation-filters:linearRGB;solid-color:#000000;solid-opacity:1;fill:#333333;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1.00000012;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;color-rendering:auto;image-rendering:auto;shape-rendering:auto;text-rendering:auto;enable-background:accumulate"
-       d="M 95.941406 74.103516 L 95.943359 74.111328 L 92.75 79.517578 L 55.707031 142.60352 L 87.675781 146.44922 L 85.550781 176.20703 C 85.335275 176.18803 85.185319 176.30325 84.958984 176.28125 L 84.945312 176.28125 L 84.916016 176.28125 C 80.449078 177.02973 76.077044 178.17004 71.804688 179.5332 A 87.999995 87.999995 0 0 0 96 183 A 87.999995 87.999995 0 0 0 120.24219 179.55859 C 115.91918 178.17283 111.49309 177.0172 106.96875 176.25977 L 106.93945 176.25977 L 106.91016 176.25977 C 106.70533 176.23877 106.52884 176.18559 106.33203 176.18359 L 104.22266 146.42578 L 136.19336 142.5957 L 95.941406 74.103516 z "
+       d="M 95.941406 74.103516 L 95.943359 74.111328 L 92.75 79.517578 L 55.707031 142.60352 L 87.675781 146.44922 L 86.140625 182.39844 A 87.999995 87.999995 0 0 0 96 183 A 87.999995 87.999995 0 0 0 105.74609 182.35156 L 104.22266 146.42578 L 136.19336 142.5957 L 95.941406 74.103516 z "
        transform="translate(0,860.36231)"
        id="path4757" />
     <flowRoot

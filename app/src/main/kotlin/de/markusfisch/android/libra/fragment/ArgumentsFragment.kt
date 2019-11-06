@@ -205,9 +205,7 @@ class ArgumentsFragment : Fragment() {
 		} else {
 			db.insertArgument(issueId, text, weight)
 			reloadList()
-			val pos = adapter.count
-			android.util.Log.d("mfdbg", "mfdbg: pos is $pos")
-			listView.smoothScrollToPosition(pos)
+			listView.smoothScrollToPosition(adapter.count)
 		}
 		closeActionMode()
 		return true
