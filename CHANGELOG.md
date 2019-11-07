@@ -1,5 +1,9 @@
 # Change Log
 
+## 1.5.0
+* Option to edit issue name from argument list
+* Update app icon
+
 ## 1.4.0
 * Rename to Decisions
 * Replace swiping over list items with SeekBar
