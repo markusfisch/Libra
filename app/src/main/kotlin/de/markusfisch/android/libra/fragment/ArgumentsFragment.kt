@@ -151,6 +151,16 @@ class ArgumentsFragment : Fragment() {
 
 	override fun onOptionsItemSelected(item: MenuItem): Boolean {
 		return when (item.itemId) {
+			R.id.edit_issue -> {
+				askForIssueName(
+					context,
+					issueId,
+					db.getIssueName(issueId)
+				) { title ->
+					activity?.title = title
+				}
+				true
+			}
 			R.id.sort_arguments -> {
 				sortArguments()
 				true

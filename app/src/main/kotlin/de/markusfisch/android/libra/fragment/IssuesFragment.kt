@@ -48,7 +48,13 @@ class IssuesFragment : Fragment() {
 		): Boolean {
 			return when (item.itemId) {
 				R.id.edit_issue -> {
-					askForIssueName(issue.id, getItemText(issue.position))
+					askForIssueName(
+						context,
+						issue.id,
+						getItemText(issue.position)
+					) {
+						updateList()
+					}
 					closeActionMode()
 					true
 				}
@@ -150,35 +156,33 @@ class IssuesFragment : Fragment() {
 		)
 	}
 
-	// dialogs don't have a parent layout
-	@SuppressLint("InflateParams")
-	private fun askForIssueName(issueId: Long, text: String?) {
-		val context = activity
-		val view = LayoutInflater.from(context).inflate(
-			R.layout.dialog_enter_name, null
-		)
-		val nameView = view.findViewById<EditText>(R.id.name)
-		nameView.setText(text)
-		AlertDialog.Builder(context)
-			.setView(view)
-			.setPositiveButton(android.R.string.ok) { _, _ ->
-				updateIssueName(
-					issueId,
-					nameView.text.toString()
-				)
-			}
-			.setNegativeButton(android.R.string.cancel) { _, _ -> }
-			.show()
-	}
-
-	private fun updateIssueName(id: Long, name: String) {
-		db.updateIssueName(id, name)
-		updateList()
-	}
-
 	private fun updateList() {
 		adapter.changeCursor(db.getIssues())
 	}
 
 	private data class Issue(var id: Long, var position: Int)
+}
+
+// dialogs don't have a parent layout
+@SuppressLint("InflateParams")
+fun askForIssueName(
+	context: Context,
+	issueId: Long,
+	text: String?,
+	update: (name: String) -> Unit
+) {
+	val view = LayoutInflater.from(context).inflate(
+		R.layout.dialog_enter_name, null
+	)
+	val nameView = view.findViewById<EditText>(R.id.name)
+	nameView.setText(text)
+	AlertDialog.Builder(context)
+		.setView(view)
+		.setPositiveButton(android.R.string.ok) { _, _ ->
+			val name = nameView.text.toString()
+			db.updateIssueName(issueId, name)
+			update(name)
+		}
+		.setNegativeButton(android.R.string.cancel) { _, _ -> }
+		.show()
 }
