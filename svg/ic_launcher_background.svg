@@ -26,9 +26,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="2.2352521"
-     inkscape:cx="54.000001"
-     inkscape:cy="35.524934"
+     inkscape:zoom="4.2426407"
+     inkscape:cx="54"
+     inkscape:cy="54"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -57,7 +57,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -67,45 +67,40 @@
      inkscape:groupmode="layer"
      inkscape:label="Ebene 1">
     <rect
-       style="opacity:1;fill:#f9f9f9;fill-opacity:1;stroke:none;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       style="opacity:1;fill:#e8e8e8;fill-opacity:1;stroke:none;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
        id="rect4190"
        width="108.00001"
        height="108.00001"
        x="0"
        y="944.3623" />
+    <rect
+       y="944.3623"
+       x="0"
+       height="108.00001"
+       width="54.000004"
+       id="rect4138"
+       style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+    <circle
+       r="0"
+       cy="1022.4262"
+       cx="-1668.6742"
+       id="circle4766"
+       style="fill:#f9f9f9;fill-opacity:1;stroke:none;stroke-width:4;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    <g
+       id="g4998"
+       transform="translate(-1564.6742,67.063899)" />
+    <g
+       transform="translate(-1564.6742,-112.93611)"
+       id="g5021" />
     <path
-       d="m 54.000001,1089.3124 a 53.886505,53.886505 0 0 1 -46.6670831,-26.9432 53.886505,53.886505 0 0 1 -1e-7,-53.8865 53.886505,53.886505 0 0 1 46.6670832,-26.9433"
-       sodipodi:end="4.712389"
-       sodipodi:start="1.5707963"
-       sodipodi:ry="53.886505"
-       sodipodi:rx="53.886505"
-       sodipodi:cy="1035.4259"
-       sodipodi:cx="54"
-       sodipodi:type="arc"
-       id="path4177"
-       style="fill:#ff6600;fill-opacity:1;stroke:none;stroke-width:10.00000095;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       sodipodi:open="true" />
+       style="fill:#e8e8e8;fill-opacity:1"
+       inkscape:connector-curvature="0"
+       d="m 43.616532,980.60893 -1.204568,-1.20461 -4.775646,4.77564 -4.775605,-4.77564 -1.204609,1.20461 4.775646,4.7756 -4.775646,4.77565 1.204609,1.20457 4.775605,-4.77561 4.775646,4.77561 1.204568,-1.20457 -4.775646,-4.77565 z"
+       id="path6271" />
     <path
-       style="fill:#ffcc00;fill-opacity:1;stroke:none;stroke-width:10.00000095;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       id="path4179"
-       sodipodi:type="arc"
-       sodipodi:cx="54"
-       sodipodi:cy="1035.4259"
-       sodipodi:rx="53.886505"
-       sodipodi:ry="53.886505"
-       sodipodi:start="4.712389"
-       sodipodi:end="5.2359878"
-       d="m 54.000001,981.5394 a 53.886505,53.886505 0 0 1 26.943254,7.21942 L 54,1035.4259 Z" />
-    <path
-       d="m 80.943255,988.75882 a 53.886505,53.886505 0 0 1 25.107115,60.61398 53.886505,53.886505 0 0 1 -52.050369,39.9396 L 54,1035.4259 Z"
-       sodipodi:end="1.5707963"
-       sodipodi:start="5.2359878"
-       sodipodi:ry="53.886505"
-       sodipodi:rx="53.886505"
-       sodipodi:cy="1035.4259"
-       sodipodi:cx="54"
-       sodipodi:type="arc"
-       id="path4181"
-       style="fill:#55d400;fill-opacity:1;stroke:none;stroke-width:10.00000095;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+       style="fill:#ffffff"
+       inkscape:connector-curvature="0"
+       d="m 67.625506,988.38149 -3.562487,-3.56249 -1.213118,1.20461 4.775605,4.77561 10.251778,-10.25178 -1.204568,-1.20461 z"
+       id="path6273" />
   </g>
 </svg>
