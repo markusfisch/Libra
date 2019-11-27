@@ -1,5 +1,8 @@
 # Change Log
 
+## 1.5.1
+* Update app icon
+
 ## 1.5.0
 * Option to edit issue name from argument list
 * Update app icon
