@@ -32,10 +32,12 @@
       android:fillAlpha="1"
       android:strokeLineCap="round"/>
   <path
-      android:pathData="m43.617,36.247 l-1.205,-1.205 -4.776,4.776 -4.776,-4.776 -1.205,1.205 4.776,4.776 -4.776,4.776 1.205,1.205 4.776,-4.776 4.776,4.776 1.205,-1.205 -4.776,-4.776z"
-      android:fillColor="#e8e8e8"
-      android:fillAlpha="1"/>
-  <path
-      android:pathData="m67.626,44.019 l-3.563,-3.563 -1.213,1.205 4.776,4.776 10.252,-10.252 -1.205,-1.205z"
-      android:fillColor="#ffffff"/>
+      android:pathData="M-1630.365,53.229m-0,0a0,0 0,1 1,0 0a0,0 0,1 1,-0 0"
+      android:strokeAlpha="1"
+      android:strokeLineJoin="miter"
+      android:strokeWidth="4"
+      android:fillColor="#f9f9f9"
+      android:strokeColor="#00000000"
+      android:fillAlpha="1"
+      android:strokeLineCap="butt"/>
 </vector>
