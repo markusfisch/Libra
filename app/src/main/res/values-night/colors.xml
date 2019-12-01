@@ -1,0 +1,14 @@
+<resources>
+	<color name="primary">#161616</color>
+	<color name="primary_dark">#161616</color>
+	<color name="accent">#e5e5e5</color>
+	<color name="background_window">#0a0a0a</color>
+	<color name="background_action_mode">#161616</color>
+	<color name="background_argument_editor">#111</color>
+	<color name="separator_argument_editor">#1f1f1f</color>
+	<color name="selector">#111</color>
+	<color name="yes">#55d400</color>
+	<color name="maybe">#ffcc00</color>
+	<color name="no">#ff6600</color>
+	<color name="neutral">#aaa</color>
+</resources>

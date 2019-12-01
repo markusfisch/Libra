@@ -60,8 +60,8 @@ newer_than() {
 #
 # @param 1 - output path
 update() {
-	local SVG SIZE NEGATE
-	while read -r SVG SIZE NEGATE
+	local SVG SIZE
+	while read -r SVG SIZE
 	do
 		SIZE=${SIZE:-24}
 
@@ -81,11 +81,6 @@ update() {
 				"$PNG" \
 				"$(scale "${SIZE%%x*}" "$MULTIPLIER")" \
 				"$(scale "${SIZE##*x}" "$MULTIPLIER")"
-
-			if (( NEGATE ))
-			then
-				convert "$PNG" -negate "$PNG"
-			fi
 		done <<EOF
 xxxhdpi 4
 xxhdpi 3
@@ -120,4 +115,14 @@ svg/ic_splash.svg 128
 svg/scale_bar.svg 102x68
 svg/scale_frame.svg 96x142
 svg/scale_pan.svg 30x48
+EOF
+
+# drawable SVGs to PNGs
+update app/src/main/res/drawable-night << EOF
+svg/night/ic_empty_arguments.svg 174x128
+svg/night/ic_empty_issues.svg 200x175
+svg/night/ic_splash.svg 128
+svg/night/scale_bar.svg 102x68
+svg/night/scale_frame.svg 96x142
+svg/night/scale_pan.svg 30x48
 EOF
