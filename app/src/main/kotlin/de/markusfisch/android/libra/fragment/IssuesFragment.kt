@@ -50,8 +50,8 @@ class IssuesFragment : Fragment() {
 				R.id.edit_issue -> {
 					askForIssueName(
 						context,
-						issue.id,
-						getItemText(issue.position)
+						adapter.selectedId,
+						getItemText(adapter.selectedPosition)
 					) {
 						updateList()
 					}
@@ -59,7 +59,7 @@ class IssuesFragment : Fragment() {
 					true
 				}
 				R.id.remove_issue -> {
-					askToRemoveIssue(activity, issue.id)
+					askToRemoveIssue(activity, adapter.selectedId)
 					closeActionMode()
 					true
 				}
@@ -71,8 +71,6 @@ class IssuesFragment : Fragment() {
 			closeActionMode()
 		}
 	}
-
-	private val issue = Issue(0L, 0)
 
 	private lateinit var adapter: IssuesAdapter
 	private var actionMode: ActionMode? = null
@@ -99,8 +97,7 @@ class IssuesFragment : Fragment() {
 		}
 		listView.setOnItemLongClickListener { _, v, position, id ->
 			v.isSelected = true
-			issue.id = id
-			issue.position = position
+			adapter.select(id, position)
 			val a = activity
 			if (actionMode == null && a is AppCompatActivity) {
 				actionMode = a.delegate.startSupportActionMode(
@@ -129,6 +126,7 @@ class IssuesFragment : Fragment() {
 	private fun closeActionMode() {
 		actionMode?.finish()
 		actionMode = null
+		adapter.clearSelection()
 		adapter.notifyDataSetChanged()
 	}
 
@@ -159,8 +157,6 @@ class IssuesFragment : Fragment() {
 	private fun updateList() {
 		adapter.changeCursor(db.getIssues())
 	}
-
-	private data class Issue(var id: Long, var position: Int)
 }
 
 // dialogs don't have a parent layout

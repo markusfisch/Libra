@@ -50,7 +50,7 @@ class ArgumentsFragment : Fragment() {
 		): Boolean {
 			return when (item.itemId) {
 				R.id.remove_argument -> {
-					askToRemoveArgument(activity, argumentId)
+					askToRemoveArgument(activity, adapter.selectedId)
 					closeActionMode()
 					true
 				}
@@ -69,7 +69,6 @@ class ArgumentsFragment : Fragment() {
 	private lateinit var argumentInput: EditText
 	private lateinit var scaleView: ScaleView
 	private var actionMode: ActionMode? = null
-	private var argumentId: Long = 0
 	private var issueId: Long = 0
 
 	override fun onCreate(state: Bundle?) {
@@ -142,7 +141,7 @@ class ArgumentsFragment : Fragment() {
 	}
 
 	override fun onSaveInstanceState(outState: Bundle) {
-		outState.putLong(ARGUMENTS_ID, argumentId)
+		outState.putLong(ARGUMENTS_ID, adapter.selectedId)
 	}
 
 	override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -207,8 +206,8 @@ class ArgumentsFragment : Fragment() {
 			return false
 		}
 		val weight = weightBar.progress - WEIGHT_BAR_SHIFT
-		if (argumentId > 0) {
-			db.updateArgument(argumentId, text, weight)
+		if (adapter.selectedId > 0) {
+			db.updateArgument(adapter.selectedId, text, weight)
 			val state = listView.onSaveInstanceState()
 			reloadList()
 			listView.onRestoreInstanceState(state)
@@ -239,7 +238,7 @@ class ArgumentsFragment : Fragment() {
 	}
 
 	private fun editArgument(id: Long) {
-		argumentId = id
+		adapter.selectedId = id
 		db.getArgument(id)?.let {
 			weightBar.progress = it.weight + WEIGHT_BAR_SHIFT
 			argumentInput.setText(it.text)
@@ -262,7 +261,7 @@ class ArgumentsFragment : Fragment() {
 		actionMode = null
 		argumentInput.setText("")
 		weightBar.progress = WEIGHT_BAR_SHIFT
-		argumentId = 0
+		adapter.selectedId = 0L
 		adapter.notifyDataSetChanged()
 	}
 

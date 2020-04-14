@@ -20,6 +20,9 @@ class IssuesAdapter(context: Context, cursor: Cursor) :
 	CursorAdapter(context, cursor, false) {
 	private val dateFormat = DateFormat.getLongDateFormat(context)
 	private val res = context.resources
+	private val idIndex = cursor.getColumnIndex(
+		Database.ISSUES_ID
+	)
 	private val nameIndex = cursor.getColumnIndex(
 		Database.ISSUES_NAME
 	)
@@ -32,6 +35,19 @@ class IssuesAdapter(context: Context, cursor: Cursor) :
 	private val positiveIndex = cursor.getColumnIndex(
 		Database.ISSUES_POSITIVE
 	)
+
+	var selectedId = 0L
+	var selectedPosition = -1
+
+	fun select(id: Long, position: Int) {
+		this.selectedId = id
+		this.selectedPosition = position
+	}
+
+	fun clearSelection() {
+		this.selectedId = 0L
+		this.selectedPosition = -1
+	}
 
 	override fun newView(
 		context: Context,
@@ -66,6 +82,10 @@ class IssuesAdapter(context: Context, cursor: Cursor) :
 		}
 		holder.nameView.text = name
 		holder.createdView.text = getHumanTime(time)
+		val selected = cursor.getLong(idIndex) == selectedId
+		view.post {
+			view.isSelected = selected
+		}
 	}
 
 	private fun getViewHolder(view: View): ViewHolder {

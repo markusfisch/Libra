@@ -23,6 +23,8 @@ class ArgumentsAdapter(context: Context, cursor: Cursor) :
 		Database.ARGUMENTS_WEIGHT
 	)
 
+	var selectedId = 0L
+
 	override fun newView(
 		context: Context,
 		cursor: Cursor,
@@ -38,10 +40,15 @@ class ArgumentsAdapter(context: Context, cursor: Cursor) :
 		context: Context,
 		cursor: Cursor
 	) {
+		val itemId = cursor.getLong(idIndex)
 		getViewHolder(view).argumentView.apply {
-			id = cursor.getLong(idIndex)
+			id = itemId
 			text = cursor.getString(textIndex)
 			weight = cursor.getInt(weightIndex)
+		}
+		val selected = itemId == selectedId
+		view.post {
+			view.isSelected = selected
 		}
 	}
 
