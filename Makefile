@@ -24,6 +24,9 @@ start:
 	adb $(TARGET) shell 'am start -n \
 		$(PACKAGE).debug/$(PACKAGE).activity.SplashActivity'
 
+meminfo:
+	adb shell dumpsys meminfo $(PACKAGE).debug
+
 uninstall:
 	adb $(TARGET) uninstall $(PACKAGE).debug
 
