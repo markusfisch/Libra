@@ -1,8 +1,7 @@
 package de.markusfisch.android.libra.app
 
-import de.markusfisch.android.libra.database.Database
-
 import android.app.Application
+import de.markusfisch.android.libra.database.Database
 
 val db = Database()
 

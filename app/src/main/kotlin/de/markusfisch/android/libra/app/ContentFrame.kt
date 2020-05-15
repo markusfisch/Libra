@@ -1,11 +1,10 @@
 package de.markusfisch.android.libra.app
 
 import android.annotation.SuppressLint
-import de.markusfisch.android.libra.R
-
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentTransaction
+import de.markusfisch.android.libra.R
 
 fun setFragment(fm: FragmentManager?, fragment: Fragment) {
 	fm?.let { getTransaction(fm, fragment).commit() }

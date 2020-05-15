@@ -1,28 +1,22 @@
 package de.markusfisch.android.libra.fragment
 
-import de.markusfisch.android.libra.adapter.ArgumentsAdapter
-import de.markusfisch.android.libra.app.db
-import de.markusfisch.android.libra.database.Database
-import de.markusfisch.android.libra.widget.ScaleView
-import de.markusfisch.android.libra.R
-
 import android.app.AlertDialog
 import android.content.Context
 import android.database.Cursor
+import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.view.ActionMode
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import android.widget.ListView
 import android.widget.SeekBar
+import de.markusfisch.android.libra.R
+import de.markusfisch.android.libra.adapter.ArgumentsAdapter
+import de.markusfisch.android.libra.app.db
+import de.markusfisch.android.libra.database.Database
+import de.markusfisch.android.libra.widget.ScaleView
 
 class ArgumentsFragment : Fragment() {
 	private val actionModeCallback = object : ActionMode.Callback {

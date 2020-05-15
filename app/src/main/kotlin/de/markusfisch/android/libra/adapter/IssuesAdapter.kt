@@ -1,9 +1,5 @@
 package de.markusfisch.android.libra.adapter
 
-import de.markusfisch.android.libra.app.Recommendation
-import de.markusfisch.android.libra.database.Database
-import de.markusfisch.android.libra.R
-
 import android.content.Context
 import android.database.Cursor
 import android.text.format.DateFormat
@@ -13,8 +9,10 @@ import android.view.ViewGroup
 import android.widget.CursorAdapter
 import android.widget.ImageView
 import android.widget.TextView
-
-import java.util.Date
+import de.markusfisch.android.libra.R
+import de.markusfisch.android.libra.app.Recommendation
+import de.markusfisch.android.libra.database.Database
+import java.util.*
 
 class IssuesAdapter(context: Context, cursor: Cursor) :
 	CursorAdapter(context, cursor, false) {

@@ -1,8 +1,6 @@
 package de.markusfisch.android.libra.widget
 
 import android.annotation.SuppressLint
-import de.markusfisch.android.libra.R
-
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Paint
@@ -12,6 +10,7 @@ import android.support.v4.content.ContextCompat
 import android.support.v7.widget.AppCompatTextView
 import android.util.AttributeSet
 import android.view.Gravity
+import de.markusfisch.android.libra.R
 import kotlin.math.abs
 import kotlin.math.min
 import kotlin.math.roundToInt

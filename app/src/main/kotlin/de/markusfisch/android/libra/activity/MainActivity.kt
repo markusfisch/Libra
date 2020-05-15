@@ -1,13 +1,11 @@
 package de.markusfisch.android.libra.activity
 
+import android.os.Bundle
+import android.support.v7.app.AppCompatActivity
+import de.markusfisch.android.libra.R
 import de.markusfisch.android.libra.app.setFragment
 import de.markusfisch.android.libra.fragment.IssuesFragment
-import de.markusfisch.android.libra.R
-
-import android.support.v7.app.AppCompatActivity
-import android.os.Bundle
-
-import kotlinx.android.synthetic.main.toolbar.toolbar
+import kotlinx.android.synthetic.main.toolbar.*
 
 class MainActivity : AppCompatActivity() {
 	override fun onSupportNavigateUp(): Boolean {

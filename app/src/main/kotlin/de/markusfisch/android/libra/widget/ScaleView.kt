@@ -1,13 +1,12 @@
 package de.markusfisch.android.libra.widget
 
-import de.markusfisch.android.libra.R
-
 import android.content.Context
 import android.graphics.*
 import android.support.v4.content.ContextCompat
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.Transformation
+import de.markusfisch.android.libra.R
 import kotlin.math.*
 
 class ScaleView(context: Context) : View(context) {

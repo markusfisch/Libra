@@ -1,26 +1,21 @@
 package de.markusfisch.android.libra.fragment
 
 import android.annotation.SuppressLint
-import de.markusfisch.android.libra.adapter.IssuesAdapter
-import de.markusfisch.android.libra.app.db
-import de.markusfisch.android.libra.app.addFragment
-import de.markusfisch.android.libra.database.Database
-import de.markusfisch.android.libra.R
-
 import android.app.AlertDialog
 import android.content.Context
 import android.database.Cursor
+import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.view.ActionMode
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuItem
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.EditText
 import android.widget.ListView
+import de.markusfisch.android.libra.R
+import de.markusfisch.android.libra.adapter.IssuesAdapter
+import de.markusfisch.android.libra.app.addFragment
+import de.markusfisch.android.libra.app.db
+import de.markusfisch.android.libra.database.Database
 
 class IssuesFragment : Fragment() {
 	private val actionModeCallback = object : ActionMode.Callback {

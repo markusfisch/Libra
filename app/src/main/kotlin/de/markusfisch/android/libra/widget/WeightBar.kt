@@ -1,7 +1,5 @@
 package de.markusfisch.android.libra.widget
 
-import de.markusfisch.android.libra.R
-
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Paint
@@ -9,6 +7,7 @@ import android.graphics.Rect
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.AppCompatSeekBar
 import android.util.AttributeSet
+import de.markusfisch.android.libra.R
 import kotlin.math.abs
 import kotlin.math.roundToInt
 

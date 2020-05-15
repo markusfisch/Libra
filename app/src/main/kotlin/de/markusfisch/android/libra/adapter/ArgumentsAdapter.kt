@@ -1,15 +1,14 @@
 package de.markusfisch.android.libra.adapter
 
-import de.markusfisch.android.libra.database.Database
-import de.markusfisch.android.libra.widget.ArgumentView
-import de.markusfisch.android.libra.R
-
 import android.content.Context
 import android.database.Cursor
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.CursorAdapter
+import de.markusfisch.android.libra.R
+import de.markusfisch.android.libra.database.Database
+import de.markusfisch.android.libra.widget.ArgumentView
 
 class ArgumentsAdapter(context: Context, cursor: Cursor) :
 	CursorAdapter(context, cursor, false) {
