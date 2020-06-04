@@ -1,0 +1,14 @@
+<resources
+	xmlns:tools="http://schemas.android.com/tools"
+	tools:ignore="TypographyFractions">
+	<string-array name="design_names">
+		<item>@string/follow_system</item>
+		<item>@string/light_mode</item>
+		<item>@string/dark_mode</item>
+	</string-array>
+	<string-array name="design_values">
+		<item>-1</item>
+		<item>1</item>
+		<item>2</item>
+	</string-array>
+</resources>

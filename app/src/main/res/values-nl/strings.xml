@@ -18,4 +18,9 @@
 	<string name="no_issues_saved">Nog geen problemen.</string>
 	<string name="enter_name">Voer een nieuwe naam in</string>
 	<string name="enter_name_hint">Waar gaat dit over?</string>
+	<string name="preferences">Voorkeuren</string>
+	<string name="design">Design</string>
+	<string name="follow_system">Follow system</string>
+	<string name="light_mode">Light Mode</string>
+	<string name="dark_mode">Dark Mode</string>
 </resources>

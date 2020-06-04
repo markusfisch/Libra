@@ -70,6 +70,11 @@ class IssuesFragment : Fragment() {
 	private lateinit var adapter: IssuesAdapter
 	private var actionMode: ActionMode? = null
 
+	override fun onCreate(state: Bundle?) {
+		super.onCreate(state)
+		setHasOptionsMenu(true)
+	}
+
 	override fun onCreateView(
 		inflater: LayoutInflater,
 		container: ViewGroup?,
@@ -108,6 +113,20 @@ class IssuesFragment : Fragment() {
 		}
 
 		return view
+	}
+
+	override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+		inflater.inflate(R.menu.fragment_issues, menu)
+	}
+
+	override fun onOptionsItemSelected(item: MenuItem): Boolean {
+		return when (item.itemId) {
+			R.id.preferences -> {
+				addFragment(fragmentManager, PreferencesFragment())
+				true
+			}
+			else -> super.onOptionsItemSelected(item)
+		}
 	}
 
 	private fun showArguments(id: Long) {

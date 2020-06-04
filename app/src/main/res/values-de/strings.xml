@@ -18,4 +18,9 @@
 	<string name="no_issues_saved">Keine Fragen gespeichert.</string>
 	<string name="enter_name">Gib einen neuen Namen ein</string>
 	<string name="enter_name_hint">Um was geht es?</string>
+	<string name="preferences">Einstellungen</string>
+	<string name="design">Design</string>
+	<string name="follow_system">Entspricht dem System</string>
+	<string name="light_mode">Helles Thema</string>
+	<string name="dark_mode">Dunkles Thema</string>
 </resources>

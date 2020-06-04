@@ -18,4 +18,9 @@
 	<string name="no_issues_saved">No issues yet.</string>
 	<string name="enter_name">Enter a new name</string>
 	<string name="enter_name_hint">What\'s it about?</string>
+	<string name="preferences">Preferences</string>
+	<string name="design">Design</string>
+	<string name="follow_system">Follow system</string>
+	<string name="light_mode">Light Mode</string>
+	<string name="dark_mode">Dark Mode</string>
 </resources>
