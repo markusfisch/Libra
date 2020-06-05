@@ -3,7 +3,7 @@
 	<string name="arguments">Pro und Contra</string>
 	<string name="recommendation">Empfehlung</string>
 	<string name="just_now">Gerade eben</string>
-	<string name="find_arguments">Schreibe alle Pros und Contras auf.</string>
+	<string name="find_arguments">Schreibe alle Argumente auf.\n\nBewerte jedes negative Argument mit einer roten Zahl von der linken Seite und jedes positive Argument mit einer grünen Zahl von der rechten Seite.\n\nJe höher die Zahl, desto wichtiger ist das Argument für die entsprechende Seite.\n\nDie Waage zeigt auf Ja wenn die Summe der positiven Argumente mindestens doppelt so hoch ist wie die der negativen.</string>
 	<string name="yes">Ja</string>
 	<string name="maybe">Vielleicht</string>
 	<string name="no">Nein</string>

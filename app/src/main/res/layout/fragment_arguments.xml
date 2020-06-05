@@ -12,20 +12,27 @@
 		android:choiceMode="singleChoice"
 		android:divider="@android:color/transparent"
 		android:dividerHeight="0px"/>
-	<TextView
+	<ScrollView
 		android:id="@+id/no_arguments"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:layout_centerInParent="true"
-		android:drawablePadding="8dp"
-		android:drawableTop="@drawable/ic_empty_arguments"
-		android:paddingLeft="32dp"
-		android:paddingStart="32dp"
-		android:paddingRight="32dp"
-		android:paddingEnd="32dp"
-		android:gravity="center"
-		android:text="@string/find_arguments"
-		android:visibility="gone"/>
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:layout_above="@+id/argument_editor"
+		android:fillViewport="true"
+		android:visibility="gone">
+		<RelativeLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:padding="32dp">
+			<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_centerInParent="true"
+				android:drawablePadding="8dp"
+				android:drawableTop="@drawable/ic_empty_arguments"
+				android:gravity="center"
+				android:text="@string/find_arguments"/>
+		</RelativeLayout>
+	</ScrollView>
 	<RelativeLayout
 		android:id="@+id/argument_editor"
 		android:background="@drawable/background_argument_editor"

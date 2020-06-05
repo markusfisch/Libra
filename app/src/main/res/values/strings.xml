@@ -3,7 +3,7 @@
 	<string name="arguments">Pros and cons</string>
 	<string name="recommendation">Recommendation</string>
 	<string name="just_now">Just now</string>
-	<string name="find_arguments">Write down pros and cons.</string>
+	<string name="find_arguments">Write down all the arguments.\n\nRate each negative argument with a red number from the left side and each positive argument with a green number from the right side.\n\nThe higher the number, the more important is the argument.\n\nThe scale points to Yes if the sum of the positive arguments is at least twice as high as the sum of the negative ones.</string>
 	<string name="yes">Yes</string>
 	<string name="maybe">Maybe</string>
 	<string name="no">No</string>

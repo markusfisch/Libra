@@ -3,7 +3,7 @@
 	<string name="arguments">Voor- en nadelen</string>
 	<string name="recommendation">Aanbeveling</string>
 	<string name="just_now">Zojuist</string>
-	<string name="find_arguments">Schrijf voor- en nadelen op.</string>
+	<string name="find_arguments">Schrijf alle argumenten op.\n\nBeoordeel elk negatief argument met een rood nummer van de linkerkant en elk positief argument met een groen nummer van de rechterkant.\n\nHoe hoger het getal, hoe belangrijker het argument.\n\nDe schaal wijst naar Ja als de som van de positieve argumenten minstens twee keer zo hoog is als de negatieve.</string>
 	<string name="yes">Ja</string>
 	<string name="maybe">Misschien</string>
 	<string name="no">Nee</string>
