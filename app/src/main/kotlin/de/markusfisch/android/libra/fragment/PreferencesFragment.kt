@@ -42,9 +42,11 @@ class PreferencesFragment : Fragment() {
 			val mode = it.toInt()
 			if (mode != prefs.design) {
 				prefs.design = mode
-				// from AppCompat 1.1.0 invoking setDefaultNightMode()
-				// will automatically update the app but since I want
-				// to keep the minSdk, I need to do it manually
+				// setDefaultNightMode() in AppCompat 1.1.0 will automatically
+				// update the app but since I want to keep the minSdk, I need
+				// to restart the whole app to make sure the night mode setting
+				// takes effect. Simply recreating the Activity doesn't work
+				// when returning to MODE_NIGHT_FOLLOW_SYSTEM.
 				restartApp(activity)
 			}
 		}
