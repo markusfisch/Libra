@@ -3,8 +3,10 @@ package de.markusfisch.android.libra.activity
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import de.markusfisch.android.libra.R
+import de.markusfisch.android.libra.app.addFragment
 import de.markusfisch.android.libra.app.setFragment
 import de.markusfisch.android.libra.fragment.IssuesFragment
+import de.markusfisch.android.libra.fragment.PreferencesFragment
 import kotlinx.android.synthetic.main.toolbar.*
 
 class MainActivity : AppCompatActivity() {
@@ -25,6 +27,9 @@ class MainActivity : AppCompatActivity() {
 
 		if (state == null) {
 			setFragment(supportFragmentManager, IssuesFragment())
+			if (intent?.getBooleanExtra(OPEN_PREFERENCES, false) == true) {
+				addFragment(supportFragmentManager, PreferencesFragment())
+			}
 		}
 	}
 
@@ -40,5 +45,9 @@ class MainActivity : AppCompatActivity() {
 		supportActionBar?.setDisplayHomeAsUpEnabled(
 			supportFragmentManager.backStackEntryCount > 0
 		)
+	}
+
+	companion object {
+		const val OPEN_PREFERENCES = "open_preferences"
 	}
 }
