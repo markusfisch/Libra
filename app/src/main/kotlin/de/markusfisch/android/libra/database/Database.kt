@@ -17,7 +17,7 @@ class Database {
 		db = OpenHelper(context).writableDatabase
 	}
 
-	fun getIssues(): Cursor {
+	fun getIssues(): Cursor? {
 		return db.rawQuery(
 			"""SELECT
 				d.$ISSUES_ID,
@@ -38,21 +38,19 @@ class Database {
 		)
 	}
 
-	fun getIssueName(id: Long) =
-		db.rawQuery(
-			"""SELECT
-				$ISSUES_NAME
-				FROM $ISSUES
-				WHERE $ISSUES_ID = ?""",
-			arrayOf("$id")
-		)?.use {
-			if (it.moveToFirst()) {
-				it.getString(it.getColumnIndex(ISSUES_NAME))
-			} else {
-				null
-			}
-		} ?: ""
-
+	fun getIssueName(id: Long) = db.rawQuery(
+		"""SELECT
+			$ISSUES_NAME
+			FROM $ISSUES
+			WHERE $ISSUES_ID = ?""",
+		arrayOf("$id")
+	)?.use {
+		if (it.moveToFirst()) {
+			it.getString(it.getColumnIndex(ISSUES_NAME))
+		} else {
+			null
+		}
+	} ?: ""
 
 	fun insertIssue(): Long {
 		val cv = ContentValues()
@@ -72,38 +70,37 @@ class Database {
 		db.update(ISSUES, cv, "$ISSUES_ID = ?", arrayOf("$id"))
 	}
 
-	fun getArguments(issueId: Long): Cursor {
-		return db.rawQuery(
-			"""SELECT
-				$ARGUMENTS_ID,
-				$ARGUMENTS_TEXT,
-				$ARGUMENTS_WEIGHT,
-				$ARGUMENTS_ORDER
-				FROM $ARGUMENTS
-				WHERE $ARGUMENTS_ISSUE = ?
-				ORDER BY $ARGUMENTS_ORDER, $ARGUMENTS_ID""",
-			arrayOf("$issueId")
-		)
-	}
+	fun getArguments(issueId: Long, sorted: Boolean = false): Cursor? = db.rawQuery(
+		"""SELECT
+			$ARGUMENTS_ID,
+			$ARGUMENTS_TEXT,
+			$ARGUMENTS_WEIGHT,
+			$ARGUMENTS_ORDER
+			FROM $ARGUMENTS
+			WHERE $ARGUMENTS_ISSUE = ?
+			ORDER BY ${if (sorted)
+			ARGUMENTS_WEIGHT else
+			"$ARGUMENTS_ORDER, $ARGUMENTS_ID"}""",
+		arrayOf("$issueId")
+	)
 
-	fun getArgument(id: Long): Argument? =
-		db.rawQuery(
-			"""SELECT
-				$ARGUMENTS_TEXT,
-				$ARGUMENTS_WEIGHT
-				FROM $ARGUMENTS
-				WHERE $ARGUMENTS_ID = ?""",
-			arrayOf("$id")
-		)?.use {
-			if (it.moveToFirst()) {
-				Argument(
-					it.getString(it.getColumnIndex(ARGUMENTS_TEXT)),
-					it.getInt(it.getColumnIndex(ARGUMENTS_WEIGHT))
-				)
-			} else {
-				null
-			}
+	fun getArgument(id: Long): Argument? = db.rawQuery(
+		"""SELECT
+			$ARGUMENTS_TEXT,
+			$ARGUMENTS_WEIGHT
+			FROM $ARGUMENTS
+			WHERE $ARGUMENTS_ID = ?""",
+		arrayOf("$id")
+	)?.use {
+		if (it.moveToFirst()) {
+			Argument(
+				it.getString(it.getColumnIndex(ARGUMENTS_TEXT)),
+				it.getInt(it.getColumnIndex(ARGUMENTS_WEIGHT))
+			)
+		} else {
+			null
 		}
+	}
 
 	fun insertArgument(issueId: Long, text: String, weight: Int): Long {
 		val cv = ContentValues()

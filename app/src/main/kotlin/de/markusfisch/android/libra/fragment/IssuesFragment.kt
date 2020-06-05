@@ -79,9 +79,11 @@ class IssuesFragment : Fragment() {
 		inflater: LayoutInflater,
 		container: ViewGroup?,
 		state: Bundle?
-	): View {
+	): View? {
 		activity.setTitle(R.string.issues)
-		adapter = IssuesAdapter(activity, db.getIssues())
+
+		val cursor = db.getIssues() ?: return null
+		adapter = IssuesAdapter(activity, cursor)
 
 		val view = inflater.inflate(
 			R.layout.fragment_issues,

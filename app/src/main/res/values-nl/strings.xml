@@ -13,6 +13,9 @@
 	<string name="really_remove_issue">Wil je het probleem verwijderen?</string>
 	<string name="cancel_editing">Annuleren</string>
 	<string name="sort_arguments">Argumenten sorteren</string>
+	<string name="share_arguments">Deel argumenten</string>
+	<string name="header_pros">Pros</string>
+	<string name="header_cons">Cons</string>
 	<string name="remove_issue">Probleem verwijderen</string>
 	<string name="edit_issue">Naam van probleem wijzigen</string>
 	<string name="no_issues_saved">Nog geen problemen.</string>
@@ -20,7 +23,7 @@
 	<string name="enter_name_hint">Waar gaat dit over?</string>
 	<string name="preferences">Voorkeuren</string>
 	<string name="design">Design</string>
-	<string name="follow_system">Follow system</string>
-	<string name="light_mode">Light Mode</string>
-	<string name="dark_mode">Dark Mode</string>
+	<string name="follow_system">Volg systeem</string>
+	<string name="light_mode">Helder ontwerp</string>
+	<string name="dark_mode">Donker ontwerp</string>
 </resources>

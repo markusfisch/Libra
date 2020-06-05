@@ -15,6 +15,7 @@ import android.widget.SeekBar
 import de.markusfisch.android.libra.R
 import de.markusfisch.android.libra.adapter.ArgumentsAdapter
 import de.markusfisch.android.libra.app.db
+import de.markusfisch.android.libra.app.shareText
 import de.markusfisch.android.libra.database.Database
 import de.markusfisch.android.libra.widget.ScaleView
 
@@ -74,7 +75,7 @@ class ArgumentsFragment : Fragment() {
 		inflater: LayoutInflater,
 		container: ViewGroup?,
 		state: Bundle?
-	): View {
+	): View? {
 		if (arguments != null) {
 			issueId = arguments.getLong(ISSUE_ID, 0)
 		}
@@ -86,7 +87,7 @@ class ArgumentsFragment : Fragment() {
 			activity.title = title
 		}
 
-		val cursor = db.getArguments(issueId)
+		val cursor = db.getArguments(issueId) ?: return null
 		adapter = ArgumentsAdapter(activity, cursor)
 
 		val view = inflater.inflate(
@@ -144,6 +145,10 @@ class ArgumentsFragment : Fragment() {
 
 	override fun onOptionsItemSelected(item: MenuItem): Boolean {
 		return when (item.itemId) {
+			R.id.share_arguments -> {
+				shareArguments()
+				true
+			}
 			R.id.edit_issue -> {
 				askForIssueName(
 					context,
@@ -163,7 +168,7 @@ class ArgumentsFragment : Fragment() {
 	}
 
 	private fun reloadList() {
-		val cursor = db.getArguments(issueId)
+		val cursor = db.getArguments(issueId) ?: return
 		adapter.changeCursor(cursor)
 		updateScale(cursor)
 	}
@@ -229,6 +234,41 @@ class ArgumentsFragment : Fragment() {
 	private fun removeArgument(id: Long) {
 		db.removeArgument(id)
 		reloadList()
+	}
+
+	private fun shareArguments() {
+		val ctx = context ?: return
+		db.getArguments(issueId, true)?.use { cursor ->
+			if (!cursor.moveToFirst()) {
+				return@shareArguments
+			}
+			val textIndex = cursor.getColumnIndex(Database.ARGUMENTS_TEXT)
+			val weightIndex = cursor.getColumnIndex(Database.ARGUMENTS_WEIGHT)
+			val sb = StringBuilder()
+			var headerWritten = false
+			do {
+				val weight = cursor.getInt(weightIndex)
+				if (weight > -1) {
+					if (headerWritten) {
+						sb.append("\n")
+					}
+					headerWritten = false
+				}
+				if (!headerWritten) {
+					sb.append(if (weight < 0) {
+						getString(R.string.header_cons)
+					} else {
+						getString(R.string.header_pros)
+					})
+					sb.append("\n")
+					headerWritten = true
+				}
+				sb.append("* %3d ".format(weight))
+				sb.append(cursor.getString(textIndex))
+				sb.append("\n")
+			} while (cursor.moveToNext())
+			shareText(ctx, sb.toString())
+		}
 	}
 
 	private fun editArgument(id: Long) {

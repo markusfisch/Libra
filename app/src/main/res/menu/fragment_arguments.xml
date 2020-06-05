@@ -2,6 +2,11 @@
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:material="http://schemas.android.com/apk/res-auto">
 	<item
+		android:id="@+id/share_arguments"
+		android:title="@string/share_arguments"
+		android:icon="@drawable/ic_action_share"
+		material:showAsAction="ifRoom"/>
+	<item
 		android:id="@+id/edit_issue"
 		android:title="@string/edit_issue"
 		android:icon="@drawable/ic_action_edit"
