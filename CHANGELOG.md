@@ -1,7 +1,12 @@
 # Change Log
 
+## 1.7.0
+* Share pros and cons as plain text
+* Add a setting to set/unset night mode manually
+* Add more detailed instructions to arguments view
+
 ## 1.6.0
-* Add Dark theme
+* Add support for night mode
 
 ## 1.5.1
 * Update app icon
