@@ -79,7 +79,7 @@ class Database {
 			FROM $ARGUMENTS
 			WHERE $ARGUMENTS_ISSUE = ?
 			ORDER BY ${if (sorted)
-			ARGUMENTS_WEIGHT else
+			"$ARGUMENTS_WEIGHT, $ARGUMENTS_ID" else
 			"$ARGUMENTS_ORDER, $ARGUMENTS_ID"}""",
 		arrayOf("$issueId")
 	)
