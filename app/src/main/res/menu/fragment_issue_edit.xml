@@ -2,6 +2,11 @@
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:material="http://schemas.android.com/apk/res-auto">
 	<item
+		android:id="@+id/duplicate_issue"
+		android:title="@string/duplicate_issue"
+		android:icon="@drawable/ic_action_duplicate"
+		material:showAsAction="ifRoom"/>
+	<item
 		android:id="@+id/edit_issue"
 		android:title="@string/edit_issue"
 		android:icon="@drawable/ic_action_edit"

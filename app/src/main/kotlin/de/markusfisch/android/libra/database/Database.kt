@@ -52,9 +52,12 @@ class Database {
 		}
 	} ?: ""
 
-	fun insertIssue(): Long {
+	fun insertIssue(name: String? = null): Long {
 		val cv = ContentValues()
 		cv.put(ISSUES_CREATED, now())
+		name?.let {
+			cv.put(ISSUES_NAME, name)
+		}
 		return db.insert(ISSUES, null, cv)
 	}
 
@@ -68,6 +71,27 @@ class Database {
 		val cv = ContentValues()
 		cv.put(ISSUES_NAME, name)
 		db.update(ISSUES, cv, "$ISSUES_ID = ?", arrayOf("$id"))
+	}
+
+	fun duplicateIssue(id: Long): Long {
+		val copy = insertIssue(getIssueName(id))
+		db.execSQL(
+			"""INSERT INTO $ARGUMENTS (
+				$ARGUMENTS_ISSUE,
+				$ARGUMENTS_TEXT,
+				$ARGUMENTS_WEIGHT,
+				$ARGUMENTS_ORDER
+			)
+			SELECT
+				?,
+				$ARGUMENTS_TEXT,
+				$ARGUMENTS_WEIGHT,
+				$ARGUMENTS_ORDER
+			FROM $ARGUMENTS
+			WHERE $ARGUMENTS_ISSUE = ?""",
+			arrayOf("$copy", "$id")
+		)
+		return copy
 	}
 
 	fun getArguments(issueId: Long, sorted: Boolean = false): Cursor? = db.rawQuery(

@@ -42,6 +42,12 @@ class IssuesFragment : Fragment() {
 			item: MenuItem
 		): Boolean {
 			return when (item.itemId) {
+				R.id.duplicate_issue -> {
+					db.duplicateIssue(adapter.selectedId)
+					updateList()
+					closeActionMode()
+					true
+				}
 				R.id.edit_issue -> {
 					askForIssueName(
 						context,
