@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v7.widget.SwitchCompat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,6 +17,7 @@ import de.markusfisch.android.libra.app.prefs
 
 class PreferencesFragment : Fragment() {
 	private lateinit var designSpinner: Spinner
+	private lateinit var sortOnInsertSwitch: SwitchCompat
 
 	override fun onCreateView(
 		inflater: LayoutInflater,
@@ -50,6 +52,12 @@ class PreferencesFragment : Fragment() {
 				}
 			}
 		}
+
+		sortOnInsertSwitch = view.findViewById(R.id.sort_on_insert)
+		sortOnInsertSwitch.setOnCheckedChangeListener { _, isChecked ->
+			prefs.sortOnInsert = isChecked
+		}
+		sortOnInsertSwitch.isChecked = prefs.sortOnInsert
 
 		return view
 	}

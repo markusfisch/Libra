@@ -28,4 +28,5 @@
 	<string name="follow_system">Entspricht dem System</string>
 	<string name="light_mode">Helles Thema</string>
 	<string name="dark_mode">Dunkles Thema</string>
+	<string name="sort_on_insert">Argumente automatisch sortieren</string>
 </resources>

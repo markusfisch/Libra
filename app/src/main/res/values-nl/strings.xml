@@ -28,4 +28,5 @@
 	<string name="follow_system">Volg systeem</string>
 	<string name="light_mode">Helder ontwerp</string>
 	<string name="dark_mode">Donker ontwerp</string>
+	<string name="sort_on_insert">Argumenten automatisch sorteren</string>
 </resources>

@@ -15,6 +15,7 @@ import android.widget.SeekBar
 import de.markusfisch.android.libra.R
 import de.markusfisch.android.libra.adapter.ArgumentsAdapter
 import de.markusfisch.android.libra.app.db
+import de.markusfisch.android.libra.app.prefs
 import de.markusfisch.android.libra.app.shareText
 import de.markusfisch.android.libra.database.Database
 import de.markusfisch.android.libra.widget.ScaleView
@@ -209,11 +210,17 @@ class ArgumentsFragment : Fragment() {
 		val weight = weightBar.progress - WEIGHT_BAR_SHIFT
 		if (adapter.selectedId > 0) {
 			db.updateArgument(adapter.selectedId, text, weight)
+			if (prefs.sortOnInsert) {
+				db.sortArguments(issueId)
+			}
 			val state = listView.onSaveInstanceState()
 			reloadList()
 			listView.onRestoreInstanceState(state)
 		} else {
 			db.insertArgument(issueId, text, weight)
+			if (prefs.sortOnInsert) {
+				db.sortArguments(issueId)
+			}
 			reloadList()
 			listView.smoothScrollToPosition(adapter.count)
 		}

@@ -8,13 +8,18 @@ import android.support.v7.app.AppCompatDelegate
 class Preferences {
 	lateinit var preferences: SharedPreferences
 
-	var design: Int = AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
+	// values need to be written immediately because the app may be about
+	// to restart when the night mode setting needs to change
+	var design = AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
 		set(value) {
-			// this needs to be written immediately because the app
-			// may be about to restart
-			commit(DESIGN, value)
+			put(DESIGN, value).commit()
 			field = value
 			AppCompatDelegate.setDefaultNightMode(value)
+		}
+	var sortOnInsert = false
+		set(value) {
+			put(SORT_ON_INSERT, value).commit()
+			field = value
 		}
 
 	fun init(context: Context) {
@@ -24,15 +29,17 @@ class Preferences {
 
 	fun update() {
 		design = preferences.getInt(DESIGN, design)
+		sortOnInsert = preferences.getBoolean(SORT_ON_INSERT, sortOnInsert)
 	}
-
-	private fun commit(label: String, value: Int) =
-		put(label, value).commit()
 
 	private fun put(label: String, value: Int) =
 		preferences.edit().putInt(label, value)
 
+	private fun put(label: String, value: Boolean) =
+		preferences.edit().putBoolean(label, value)
+
 	companion object {
 		const val DESIGN = "design"
+		const val SORT_ON_INSERT = "sort_on_insert"
 	}
 }
