@@ -15,6 +15,7 @@
 	<string name="sort_arguments">Argumente sortieren</string>
 	<string name="share_arguments">Argumente teilen</string>
 	<string name="header_pros">Pros</string>
+	<string name="header_neutral">Neutral</string>
 	<string name="header_cons">Cons</string>
 	<string name="remove_issue">Frage entfernen</string>
 	<string name="edit_issue">Name bearbeiten</string>

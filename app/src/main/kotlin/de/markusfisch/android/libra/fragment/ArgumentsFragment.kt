@@ -18,6 +18,8 @@ import de.markusfisch.android.libra.app.db
 import de.markusfisch.android.libra.app.shareText
 import de.markusfisch.android.libra.database.Database
 import de.markusfisch.android.libra.widget.ScaleView
+import kotlin.math.max
+import kotlin.math.min
 
 class ArgumentsFragment : Fragment() {
 	private val actionModeCallback = object : ActionMode.Callback {
@@ -245,23 +247,24 @@ class ArgumentsFragment : Fragment() {
 			val textIndex = cursor.getColumnIndex(Database.ARGUMENTS_TEXT)
 			val weightIndex = cursor.getColumnIndex(Database.ARGUMENTS_WEIGHT)
 			val sb = StringBuilder()
-			var headerWritten = false
+			val NO_TYPE = 2
+			var lastType = NO_TYPE
 			do {
 				val weight = cursor.getInt(weightIndex)
-				if (weight > -1) {
-					if (headerWritten) {
+				val type = max(-1, min(weight, 1))
+				if (type != lastType) {
+					val header = getString(
+						when (type) {
+							-1 -> R.string.header_cons
+							1 -> R.string.header_pros
+							else -> R.string.header_neutral
+						}
+					)
+					if (lastType != NO_TYPE) {
 						sb.append("\n")
 					}
-					headerWritten = false
-				}
-				if (!headerWritten) {
-					sb.append(if (weight < 0) {
-						getString(R.string.header_cons)
-					} else {
-						getString(R.string.header_pros)
-					})
-					sb.append("\n")
-					headerWritten = true
+					sb.append("$header\n")
+					lastType = type
 				}
 				sb.append("* %3d ".format(weight))
 				sb.append(cursor.getString(textIndex))

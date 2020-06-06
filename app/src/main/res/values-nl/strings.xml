@@ -15,6 +15,7 @@
 	<string name="sort_arguments">Argumenten sorteren</string>
 	<string name="share_arguments">Deel argumenten</string>
 	<string name="header_pros">Pros</string>
+	<string name="header_neutral">Neutral</string>
 	<string name="header_cons">Cons</string>
 	<string name="remove_issue">Probleem verwijderen</string>
 	<string name="edit_issue">Naam van probleem wijzigen</string>
