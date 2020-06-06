@@ -1,5 +1,10 @@
 # Change Log
 
+## 1.8.0
+* Add a setting to automatically sort arguments
+* Add an action item to duplicate an issue
+* Add a neutral header when sharing arguments
+
 ## 1.7.0
 * Share pros and cons as plain text
 * Add a setting to set/unset night mode manually
