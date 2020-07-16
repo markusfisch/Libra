@@ -190,11 +190,6 @@ class ArgumentsFragment : Fragment() {
 			when {
 				weight > 0 -> positive += weight
 				weight < 0 -> negative += -weight
-				else -> {
-					scaleView.setWeights(-1, -1)
-					cursor.moveToFirst()
-					return
-				}
 			}
 		} while (cursor.moveToNext())
 
