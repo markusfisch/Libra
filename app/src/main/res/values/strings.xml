@@ -16,6 +16,9 @@
 	<string name="cancel_editing">Cancel</string>
 	<string name="sort_arguments">Sort arguments</string>
 	<string name="share_arguments">Share</string>
+	<string name="share_as">Share as</string>
+	<string name="share_as_text">Text</string>
+	<string name="share_as_csv">CSV</string>
 	<string name="header_pros">Pros</string>
 	<string name="header_neutral">Neutral</string>
 	<string name="header_cons">Cons</string>

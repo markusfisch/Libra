@@ -252,18 +252,24 @@ class ArgumentsFragment : Fragment() {
 	}
 
 	private fun shareArguments() {
-		val ctx = context ?: return
-		db.getArguments(issueId, true)?.use { cursor ->
-			if (!cursor.moveToFirst()) {
-				return@shareArguments
+		AlertDialog.Builder(context)
+			.setTitle(R.string.share_as)
+			.setItems(R.array.share_options_names) { _, which ->
+				when (which) {
+					0 -> shareArgumentsAsText()
+					1 -> shareArgumentsAsCsv()
+				}
 			}
+			.show()
+	}
+
+	private fun shareArgumentsAsText() {
+		shareArgumentsAs("text/plain") { cursor ->
 			val textIndex = cursor.getColumnIndex(Database.ARGUMENTS_TEXT)
 			val weightIndex = cursor.getColumnIndex(Database.ARGUMENTS_WEIGHT)
 			val sb = StringBuilder()
 			val sumFormat = "= %3d\n"
 			var sum = 0
-			val TYPE_UNSET = 2
-			val TYPE_NEUTRAL = 0
 			var lastType = TYPE_UNSET
 			do {
 				val weight = cursor.getInt(weightIndex)
@@ -294,7 +300,39 @@ class ArgumentsFragment : Fragment() {
 			if (lastType != TYPE_NEUTRAL) {
 				sb.append(sumFormat.format(sum))
 			}
-			shareText(ctx, sb.toString())
+			sb.toString()
+		}
+	}
+
+	private fun shareArgumentsAsCsv() {
+		shareArgumentsAs("text/csv") { cursor ->
+			val delimiter = ";"
+			val columns = arrayOf(
+				Database.ARGUMENTS_TEXT,
+				Database.ARGUMENTS_WEIGHT
+			)
+			val indices = columns.map {
+				cursor.getColumnIndex(it)
+			}
+			val sb = StringBuilder()
+			sb.append(columns.joinToString(delimiter, postfix = "\n"))
+			do {
+				sb.append(cursor.toCsvRecord(indices, delimiter))
+			} while (cursor.moveToNext())
+			sb.toString()
+		}
+	}
+
+	private fun shareArgumentsAs(
+		type: String,
+		producer: (cursor: Cursor) -> String
+	) {
+		val ctx = context ?: return
+		db.getArguments(issueId, true)?.use { cursor ->
+			if (!cursor.moveToFirst()) {
+				return@shareArgumentsAs
+			}
+			shareText(ctx, producer(cursor), type)
 		}
 	}
 
@@ -330,6 +368,8 @@ class ArgumentsFragment : Fragment() {
 		private const val ISSUE_ID = "issue_id"
 		private const val ARGUMENTS_ID = "argumentId"
 		private const val WEIGHT_BAR_SHIFT = 10
+		private const val TYPE_UNSET = 2
+		private const val TYPE_NEUTRAL = 0
 
 		fun newInstance(issueId: Long): ArgumentsFragment {
 			val args = Bundle()
@@ -341,3 +381,20 @@ class ArgumentsFragment : Fragment() {
 		}
 	}
 }
+
+private fun Cursor.toCsvRecord(
+	indices: List<Int>,
+	delimiter: String
+): String {
+	val sb = StringBuilder()
+	indices.forEach {
+		sb.append(getString(it)?.quoteAndEscape() ?: "")
+		sb.append(delimiter)
+	}
+	sb.append("\n")
+	return sb.toString()
+}
+
+private fun String.quoteAndEscape() = "\"${this
+	.replace("\n", " ")
+	.replace("\"", "\"\"")}\""

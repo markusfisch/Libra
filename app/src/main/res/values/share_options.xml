@@ -1,0 +1,6 @@
+<resources>
+	<string-array name="share_options_names">
+		<item>@string/share_as_text</item>
+		<item>@string/share_as_csv</item>
+	</string-array>
+</resources>
