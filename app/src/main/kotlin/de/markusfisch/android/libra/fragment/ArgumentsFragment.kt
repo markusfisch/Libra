@@ -249,10 +249,14 @@ class ArgumentsFragment : Fragment() {
 			val textIndex = cursor.getColumnIndex(Database.ARGUMENTS_TEXT)
 			val weightIndex = cursor.getColumnIndex(Database.ARGUMENTS_WEIGHT)
 			val sb = StringBuilder()
-			val NO_TYPE = 2
-			var lastType = NO_TYPE
+			val sumFormat = "= %3d\n"
+			var sum = 0
+			val TYPE_UNSET = 2
+			val TYPE_NEUTRAL = 0
+			var lastType = TYPE_UNSET
 			do {
 				val weight = cursor.getInt(weightIndex)
+				sum += weight
 				val type = max(-1, min(weight, 1))
 				if (type != lastType) {
 					val header = getString(
@@ -262,8 +266,12 @@ class ArgumentsFragment : Fragment() {
 							else -> R.string.header_neutral
 						}
 					)
-					if (lastType != NO_TYPE) {
+					if (lastType != TYPE_UNSET) {
+						if (lastType != TYPE_NEUTRAL) {
+							sb.append(sumFormat.format(sum))
+						}
 						sb.append("\n")
+						sum = 0
 					}
 					sb.append("$header\n")
 					lastType = type
@@ -272,6 +280,9 @@ class ArgumentsFragment : Fragment() {
 				sb.append(cursor.getString(textIndex))
 				sb.append("\n")
 			} while (cursor.moveToNext())
+			if (lastType != TYPE_NEUTRAL) {
+				sb.append(sumFormat.format(sum))
+			}
 			shareText(ctx, sb.toString())
 		}
 	}

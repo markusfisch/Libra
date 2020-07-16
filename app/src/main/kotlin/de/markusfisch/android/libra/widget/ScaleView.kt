@@ -178,10 +178,10 @@ class ScaleView(context: Context) : View(context) {
 			val labelY = round(sumY + sumPaint.textSize)
 
 			sumPaint.color = negativeColor
-			canvas.drawText(negativeSum.toString(), negativeX, sumY, sumPaint)
+			canvas.drawText("$negativeSum", negativeX, sumY, sumPaint)
 			canvas.drawText(negativeSumLabel, negativeX, labelY, labelPaint)
 			sumPaint.color = positiveColor
-			canvas.drawText(positiveSum.toString(), positiveX, sumY, sumPaint)
+			canvas.drawText("$positiveSum", positiveX, sumY, sumPaint)
 			canvas.drawText(positiveSumLabel, positiveX, labelY, labelPaint)
 		}
 
