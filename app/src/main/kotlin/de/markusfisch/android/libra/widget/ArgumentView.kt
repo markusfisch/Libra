@@ -32,7 +32,7 @@ class ArgumentView : AppCompatTextView {
 	private val paint: Paint = Paint(Paint.ANTI_ALIAS_FLAG)
 	private val textPaint: Paint = Paint(Paint.ANTI_ALIAS_FLAG)
 	private val padding: Int
-	private var radius: Int
+	private val radius: Int
 	private val positiveColor: Int
 	private val negativeColor: Int
 
