@@ -307,6 +307,7 @@ class ArgumentsFragment : Fragment() {
 	private fun shareArgumentsAsCsv() {
 		shareArgumentsAs("text/csv") { cursor ->
 			val delimiter = ";"
+			val endOfRecord = "\n"
 			val columns = arrayOf(
 				Database.ARGUMENTS_TEXT,
 				Database.ARGUMENTS_WEIGHT
@@ -315,9 +316,12 @@ class ArgumentsFragment : Fragment() {
 				cursor.getColumnIndex(it)
 			}
 			val sb = StringBuilder()
-			sb.append(columns.joinToString(delimiter, postfix = "\n"))
+			sb.append(columns.joinToString(delimiter, postfix = endOfRecord))
 			do {
-				sb.append(cursor.toCsvRecord(indices, delimiter))
+				sb.append(cursor.getString(indices[0])?.quoteAndEscape())
+				sb.append(delimiter)
+				sb.append(cursor.getInt(indices[1]))
+				sb.append(endOfRecord)
 			} while (cursor.moveToNext())
 			sb.toString()
 		}
@@ -380,19 +384,6 @@ class ArgumentsFragment : Fragment() {
 			return fragment
 		}
 	}
-}
-
-private fun Cursor.toCsvRecord(
-	indices: List<Int>,
-	delimiter: String
-): String {
-	val sb = StringBuilder()
-	indices.forEach {
-		sb.append(getString(it)?.quoteAndEscape() ?: "")
-		sb.append(delimiter)
-	}
-	sb.append("\n")
-	return sb.toString()
 }
 
 private fun String.quoteAndEscape() = "\"${this
