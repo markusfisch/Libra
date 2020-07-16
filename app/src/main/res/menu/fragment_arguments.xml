@@ -2,9 +2,9 @@
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:material="http://schemas.android.com/apk/res-auto">
 	<item
-		android:id="@+id/share_arguments"
-		android:title="@string/share_arguments"
-		android:icon="@drawable/ic_action_share"
+		android:id="@+id/sort_arguments"
+		android:title="@string/sort_arguments"
+		android:icon="@drawable/ic_action_sort"
 		material:showAsAction="ifRoom"/>
 	<item
 		android:id="@+id/edit_issue"
@@ -12,8 +12,18 @@
 		android:icon="@drawable/ic_action_edit"
 		material:showAsAction="ifRoom"/>
 	<item
-		android:id="@+id/sort_arguments"
-		android:title="@string/sort_arguments"
-		android:icon="@drawable/ic_action_sort"
+		android:id="@+id/remove_issue"
+		android:title="@string/remove_issue"
+		android:icon="@drawable/ic_action_remove"
+		material:showAsAction="ifRoom"/>
+	<item
+		android:id="@+id/duplicate_issue"
+		android:title="@string/duplicate_issue"
+		android:icon="@drawable/ic_action_duplicate"
+		material:showAsAction="ifRoom"/>
+	<item
+		android:id="@+id/share_arguments"
+		android:title="@string/share_arguments"
+		android:icon="@drawable/ic_action_share"
 		material:showAsAction="ifRoom"/>
 </menu>

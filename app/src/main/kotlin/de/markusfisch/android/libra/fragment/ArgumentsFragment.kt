@@ -148,8 +148,8 @@ class ArgumentsFragment : Fragment() {
 
 	override fun onOptionsItemSelected(item: MenuItem): Boolean {
 		return when (item.itemId) {
-			R.id.share_arguments -> {
-				shareArguments()
+			R.id.sort_arguments -> {
+				sortArguments()
 				true
 			}
 			R.id.edit_issue -> {
@@ -162,8 +162,19 @@ class ArgumentsFragment : Fragment() {
 				}
 				true
 			}
-			R.id.sort_arguments -> {
-				sortArguments()
+			R.id.remove_issue -> {
+				askToRemoveIssue(context, issueId) {
+					fragmentManager?.popBackStack()
+				}
+				true
+			}
+			R.id.duplicate_issue -> {
+				db.duplicateIssue(issueId)
+				fragmentManager?.popBackStack()
+				true
+			}
+			R.id.share_arguments -> {
+				shareArguments()
 				true
 			}
 			else -> super.onOptionsItemSelected(item)

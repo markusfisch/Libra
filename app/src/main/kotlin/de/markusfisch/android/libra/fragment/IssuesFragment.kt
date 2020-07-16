@@ -60,7 +60,9 @@ class IssuesFragment : Fragment() {
 					true
 				}
 				R.id.remove_issue -> {
-					askToRemoveIssue(activity, adapter.selectedId)
+					askToRemoveIssue(activity, adapter.selectedId) {
+						updateList()
+					}
 					closeActionMode()
 					true
 				}
@@ -152,21 +154,6 @@ class IssuesFragment : Fragment() {
 		adapter.notifyDataSetChanged()
 	}
 
-	private fun askToRemoveIssue(context: Context, issueId: Long) {
-		AlertDialog.Builder(context)
-			.setMessage(R.string.really_remove_issue)
-			.setPositiveButton(android.R.string.ok) { _, _ ->
-				removeIssue(issueId)
-			}
-			.setNegativeButton(android.R.string.cancel) { _, _ -> }
-			.show()
-	}
-
-	private fun removeIssue(issueId: Long) {
-		db.removeIssue(issueId)
-		updateList()
-	}
-
 	private fun getItemText(position: Int): String? {
 		val cursor = adapter.getItem(position) as Cursor?
 		return cursor?.getString(
@@ -200,6 +187,17 @@ fun askForIssueName(
 			val name = nameView.text.toString()
 			db.updateIssueName(issueId, name)
 			update(name)
+		}
+		.setNegativeButton(android.R.string.cancel) { _, _ -> }
+		.show()
+}
+
+fun askToRemoveIssue(context: Context, issueId: Long, update: () -> Unit) {
+	AlertDialog.Builder(context)
+		.setMessage(R.string.really_remove_issue)
+		.setPositiveButton(android.R.string.ok) { _, _ ->
+			db.removeIssue(issueId)
+			update()
 		}
 		.setNegativeButton(android.R.string.cancel) { _, _ -> }
 		.show()
