@@ -81,14 +81,14 @@ class ScaleView(context: Context) : View(context) {
 		panMidX = (panWidth * .5f).roundToInt().toFloat()
 	}
 
-	fun setWeights(left: Int, right: Int) {
-		noWeights = if (left < 0 || right < 0) {
+	fun setWeights(negative: Int, positive: Int) {
+		noWeights = if (negative < 0 || positive < 0) {
 			radians = 0.0
 			true
 		} else {
 			val target = calculateBalance(
-				left.toFloat(),
-				right.toFloat()
+				negative.toFloat(),
+				positive.toFloat()
 			)
 			if (target != radians) {
 				if (visibility == VISIBLE) {
@@ -191,9 +191,9 @@ private class ScaleAnimation(
 	}
 }
 
-private fun calculateBalance(left: Float, right: Float): Double {
-	val min: Float = max(1f, min(left, right))
-	val balance: Float = right - left
+private fun calculateBalance(negative: Float, positive: Float): Double {
+	val min: Float = max(1f, min(negative, positive))
+	val balance: Float = positive - negative
 	var factor: Float = when {
 		balance == 0f -> 0f
 		balance > 0f -> min(min, balance)
