@@ -17,6 +17,8 @@ class ScaleView(context: Context) : View(context) {
 		}
 
 	private val radPerDeg = 6.283f / 360f
+	private val sumPaint = Paint(Paint.ANTI_ALIAS_FLAG)
+	private val labelPaint = Paint(Paint.ANTI_ALIAS_FLAG)
 	private val pnt = Paint(Paint.ANTI_ALIAS_FLAG)
 	private val mat = Matrix()
 	private val topMargin: Int
@@ -29,6 +31,8 @@ class ScaleView(context: Context) : View(context) {
 	private val maybeString: String
 	private val noColor: Int
 	private val noString: String
+	private val negativeSumLabel: String
+	private val positiveSumLabel: String
 	private val frame: Bitmap
 	private val frameHeight: Int
 	private val frameMidX: Float
@@ -41,11 +45,17 @@ class ScaleView(context: Context) : View(context) {
 	private val panMidX: Float
 
 	private var noWeights = false
+	private var negativeSum = 0
+	private var positiveSum = 0
 
 	init {
 		val res = context.resources
 		val dp = res.displayMetrics.density
 
+		sumPaint.textSize = 22f * dp
+		sumPaint.textAlign = Paint.Align.CENTER
+		labelPaint.textSize = 12f * dp
+		labelPaint.textAlign = Paint.Align.CENTER
 		pnt.isFilterBitmap = true
 		pnt.textSize = 12f * dp
 		topMargin = (32f * dp).roundToInt()
@@ -62,6 +72,9 @@ class ScaleView(context: Context) : View(context) {
 		maybeString = context.getString(R.string.maybe)
 		noColor = ContextCompat.getColor(context, R.color.no)
 		noString = context.getString(R.string.no)
+		labelPaint.color = ContextCompat.getColor(context, R.color.label)
+		negativeSumLabel = context.getString(R.string.negative_sum)
+		positiveSumLabel = context.getString(R.string.positive_sum)
 
 		frame = BitmapFactory.decodeResource(res, R.drawable.scale_frame)
 		val frameWidth = frame.width
@@ -82,6 +95,8 @@ class ScaleView(context: Context) : View(context) {
 	}
 
 	fun setWeights(negative: Int, positive: Int) {
+		negativeSum = negative
+		positiveSum = positive
 		noWeights = if (negative < 0 || positive < 0) {
 			radians = 0.0
 			true
@@ -127,7 +142,8 @@ class ScaleView(context: Context) : View(context) {
 	override fun onDraw(canvas: Canvas) {
 		canvas.drawColor(backgroundColor)
 
-		val centerX = (width / 2f).roundToInt().toFloat()
+		val centerX = round(width / 2f)
+		val centerY = round(height / 2f)
 		val top = topMargin.toFloat()
 
 		val alphaMod = if (noWeights) {
@@ -140,7 +156,9 @@ class ScaleView(context: Context) : View(context) {
 		}
 
 		val textPad = top * .5f
-		pnt.color = noColor and 0xffffff or alphaMod
+		val negativeColor = noColor and 0xffffff or alphaMod
+		val positiveColor = yesColor and 0xffffff or alphaMod
+		pnt.color = negativeColor
 		canvas.drawText(
 			noString,
 			centerX - frameMidX - pnt.measureText(noString),
@@ -149,8 +167,23 @@ class ScaleView(context: Context) : View(context) {
 		)
 		pnt.color = maybeColor and 0xffffff or alphaMod
 		canvas.drawText(maybeString, centerX, top - textPad * .5f, pnt)
-		pnt.color = yesColor and 0xffffff or alphaMod
+		pnt.color = positiveColor
 		canvas.drawText(yesString, centerX + frameMidX, top + textPad, pnt)
+
+		if (!noWeights) {
+			val sumPadding = scaleRadius * 2.5f
+			val negativeX = round(centerX - sumPadding)
+			val positiveX = round(centerX + sumPadding)
+			val sumY = round(centerY)
+			val labelY = round(sumY + sumPaint.textSize)
+
+			sumPaint.color = negativeColor
+			canvas.drawText(negativeSum.toString(), negativeX, sumY, sumPaint)
+			canvas.drawText(negativeSumLabel, negativeX, labelY, labelPaint)
+			sumPaint.color = positiveColor
+			canvas.drawText(positiveSum.toString(), positiveX, sumY, sumPaint)
+			canvas.drawText(positiveSumLabel, positiveX, labelY, labelPaint)
+		}
 
 		mat.setTranslate(centerX - frameMidX, top)
 		canvas.drawBitmap(frame, mat, pnt)

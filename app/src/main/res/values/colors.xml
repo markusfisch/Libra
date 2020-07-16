@@ -11,4 +11,5 @@
 	<color name="maybe">#ffcc00</color>
 	<color name="no">#ff6600</color>
 	<color name="neutral">#555</color>
+	<color name="label">#0a0a0a</color>
 </resources>

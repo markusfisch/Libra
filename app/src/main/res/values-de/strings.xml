@@ -7,6 +7,8 @@
 	<string name="yes">Ja</string>
 	<string name="maybe">Vielleicht</string>
 	<string name="no">Nein</string>
+	<string name="negative_sum">Contra</string>
+	<string name="positive_sum">Pro</string>
 	<string name="save_argument">Argument eingeben</string>
 	<string name="remove_argument">Löschen</string>
 	<string name="really_remove_argument">Argument löschen?</string>
