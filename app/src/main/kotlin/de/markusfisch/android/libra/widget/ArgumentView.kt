@@ -44,11 +44,11 @@ class ArgumentView : AppCompatTextView {
 			super(context, attrs, defStyle) {
 		val res = context.resources
 		val dp = res.displayMetrics.density
-		textPaint.textSize = dp * 12f
+		textPaint.textSize = 12f * dp
 		textPaint.typeface = Typeface.DEFAULT_BOLD
 		textPaint.color = ContextCompat.getColor(context, R.color.background_window)
-		padding = (dp * 24f).roundToInt()
-		radius = (dp * 8f).roundToInt()
+		padding = (24f * dp).roundToInt()
+		radius = (8f * dp).roundToInt()
 		positiveColor = ContextCompat.getColor(context, R.color.yes)
 		negativeColor = ContextCompat.getColor(context, R.color.no)
 	}

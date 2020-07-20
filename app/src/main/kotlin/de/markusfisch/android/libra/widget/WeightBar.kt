@@ -24,7 +24,7 @@ class WeightBar : AppCompatSeekBar {
 			super(context, attrs, defStyle) {
 		val res = context.resources
 		val dp = res.displayMetrics.density
-		textPaint.textSize = dp * 12f
+		textPaint.textSize = 12f * dp
 		positiveColor = ContextCompat.getColor(context, R.color.yes)
 		negativeColor = ContextCompat.getColor(context, R.color.no)
 		neutralColor = ContextCompat.getColor(context, R.color.neutral)
