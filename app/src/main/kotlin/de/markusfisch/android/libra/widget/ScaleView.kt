@@ -232,10 +232,13 @@ private fun calculateAngle(negative: Float, positive: Float): Float {
 	if (balance == 0f) {
 		return 0f
 	}
+	val max = max(positive, negative)
+	val min = min(positive, negative)
+	val angle = max * DOUBLE_WEIGHT_ANGLE / (min * 2f)
 	return if (positive > negative) {
-		min(MAX_ANGLE, positive * DOUBLE_WEIGHT_ANGLE / (negative * 2f))
+		min(MAX_ANGLE, angle)
 	} else {
-		max(-MAX_ANGLE, -negative * DOUBLE_WEIGHT_ANGLE / (positive * 2f))
+		max(-MAX_ANGLE, -angle)
 	}
 }
 
