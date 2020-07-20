@@ -17,7 +17,7 @@ class ScaleView(context: Context) : View(context) {
 			field = value
 		}
 
-	private val radPerDeg = 6.283f / 360f
+	private val radPerDeg = Math.PI / 180.0
 	private val sumPaint = Paint(Paint.ANTI_ALIAS_FLAG)
 	private val labelPaint = Paint(Paint.ANTI_ALIAS_FLAG)
 	private val pnt = Paint(Paint.ANTI_ALIAS_FLAG)
@@ -81,7 +81,7 @@ class ScaleView(context: Context) : View(context) {
 		val frameWidth = frame.width
 		frameHeight = frame.height
 		frameMidX = (frameWidth * .5f).roundToInt().toFloat()
-		frameAxis = (frameHeight * .4f).roundToInt().toFloat()
+		frameAxis = (frameHeight * .39f).roundToInt().toFloat()
 
 		scale = BitmapFactory.decodeResource(res, R.drawable.scale_bar)
 		val scaleWidth = scale.width
@@ -102,10 +102,10 @@ class ScaleView(context: Context) : View(context) {
 			radians = 0.0
 			true
 		} else {
-			val target = calculateBalance(
+			val target = calculateAngle(
 				negative.toFloat(),
 				positive.toFloat()
-			)
+			).toDouble()
 			if (target != radians) {
 				if (visibility == VISIBLE) {
 					animation = ScaleAnimation(this, radians, target)
@@ -202,7 +202,7 @@ class ScaleView(context: Context) : View(context) {
 		canvas.drawBitmap(pan, mat, pnt)
 
 		mat.setTranslate(centerX - scaleMidX, topAxis - scaleMidY)
-		mat.postRotate(radians.toFloat() / radPerDeg, centerX, topAxis)
+		mat.postRotate((radians / radPerDeg).toFloat(), centerX, topAxis)
 		canvas.drawBitmap(scale, mat, pnt)
 	}
 }
@@ -225,15 +225,17 @@ private class ScaleAnimation(
 	}
 }
 
-private fun calculateBalance(negative: Float, positive: Float): Double {
-	val min: Float = max(1f, min(negative, positive))
-	val balance: Float = positive - negative
-	var factor: Float = when {
-		balance == 0f -> 0f
-		balance > 0f -> min(min, balance)
-		else -> max(-min, balance)
+private const val MAX_ANGLE = 1f
+private const val DOUBLE_WEIGHT_ANGLE = .7853f
+private fun calculateAngle(negative: Float, positive: Float): Float {
+	val balance = positive - negative
+	if (balance == 0f) {
+		return 0f
 	}
-	factor /= min
-	return (.9f * factor).toDouble()
+	return if (positive > negative) {
+		min(MAX_ANGLE, positive * DOUBLE_WEIGHT_ANGLE / (negative * 2f))
+	} else {
+		max(-MAX_ANGLE, -negative * DOUBLE_WEIGHT_ANGLE / (positive * 2f))
+	}
 }
 
