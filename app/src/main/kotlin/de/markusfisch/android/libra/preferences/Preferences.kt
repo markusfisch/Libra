@@ -16,6 +16,11 @@ class Preferences {
 			field = value
 			AppCompatDelegate.setDefaultNightMode(value)
 		}
+	var showSums = true
+		set(value) {
+			put(SHOW_SUMS, value).commit()
+			field = value
+		}
 	var sortOnInsert = false
 		set(value) {
 			put(SORT_ON_INSERT, value).commit()
@@ -29,6 +34,7 @@ class Preferences {
 
 	fun update() {
 		design = preferences.getInt(DESIGN, design)
+		showSums = preferences.getBoolean(SHOW_SUMS, showSums)
 		sortOnInsert = preferences.getBoolean(SORT_ON_INSERT, sortOnInsert)
 	}
 
@@ -40,6 +46,7 @@ class Preferences {
 
 	companion object {
 		const val DESIGN = "design"
+		const val SHOW_SUMS = "show_sums"
 		const val SORT_ON_INSERT = "sort_on_insert"
 	}
 }

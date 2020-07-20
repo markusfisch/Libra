@@ -17,6 +17,7 @@ import de.markusfisch.android.libra.app.prefs
 
 class PreferencesFragment : Fragment() {
 	private lateinit var designSpinner: Spinner
+	private lateinit var showSumsSwitch: SwitchCompat
 	private lateinit var sortOnInsertSwitch: SwitchCompat
 
 	override fun onCreateView(
@@ -52,6 +53,12 @@ class PreferencesFragment : Fragment() {
 				}
 			}
 		}
+
+		showSumsSwitch = view.findViewById(R.id.show_sums)
+		showSumsSwitch.setOnCheckedChangeListener { _, isChecked ->
+			prefs.showSums = isChecked
+		}
+		showSumsSwitch.isChecked = prefs.showSums
 
 		sortOnInsertSwitch = view.findViewById(R.id.sort_on_insert)
 		sortOnInsertSwitch.setOnCheckedChangeListener { _, isChecked ->

@@ -7,6 +7,7 @@ import android.view.View
 import android.view.animation.Animation
 import android.view.animation.Transformation
 import de.markusfisch.android.libra.R
+import de.markusfisch.android.libra.app.prefs
 import kotlin.math.*
 
 class ScaleView(context: Context) : View(context) {
@@ -170,7 +171,7 @@ class ScaleView(context: Context) : View(context) {
 		pnt.color = positiveColor
 		canvas.drawText(yesString, centerX + frameMidX, top + textPad, pnt)
 
-		if (!noWeights) {
+		if (prefs.showSums && !noWeights) {
 			val sumPadding = scaleRadius * 2.5f
 			val negativeX = round(centerX - sumPadding)
 			val positiveX = round(centerX + sumPadding)
