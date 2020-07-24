@@ -176,8 +176,22 @@ class ScaleView(context: Context) : View(context) {
 			val positiveX = round(centerX + sumPadding)
 			val sumY = round(centerY)
 
-			drawSum(canvas, "$negativeSum", negativeX, sumY, negativeColor)
-			drawSum(canvas, "$positiveSum", positiveX, sumY, positiveColor)
+			drawSum(
+				canvas,
+				"$negativeSum",
+				negativeX,
+				sumY,
+				negativeColor,
+				-radians
+			)
+			drawSum(
+				canvas,
+				"$positiveSum",
+				positiveX,
+				sumY,
+				positiveColor,
+				radians
+			)
 		}
 
 		mat.setTranslate(centerX - frameMidX, top)
@@ -205,13 +219,17 @@ class ScaleView(context: Context) : View(context) {
 		text: String,
 		x: Float,
 		y: Float,
-		color: Int
+		color: Int,
+		size: Double
 	) {
 		textPaint.getTextBounds(text, 0, text.length, textBounds)
 		val cx = textBounds.centerX().toFloat()
 		val cy = textBounds.centerY().toFloat()
+		val pad = scaleRadius * .3f
+		val range = scaleRadius * .1f
+		val radius = max(cx, cy) + pad + size.toFloat() * range
 		pnt.color = color
-		canvas.drawCircle(x, y, max(cx, cy) + scaleRadius * .2f, pnt)
+		canvas.drawCircle(x, y, radius, pnt)
 		canvas.drawText(text, x - cx, y - cy, textPaint)
 	}
 }
