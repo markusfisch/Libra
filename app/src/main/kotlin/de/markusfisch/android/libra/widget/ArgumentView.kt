@@ -8,6 +8,7 @@ import android.graphics.Rect
 import android.graphics.Typeface
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.AppCompatTextView
+import android.text.TextPaint
 import android.util.AttributeSet
 import android.view.Gravity
 import de.markusfisch.android.libra.R
@@ -29,8 +30,9 @@ class ArgumentView : AppCompatTextView {
 			field = value
 		}
 
-	private val paint: Paint = Paint(Paint.ANTI_ALIAS_FLAG)
-	private val textPaint: Paint = Paint(Paint.ANTI_ALIAS_FLAG)
+	private val paint = Paint(Paint.ANTI_ALIAS_FLAG)
+	private val textPaint = TextPaint(Paint.ANTI_ALIAS_FLAG)
+	private val textBounds = Rect()
 	private val padding: Int
 	private val radius: Int
 	private val positiveColor: Int
@@ -95,12 +97,11 @@ class ArgumentView : AppCompatTextView {
 			paint
 		)
 		val s = abs(min(weight, 10)).toString()
-		val bounds = Rect()
-		textPaint.getTextBounds(s, 0, s.length, bounds)
+		textPaint.getTextBounds(s, 0, s.length, textBounds)
 		canvas.drawText(
 			s,
-			(x - bounds.centerX()).toFloat(),
-			(base - bounds.centerY()).toFloat(),
+			(x - textBounds.centerX()).toFloat(),
+			(base - textBounds.centerY()).toFloat(),
 			textPaint
 		)
 	}

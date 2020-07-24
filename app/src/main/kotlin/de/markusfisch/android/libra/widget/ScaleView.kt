@@ -3,6 +3,7 @@ package de.markusfisch.android.libra.widget
 import android.content.Context
 import android.graphics.*
 import android.support.v4.content.ContextCompat
+import android.text.TextPaint
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.Transformation
@@ -18,8 +19,8 @@ class ScaleView(context: Context) : View(context) {
 		}
 
 	private val radPerDeg = Math.PI / 180.0
-	private val sumPaint = Paint(Paint.ANTI_ALIAS_FLAG)
-	private val labelPaint = Paint(Paint.ANTI_ALIAS_FLAG)
+	private val textPaint = TextPaint(Paint.ANTI_ALIAS_FLAG)
+	private val textBounds = Rect()
 	private val pnt = Paint(Paint.ANTI_ALIAS_FLAG)
 	private val mat = Matrix()
 	private val topMargin: Int
@@ -53,10 +54,8 @@ class ScaleView(context: Context) : View(context) {
 		val res = context.resources
 		val dp = res.displayMetrics.density
 
-		sumPaint.textSize = 22f * dp
-		sumPaint.textAlign = Paint.Align.CENTER
-		labelPaint.textSize = 12f * dp
-		labelPaint.textAlign = Paint.Align.CENTER
+		textPaint.typeface = Typeface.DEFAULT_BOLD
+		textPaint.textSize = 22f * dp
 		pnt.isFilterBitmap = true
 		pnt.textSize = 12f * dp
 		topMargin = (32f * dp).roundToInt()
@@ -73,7 +72,7 @@ class ScaleView(context: Context) : View(context) {
 		maybeString = context.getString(R.string.maybe)
 		noColor = ContextCompat.getColor(context, R.color.no)
 		noString = context.getString(R.string.no)
-		labelPaint.color = ContextCompat.getColor(context, R.color.label)
+		textPaint.color = ContextCompat.getColor(context, R.color.background_window)
 		negativeSumLabel = context.getString(R.string.negative_sum)
 		positiveSumLabel = context.getString(R.string.positive_sum)
 
@@ -176,14 +175,9 @@ class ScaleView(context: Context) : View(context) {
 			val negativeX = round(centerX - sumPadding)
 			val positiveX = round(centerX + sumPadding)
 			val sumY = round(centerY)
-			val labelY = round(sumY + sumPaint.textSize)
 
-			sumPaint.color = negativeColor
-			canvas.drawText("$negativeSum", negativeX, sumY, sumPaint)
-			canvas.drawText(negativeSumLabel, negativeX, labelY, labelPaint)
-			sumPaint.color = positiveColor
-			canvas.drawText("$positiveSum", positiveX, sumY, sumPaint)
-			canvas.drawText(positiveSumLabel, positiveX, labelY, labelPaint)
+			drawSum(canvas, "$negativeSum", negativeX, sumY, negativeColor)
+			drawSum(canvas, "$positiveSum", positiveX, sumY, positiveColor)
 		}
 
 		mat.setTranslate(centerX - frameMidX, top)
@@ -204,6 +198,21 @@ class ScaleView(context: Context) : View(context) {
 		mat.setTranslate(centerX - scaleMidX, topAxis - scaleMidY)
 		mat.postRotate((radians / radPerDeg).toFloat(), centerX, topAxis)
 		canvas.drawBitmap(scale, mat, pnt)
+	}
+
+	private fun drawSum(
+		canvas: Canvas,
+		text: String,
+		x: Float,
+		y: Float,
+		color: Int
+	) {
+		textPaint.getTextBounds(text, 0, text.length, textBounds)
+		val cx = textBounds.centerX().toFloat()
+		val cy = textBounds.centerY().toFloat()
+		pnt.color = color
+		canvas.drawCircle(x, y, max(cx, cy) + scaleRadius * .2f, pnt)
+		canvas.drawText(text, x - cx, y - cy, textPaint)
 	}
 }
 
