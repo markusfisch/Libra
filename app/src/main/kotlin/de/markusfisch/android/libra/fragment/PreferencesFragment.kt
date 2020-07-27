@@ -2,104 +2,70 @@ package de.markusfisch.android.libra.fragment
 
 import android.app.Activity
 import android.content.Intent
+import android.content.SharedPreferences
+import android.content.SharedPreferences.OnSharedPreferenceChangeListener
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v7.widget.SwitchCompat
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.Spinner
+import android.support.v7.preference.ListPreference
+import android.support.v7.preference.Preference
+import android.support.v7.preference.PreferenceFragmentCompat
+import android.support.v7.preference.PreferenceGroup
 import de.markusfisch.android.libra.R
 import de.markusfisch.android.libra.activity.MainActivity
 import de.markusfisch.android.libra.app.prefs
+import de.markusfisch.android.libra.preferences.Preferences
 
-class PreferencesFragment : Fragment() {
-	private lateinit var designSpinner: Spinner
-	private lateinit var showSumsSwitch: SwitchCompat
-	private lateinit var sortOnInsertSwitch: SwitchCompat
-
-	override fun onCreateView(
-		inflater: LayoutInflater,
-		container: ViewGroup?,
-		state: Bundle?
-	): View? {
-		activity?.setTitle(R.string.preferences)
-
-		val view = inflater.inflate(
-			R.layout.fragment_preferences,
-			container,
-			false
-		)
-
-		designSpinner = view.findViewById(R.id.design)
-		designSpinner.apply {
-			init(R.array.design_names)
-			setValue(R.array.design_values, prefs.design.toString())
-			onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-				val values = resources.getStringArray(R.array.design_values)
-
-				override fun onNothingSelected(parent: AdapterView<*>?) {
-				}
-
-				override fun onItemSelected(
-					parent: AdapterView<*>?,
-					view: View?,
-					position: Int,
-					id: Long
-				) {
-					updateDesign(values[position].toInt())
-				}
+class PreferencesFragment : PreferenceFragmentCompat() {
+	private val changeListener = object : OnSharedPreferenceChangeListener {
+		override fun onSharedPreferenceChanged(
+			sharedPreferences: SharedPreferences,
+			key: String
+		) {
+			val preference = findPreference(key) ?: return
+			val design = prefs.design
+			prefs.update()
+			setSummary(preference)
+			if (Preferences.DESIGN == key && design != prefs.design) {
+				// setDefaultNightMode() in AppCompat 1.1.0 will automatically
+				// update the app but since I want to keep the minSdk, I need
+				// to restart the whole app to make sure the night mode setting
+				// takes effect. Simply recreating the Activity doesn't work
+				// when returning to MODE_NIGHT_FOLLOW_SYSTEM.
+				restartApp(activity)
 			}
 		}
-
-		showSumsSwitch = view.findViewById(R.id.show_sums)
-		showSumsSwitch.setOnCheckedChangeListener { _, isChecked ->
-			prefs.showSums = isChecked
-		}
-		showSumsSwitch.isChecked = prefs.showSums
-
-		sortOnInsertSwitch = view.findViewById(R.id.sort_on_insert)
-		sortOnInsertSwitch.setOnCheckedChangeListener { _, isChecked ->
-			prefs.sortOnInsert = isChecked
-		}
-		sortOnInsertSwitch.isChecked = prefs.sortOnInsert
-
-		return view
 	}
 
-	private fun updateDesign(mode: Int) {
-		if (mode != prefs.design) {
-			prefs.design = mode
-			// setDefaultNightMode() in AppCompat 1.1.0 will automatically
-			// update the app but since I want to keep the minSdk, I need
-			// to restart the whole app to make sure the night mode setting
-			// takes effect. Simply recreating the Activity doesn't work
-			// when returning to MODE_NIGHT_FOLLOW_SYSTEM.
-			restartApp(activity)
+	override fun onCreatePreferences(state: Bundle?, rootKey: String?) {
+		addPreferencesFromResource(R.xml.preferences)
+	}
+
+	override fun onResume() {
+		super.onResume()
+		preferenceScreen
+			.sharedPreferences
+			.registerOnSharedPreferenceChangeListener(changeListener)
+		setSummaries(preferenceScreen)
+	}
+
+	override fun onPause() {
+		super.onPause()
+		preferenceScreen
+			.sharedPreferences
+			.unregisterOnSharedPreferenceChangeListener(changeListener)
+	}
+
+	private fun setSummary(preference: Preference) {
+		if (preference is ListPreference) {
+			preference.setSummary(preference.entry)
+		} else if (preference is PreferenceGroup) {
+			setSummaries(preference)
 		}
 	}
-}
 
-private fun Spinner.init(namesId: Int) {
-	adapter = ArrayAdapter.createFromResource(
-		context,
-		namesId,
-		android.R.layout.simple_spinner_item
-	).apply {
-		setDropDownViewResource(
-			android.R.layout.simple_spinner_dropdown_item
-		)
-	}
-}
-
-private fun Spinner.setValue(valuesId: Int, value: String) {
-	val values = resources.getStringArray(valuesId)
-	for (i in values.indices) {
-		if (values[i] == value) {
-			setSelection(i)
-			return
+	private fun setSummaries(screen: PreferenceGroup) {
+		var i = screen.preferenceCount
+		while (i-- > 0) {
+			setSummary(screen.getPreference(i))
 		}
 	}
 }

@@ -6,6 +6,7 @@
 	<supports-screens
 		android:largeScreens="true"
 		android:xlargeScreens="true"/>
+	<uses-sdk tools:overrideLibrary="android.support.v14.preference"/>
 	<application
 		tools:ignore="UnusedAttribute"
 		android:name=".app.LibraApp"

@@ -44,5 +44,7 @@ android {
 dependencies {
 	implementation "com.android.support:appcompat-v7:$support_version"
 	implementation "com.android.support:design:$support_version"
+	implementation "com.android.support:preference-v7:$support_version"
+	implementation "com.android.support:preference-v14:$support_version"
 	implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 }

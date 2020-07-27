@@ -1,0 +1,25 @@
+<PreferenceScreen
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:title="@string/preferences"
+	android:key="preferences">
+	<PreferenceCategory android:title="@string/design">
+		<ListPreference
+			android:key="design_string"
+			android:title="@string/design"
+			android:entries="@array/design_names"
+			android:entryValues="@array/design_values"
+			android:defaultValue="-1"/>
+	</PreferenceCategory>
+	<PreferenceCategory android:title="@string/arguments">
+		<android.support.v7.preference.SwitchPreferenceCompat
+			android:defaultValue="true"
+			android:key="show_sums"
+			android:title="@string/show_sums"
+			android:summary="@string/show_sums_summary"/>
+		<android.support.v7.preference.SwitchPreferenceCompat
+			android:defaultValue="false"
+			android:key="sort_on_insert"
+			android:title="@string/sort_on_insert"
+			android:summary="@string/sort_on_insert_summary"/>
+	</PreferenceCategory>
+</PreferenceScreen>
