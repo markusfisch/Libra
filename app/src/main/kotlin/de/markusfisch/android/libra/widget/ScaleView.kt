@@ -55,7 +55,7 @@ class ScaleView(context: Context) : View(context) {
 		val dp = res.displayMetrics.density
 
 		textPaint.typeface = Typeface.DEFAULT_BOLD
-		textPaint.textSize = 22f * dp
+		textPaint.textSize = 18f * dp
 		pnt.isFilterBitmap = true
 		pnt.textSize = 12f * dp
 		topMargin = (32f * dp).roundToInt()
@@ -225,9 +225,9 @@ class ScaleView(context: Context) : View(context) {
 		textPaint.getTextBounds(text, 0, text.length, textBounds)
 		val cx = textBounds.centerX().toFloat()
 		val cy = textBounds.centerY().toFloat()
-		val pad = scaleRadius * .3f
-		val range = scaleRadius * .1f
-		val radius = max(cx, cy) + pad + size.toFloat() * range
+		val range = scaleRadius * .05f
+		val base = scaleRadius * .15f + range
+		val radius = max(cx, cy) + base + range * size.toFloat()
 		pnt.color = color
 		canvas.drawCircle(x, y, radius, pnt)
 		canvas.drawText(text, x - cx, y - cy, textPaint)
