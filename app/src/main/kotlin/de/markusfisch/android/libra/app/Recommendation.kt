@@ -15,7 +15,7 @@ enum class Recommendation {
 				INCOMPLETE
 			} else if (positive >= ng * 2) {
 				YES
-			} else if (positive > ng) {
+			} else if (positive >= ng) {
 				MAYBE
 			} else {
 				NO
