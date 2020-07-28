@@ -29,10 +29,12 @@
 	<string name="enter_name">Voer een nieuwe naam in</string>
 	<string name="enter_name_hint">Waar gaat dit over?</string>
 	<string name="preferences">Voorkeuren</string>
+	<string name="appearance_category">VERSCHIJNING</string>
 	<string name="design">Design</string>
 	<string name="follow_system">Volg systeem</string>
 	<string name="light_mode">Helder ontwerp</string>
 	<string name="dark_mode">Donker ontwerp</string>
+	<string name="arguments_category">VOOR- EN NADELEN</string>
 	<string name="show_sums">Totalen weergeven</string>
 	<string name="show_sums_summary">Toon de som van positieve en negatieve argumenten</string>
 	<string name="sort_on_insert">Argumenten automatisch sorteren</string>
