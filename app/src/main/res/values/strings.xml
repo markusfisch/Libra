@@ -1,4 +1,5 @@
 <resources>
+	<string name="app_name">Decisions</string>
 	<string name="issues">Issues</string>
 	<string name="arguments">Pros and cons</string>
 	<string name="recommendation">Recommendation</string>
