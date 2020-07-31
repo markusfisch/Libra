@@ -1,0 +1,8 @@
+Write down pros and cons, then weigh all arguments and get a recommendation based on this Time Article:
+http://time.com/3772262/billionaire-trick-for-decisions/
+
+This is open source:
+https://github.com/markusfisch/Libra
+
+Please report bugs here:
+https://github.com/markusfisch/Libra/issues

@@ -10,12 +10,14 @@ Inspired by this [Time article][trick-for-decisions].
 
 ## Screenshots
 
-<img
-	src="https://raw.githubusercontent.com/markusfisch/Libra/gh-pages/screencap-arguments.png"
-	alt="Screenshot Arguments" width="160"/>
-<img
-	src="https://raw.githubusercontent.com/markusfisch/Libra/gh-pages/screencap-issues.png"
-	alt="Screenshot Issues" width="160"/>
+<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/screencap-arguments-light.png"
+	alt="Screenshot Arguments Light Theme" width="160"/>
+<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/screencap-issues-light.png"
+	alt="Screenshot Issues Light Theme" width="160"/>
+<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/screencap-arguments-dark.png"
+	alt="Screenshot Arguments Dark Theme" width="160"/>
+<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/screencap-issues-dark.png"
+	alt="Screenshot Issues Dark Theme" width="160"/>
 
 ## Download
 
