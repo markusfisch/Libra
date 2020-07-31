@@ -1,5 +1,14 @@
 # Change Log
 
+## 1.9.0
+* Show sums of negative/positive arguments
+* Share arguments as text or CSV
+* Add speech bubbles around arguments
+* Add total sums for pros/cons when sharing an issue
+* Add remove and duplicate actions to arguments fragment
+* Count zero weights as 0
+* Improve preferences screen
+
 ## 1.8.0
 * Add a setting to automatically sort arguments
 * Add an action item to duplicate an issue
