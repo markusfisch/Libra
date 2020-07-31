@@ -1,13 +1,11 @@
-<de.markusfisch.android.libra.widget.ArgumentView
+<RelativeLayout
 	xmlns:android="http://schemas.android.com/apk/res/android"
-	android:id="@+id/text"
 	android:background="@drawable/list_selector"
 	android:layout_width="match_parent"
 	android:layout_height="wrap_content"
-	android:gravity="center"
-	android:paddingTop="16dp"
-	android:paddingBottom="16dp"
-	android:paddingLeft="54dp"
-	android:paddingStart="54dp"
-	android:paddingRight="54dp"
-	android:paddingEnd="54dp"/>
+	android:padding="4dp">
+	<de.markusfisch.android.libra.widget.ArgumentView
+		android:id="@+id/text"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"/>
+</RelativeLayout>
