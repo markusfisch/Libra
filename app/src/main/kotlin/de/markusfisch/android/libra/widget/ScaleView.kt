@@ -223,15 +223,23 @@ class ScaleView(context: Context) : View(context) {
 		size: Double
 	) {
 		textPaint.getTextBounds(text, 0, text.length, textBounds)
-		val cx = textBounds.centerX().toFloat()
-		val cy = textBounds.centerY().toFloat()
 		val range = scaleRadius * .05f
-		val base = scaleRadius * .15f + range
-		val radius = max(cx, cy) + base + range * size.toFloat()
+		val base = scaleRadius * .1f + range
+		val radius = textBounds.diagonal().toFloat() * .5f +
+				base +
+				range * size.toFloat()
 		pnt.color = color
 		canvas.drawCircle(x, y, radius, pnt)
+		val cx = textBounds.centerX().toFloat()
+		val cy = textBounds.centerY().toFloat()
 		canvas.drawText(text, x - cx, y - cy, textPaint)
 	}
+}
+
+private fun Rect.diagonal(): Double {
+	val dx = width().toDouble()
+	val dy = height().toDouble()
+	return sqrt(dx * dx + dy * dy)
 }
 
 private class ScaleAnimation(
