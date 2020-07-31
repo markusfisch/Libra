@@ -33,8 +33,8 @@
 	<string name="appearance_category">AUSSEHEN</string>
 	<string name="design">Design</string>
 	<string name="follow_system">Entspricht dem System</string>
-	<string name="light_mode">Helles Thema</string>
-	<string name="dark_mode">Dunkles Thema</string>
+	<string name="light_mode">Helles Design</string>
+	<string name="dark_mode">Dunkles Design</string>
 	<string name="arguments_category">PRO UND CONTRA</string>
 	<string name="show_sums">Summen anzeigen</string>
 	<string name="show_sums_summary">Summe der positiven und negativen Argumente anzeigen</string>
