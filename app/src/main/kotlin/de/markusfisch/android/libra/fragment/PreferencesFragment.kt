@@ -37,6 +37,7 @@ class PreferencesFragment : PreferenceFragmentCompat() {
 
 	override fun onCreatePreferences(state: Bundle?, rootKey: String?) {
 		addPreferencesFromResource(R.xml.preferences)
+		activity?.setTitle(R.string.preferences)
 	}
 
 	override fun onResume() {
