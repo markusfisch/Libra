@@ -16,6 +16,7 @@
 	<string name="really_remove_issue">Wil je het probleem verwijderen?</string>
 	<string name="cancel_editing">Annuleren</string>
 	<string name="sort_arguments">Argumenten sorteren</string>
+	<string name="unsort_arguments">Herstel de invoervolgorde</string>
 	<string name="share_arguments">Deel</string>
 	<string name="share_as">Deel als</string>
 	<string name="share_as_text">Tekst</string>

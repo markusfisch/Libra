@@ -148,10 +148,6 @@ class ArgumentsFragment : Fragment() {
 
 	override fun onOptionsItemSelected(item: MenuItem): Boolean {
 		return when (item.itemId) {
-			R.id.sort_arguments -> {
-				sortArguments()
-				true
-			}
 			R.id.edit_issue -> {
 				askForIssueName(
 					context,
@@ -160,6 +156,14 @@ class ArgumentsFragment : Fragment() {
 				) { title ->
 					activity?.title = title
 				}
+				true
+			}
+			R.id.sort_arguments -> {
+				sortArguments()
+				true
+			}
+			R.id.unsort_arguments -> {
+				unsortArguments()
 				true
 			}
 			R.id.remove_issue -> {
@@ -356,6 +360,11 @@ class ArgumentsFragment : Fragment() {
 
 	private fun sortArguments() {
 		db.sortArguments(issueId)
+		reloadList()
+	}
+
+	private fun unsortArguments() {
+		db.restoreArgumentInputOrder(issueId)
 		reloadList()
 	}
 

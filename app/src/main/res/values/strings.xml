@@ -16,6 +16,7 @@
 	<string name="really_remove_issue">Remove issue?</string>
 	<string name="cancel_editing">Cancel</string>
 	<string name="sort_arguments">Sort arguments</string>
+	<string name="unsort_arguments">Restore input order</string>
 	<string name="share_arguments">Share</string>
 	<string name="share_as">Share as</string>
 	<string name="share_as_text">Text</string>

@@ -157,6 +157,17 @@ class Database {
 		)
 	}
 
+	fun restoreArgumentInputOrder(issueId: Long) {
+		// execSQL() instead of update() because we can't use column
+		// names in values of ContentValues; another leaking abstraction
+		db.execSQL(
+			"""UPDATE $ARGUMENTS
+				SET $ARGUMENTS_ORDER = $ARGUMENTS_ID
+				WHERE $ARGUMENTS_ISSUE = ?""",
+			arrayOf("$issueId")
+		)
+	}
+
 	private class OpenHelper(context: Context) :
 		SQLiteOpenHelper(context, "arguments.db", null, 1) {
 		override fun onCreate(db: SQLiteDatabase) {

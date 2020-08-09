@@ -16,6 +16,7 @@
 	<string name="really_remove_issue">Frage löschen?</string>
 	<string name="cancel_editing">Abbrechen</string>
 	<string name="sort_arguments">Argumente sortieren</string>
+	<string name="unsort_arguments">Eingabereihenfolge wiederherstellen</string>
 	<string name="share_arguments">Teilen</string>
 	<string name="share_as">Teilen als</string>
 	<string name="share_as_text">Text</string>
