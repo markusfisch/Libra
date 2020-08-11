@@ -1,0 +1,3 @@
+* Animate scale
+* Moved cancel & delete in contextual action mode menu
+

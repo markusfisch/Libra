@@ -1,0 +1,2 @@
+* Replaced rastered icons with vector drawables
+

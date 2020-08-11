@@ -1,0 +1,8 @@
+* Show sums of negative/positive arguments
+* Share arguments as text or CSV
+* Add speech bubbles around arguments
+* Add total sums for pros/cons when sharing an issue
+* Add remove and duplicate actions to arguments fragment
+* Count zero weights as 0
+* Improve preferences screen
+

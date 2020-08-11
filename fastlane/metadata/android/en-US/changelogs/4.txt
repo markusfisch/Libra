@@ -1,0 +1,3 @@
+* Contextual action menu to edit/remove issues
+* Highlight selected list items
+

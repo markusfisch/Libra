@@ -1,0 +1,4 @@
+* Add a setting to automatically sort arguments
+* Add an action item to duplicate an issue
+* Add a neutral header when sharing arguments
+

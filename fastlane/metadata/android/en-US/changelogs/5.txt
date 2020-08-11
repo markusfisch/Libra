@@ -1,0 +1,5 @@
+* Fixed initialization of scale view
+* Fixed using contextual action mode before Honeycomb
+* Fixed input background before Honeycomb
+* Fixed soft keyboard not opening before Honeycomb
+

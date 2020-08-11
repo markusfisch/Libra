@@ -1,0 +1,4 @@
+* Share pros and cons as plain text
+* Add a setting to set/unset night mode manually
+* Add more detailed instructions to arguments view
+

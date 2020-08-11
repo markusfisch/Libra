@@ -1,0 +1,7 @@
+* Rename to Decisions
+* Replace swiping over list items with SeekBar
+* New icon design
+* Add Dutch translation
+* Improve animation
+* Improve UI colors
+

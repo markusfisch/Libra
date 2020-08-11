@@ -1,0 +1,5 @@
+* Added an explicit save button for argument input
+* Moved cancel & delete icons in a bar above argument input
+* Transfer argument input state over orientation changes
+* Better choice of words for german translation
+* Additional empty issues background image
