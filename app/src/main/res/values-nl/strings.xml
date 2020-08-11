@@ -10,6 +10,8 @@
 	<string name="no">Nee</string>
 	<string name="negative_sum">Voordelen</string>
 	<string name="positive_sum">Nadelen</string>
+	<string name="move_up">Verplaats naar boven</string>
+	<string name="move_down">Verplaats naar beneden</string>
 	<string name="save_argument">Voer een argument in</string>
 	<string name="remove_argument">Verwijderen</string>
 	<string name="really_remove_argument">Wil je het argument verwijderen?</string>

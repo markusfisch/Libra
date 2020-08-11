@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.math.*
 
 class Database {
 	data class Argument(val text: String, val weight: Int)
@@ -94,7 +95,10 @@ class Database {
 		return copy
 	}
 
-	fun getArguments(issueId: Long, sorted: Boolean = false): Cursor? = db.rawQuery(
+	fun getArguments(
+		issueId: Long,
+		sortedByWeight: Boolean = false
+	): Cursor? = db.rawQuery(
 		"""SELECT
 			$ARGUMENTS_ID,
 			$ARGUMENTS_TEXT,
@@ -102,7 +106,7 @@ class Database {
 			$ARGUMENTS_ORDER
 			FROM $ARGUMENTS
 			WHERE $ARGUMENTS_ISSUE = ?
-			ORDER BY ${if (sorted)
+			ORDER BY ${if (sortedByWeight)
 			"$ARGUMENTS_WEIGHT, $ARGUMENTS_ID" else
 			"$ARGUMENTS_ORDER, $ARGUMENTS_ID"}""",
 		arrayOf("$issueId")
@@ -166,6 +170,53 @@ class Database {
 				WHERE $ARGUMENTS_ISSUE = ?""",
 			arrayOf("$issueId")
 		)
+	}
+
+	fun moveArgument(issueId: Long, argumentId: Long, places: Int) {
+		getArguments(issueId)?.use {
+			if (!it.moveToFirst()) {
+				return
+			}
+			val idColumn = it.getColumnIndex(ARGUMENTS_ID)
+			var currentPos = -1
+			var i = 0
+			do {
+				if (it.getLong(idColumn) == argumentId) {
+					currentPos = i
+					break
+				}
+				++i
+			} while (it.moveToNext())
+			val newPos = currentPos + places
+			if (currentPos < 0 ||
+				min(it.count - 1, max(0, newPos)) == currentPos ||
+				!it.moveToFirst()
+			) {
+				return
+			}
+			val shift = if (places < 0) 1 else -1
+			val start = min(newPos, currentPos)
+			val stop = max(newPos, currentPos)
+			i = 0
+			do {
+				val id = it.getLong(idColumn)
+				val cv = ContentValues()
+				cv.put(
+					ARGUMENTS_ORDER,
+					if (i >= start && i <= stop) {
+						if (id == argumentId) {
+							newPos
+						} else {
+							i + shift
+						}
+					} else {
+						i
+					}
+				)
+				db.update(ARGUMENTS, cv, "$ARGUMENTS_ID = ?", arrayOf("$id"))
+				++i
+			} while (it.moveToNext())
+		}
 	}
 
 	private class OpenHelper(context: Context) :

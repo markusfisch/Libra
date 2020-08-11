@@ -47,6 +47,14 @@ class ArgumentsFragment : Fragment() {
 			item: MenuItem
 		): Boolean {
 			return when (item.itemId) {
+				R.id.move_argument_up -> {
+					moveArgument(adapter.selectedId, -1)
+					true
+				}
+				R.id.move_argument_down -> {
+					moveArgument(adapter.selectedId, 1)
+					true
+				}
 				R.id.remove_argument -> {
 					askToRemoveArgument(activity, adapter.selectedId)
 					closeActionMode()
@@ -365,6 +373,14 @@ class ArgumentsFragment : Fragment() {
 
 	private fun unsortArguments() {
 		db.restoreArgumentInputOrder(issueId)
+		reloadList()
+	}
+
+	private fun moveArgument(argumentId: Long, places: Int) {
+		if (places == 0) {
+			return
+		}
+		db.moveArgument(issueId, argumentId, places)
 		reloadList()
 	}
 

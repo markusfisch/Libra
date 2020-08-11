@@ -10,6 +10,8 @@
 	<string name="no">No</string>
 	<string name="negative_sum">Cons</string>
 	<string name="positive_sum">Pros</string>
+	<string name="move_up">Move up</string>
+	<string name="move_down">Move down</string>
 	<string name="save_argument">Enter argument</string>
 	<string name="remove_argument">Remove</string>
 	<string name="really_remove_argument">Remove argument?</string>

@@ -2,6 +2,16 @@
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:material="http://schemas.android.com/apk/res-auto">
 	<item
+		android:id="@+id/move_argument_up"
+		android:title="@string/move_up"
+		android:icon="@drawable/ic_action_move_up"
+		material:showAsAction="ifRoom"/>
+	<item
+		android:id="@+id/move_argument_down"
+		android:title="@string/move_down"
+		android:icon="@drawable/ic_action_move_down"
+		material:showAsAction="ifRoom"/>
+	<item
 		android:id="@+id/remove_argument"
 		android:title="@string/remove_argument"
 		android:icon="@drawable/ic_action_remove"
