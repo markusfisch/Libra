@@ -1,5 +1,9 @@
 # Change Log
 
+## 1.10.0
+* Add action items to manually sort items
+* Add menu item to restore original input order
+
 ## 1.9.0
 * Show sums of negative/positive arguments
 * Share arguments as text or CSV
