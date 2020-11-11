@@ -71,7 +71,7 @@ class PreferencesFragment : PreferenceFragmentCompat() {
 	}
 }
 
-fun restartApp(activity: Activity? = null) {
+private fun restartApp(activity: Activity? = null) {
 	if (activity != null) {
 		val intent = Intent(activity, MainActivity::class.java)
 		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
