@@ -1,0 +1,8 @@
+Écrivez les avantages et inconvénients, puis pondérez les arguments et recevez une recommandation basée sur cet article du Time :
+http://time.com/3772262/billionaire-trick-for-decisions/
+
+L’application est libre :
+https://github.com/markusfisch/Libra
+
+Veuillez rapporter vos anomalies ici :
+https://github.com/markusfisch/Libra/issues
