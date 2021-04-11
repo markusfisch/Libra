@@ -1,0 +1,8 @@
+Anota los pros y los contras, luego balancea todos los argumentos y obtén una recomendación basada en este artículo de Time:
+http://time.com/3772262/billionaire-trick-for-decisions/
+
+Este es de código abierto:
+https://github.com/markusfisch/Libra
+
+Reporta algún error por acá:
+https://github.com/markusfisch/Libra/issues
