@@ -1,5 +1,8 @@
 # Change Log
 
+## 1.11.0
+* Add French translation
+
 ## 1.10.0
 * Add action items to manually sort items
 * Add menu item to restore original input order

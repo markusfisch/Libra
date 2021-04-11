@@ -1,0 +1,3 @@
+* Ajout d’une action permettant d’ordonner manuellement les éléments
+* Ajout d’un élément de menu permettant de rétablir l’ordre original de saisie
+
