@@ -1,0 +1,14 @@
+<resources>
+	<plurals name="minutes_ago">
+		<item quantity="one">Hace %d minuto</item>
+		<item quantity="other">Hace %d minuto</item>
+	</plurals>
+	<plurals name="hours_ago">
+		<item quantity="one">Hace %d hora</item>
+		<item quantity="other">Hace %d horas</item>
+	</plurals>
+	<plurals name="days_ago">
+		<item quantity="one">Ayer</item>
+		<item quantity="other">Hace %d días</item>
+	</plurals>
+</resources>
