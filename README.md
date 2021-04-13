@@ -21,6 +21,11 @@ Inspired by this [Time article][trick-for-decisions].
 
 ## Download
 
-<a href="https://play.google.com/store/apps/details?id=de.markusfisch.android.libra"><img alt="Get it on Google Play" src="https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png" height="80"/></a>
+[<img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png"
+     alt="Get it on F-Droid"
+     height="80">](https://f-droid.org/packages/de.markusfisch.android.libra/)
+[<img src="https://play.google.com/intl/en_us/badges/images/generic/en-play-badge.png"
+     alt="Get it on Google Play"
+     height="80">](https://play.google.com/store/apps/details?id=de.markusfisch.android.libra)
 
 [trick-for-decisions]: http://time.com/3772262/billionaire-trick-for-decisions/
