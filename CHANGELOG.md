@@ -1,5 +1,8 @@
 # Change Log
 
+## 1.12.0
+* Add Spanish translation
+
 ## 1.11.0
 * Add French translation
 
