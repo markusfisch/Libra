@@ -356,7 +356,10 @@ class ArgumentsFragment : Fragment() {
 		adapter.selectedId = id
 		db.getArgument(id)?.let {
 			weightBar.progress = it.weight + WEIGHT_BAR_SHIFT
-			argumentInput.setText(it.text)
+			argumentInput.apply {
+				setText(it.text)
+				setSelection(it.text.length)
+			}
 		} ?: return
 		val a = activity
 		if (actionMode == null && a is AppCompatActivity) {
