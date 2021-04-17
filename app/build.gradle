@@ -10,8 +10,8 @@ android {
 		minSdkVersion 9
 		targetSdkVersion sdk_version
 
-		versionCode 16
-		versionName "1.12.0"
+		versionCode 17
+		versionName "1.12.1"
 	}
 
 	signingConfigs {
