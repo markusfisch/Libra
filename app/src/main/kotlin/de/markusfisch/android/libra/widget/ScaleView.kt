@@ -236,11 +236,10 @@ class ScaleView(context: Context) : View(context) {
 	}
 }
 
-private fun Rect.diagonal(): Double {
-	val dx = width().toDouble()
-	val dy = height().toDouble()
-	return sqrt(dx * dx + dy * dy)
-}
+private fun Rect.diagonal(): Float = hypot(
+	width().toFloat(),
+	height().toFloat()
+)
 
 private class ScaleAnimation(
 	val scaleView: ScaleView,
