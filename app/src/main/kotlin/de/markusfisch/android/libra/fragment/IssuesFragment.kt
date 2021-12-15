@@ -132,7 +132,7 @@ class IssuesFragment : Fragment() {
 	override fun onOptionsItemSelected(item: MenuItem): Boolean {
 		return when (item.itemId) {
 			R.id.preferences -> {
-				addFragment(fragmentManager, PreferencesFragment())
+				fragmentManager?.addFragment(PreferencesFragment())
 				true
 			}
 			else -> super.onOptionsItemSelected(item)
@@ -141,10 +141,7 @@ class IssuesFragment : Fragment() {
 
 	private fun showArguments(id: Long) {
 		closeActionMode()
-		addFragment(
-			fragmentManager,
-			ArgumentsFragment.newInstance(id)
-		)
+		fragmentManager?.addFragment(ArgumentsFragment.newInstance(id))
 	}
 
 	private fun closeActionMode() {

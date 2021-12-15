@@ -26,9 +26,9 @@ class MainActivity : AppCompatActivity() {
 		initToolbar()
 
 		if (state == null) {
-			setFragment(supportFragmentManager, IssuesFragment())
+			supportFragmentManager?.setFragment(IssuesFragment())
 			if (intent?.getBooleanExtra(OPEN_PREFERENCES, false) == true) {
-				addFragment(supportFragmentManager, PreferencesFragment())
+				supportFragmentManager?.addFragment(PreferencesFragment())
 			}
 		}
 	}
