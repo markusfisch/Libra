@@ -7,7 +7,8 @@ import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.math.*
+import kotlin.math.max
+import kotlin.math.min
 
 class Database {
 	data class Argument(val text: String, val weight: Int)
@@ -34,7 +35,7 @@ class Database {
 					WHERE a.$ARGUMENTS_ISSUE = d.$ISSUES_ID AND
 						a.$ARGUMENTS_WEIGHT > 0) AS $ISSUES_POSITIVE
 				FROM $ISSUES AS d
-				ORDER BY d.$ISSUES_CREATED DESC""",
+				ORDER BY d.$ISSUES_CREATED DESC""".trimMargin(),
 			null
 		)
 	}
@@ -43,7 +44,7 @@ class Database {
 		"""SELECT
 			$ISSUES_NAME
 			FROM $ISSUES
-			WHERE $ISSUES_ID = ?""",
+			WHERE $ISSUES_ID = ?""".trimMargin(),
 		arrayOf("$id")
 	)?.use {
 		if (it.moveToFirst()) {
@@ -89,7 +90,7 @@ class Database {
 				$ARGUMENTS_WEIGHT,
 				$ARGUMENTS_ORDER
 			FROM $ARGUMENTS
-			WHERE $ARGUMENTS_ISSUE = ?""",
+			WHERE $ARGUMENTS_ISSUE = ?""".trimMargin(),
 			arrayOf("$copy", "$id")
 		)
 		return copy
@@ -106,9 +107,11 @@ class Database {
 			$ARGUMENTS_ORDER
 			FROM $ARGUMENTS
 			WHERE $ARGUMENTS_ISSUE = ?
-			ORDER BY ${if (sortedByWeight)
-			"$ARGUMENTS_WEIGHT, $ARGUMENTS_ID" else
-			"$ARGUMENTS_ORDER, $ARGUMENTS_ID"}""",
+			ORDER BY ${
+			if (sortedByWeight)
+				"$ARGUMENTS_WEIGHT, $ARGUMENTS_ID" else
+				"$ARGUMENTS_ORDER, $ARGUMENTS_ID"
+		}""".trimMargin(),
 		arrayOf("$issueId")
 	)
 
@@ -117,7 +120,7 @@ class Database {
 			$ARGUMENTS_TEXT,
 			$ARGUMENTS_WEIGHT
 			FROM $ARGUMENTS
-			WHERE $ARGUMENTS_ID = ?""",
+			WHERE $ARGUMENTS_ID = ?""".trimMargin(),
 		arrayOf("$id")
 	)?.use {
 		if (it.moveToFirst()) {
@@ -156,7 +159,7 @@ class Database {
 		db.execSQL(
 			"""UPDATE $ARGUMENTS
 				SET $ARGUMENTS_ORDER = $ARGUMENTS_WEIGHT
-				WHERE $ARGUMENTS_ISSUE = ?""",
+				WHERE $ARGUMENTS_ISSUE = ?""".trimMargin(),
 			arrayOf("$issueId")
 		)
 	}
@@ -167,7 +170,7 @@ class Database {
 		db.execSQL(
 			"""UPDATE $ARGUMENTS
 				SET $ARGUMENTS_ORDER = $ARGUMENTS_ID
-				WHERE $ARGUMENTS_ISSUE = ?""",
+				WHERE $ARGUMENTS_ISSUE = ?""".trimMargin(),
 			arrayOf("$issueId")
 		)
 	}
@@ -251,32 +254,30 @@ class Database {
 		const val ARGUMENTS_ORDER = "sort_order"
 
 		private fun createIssues(db: SQLiteDatabase) {
-			db.execSQL("DROP TABLE IF EXISTS $ISSUES")
+			db.execSQL("DROP TABLE IF EXISTS $ISSUES".trimMargin())
 			db.execSQL(
 				"""CREATE TABLE $ISSUES (
 					$ISSUES_ID INTEGER PRIMARY KEY AUTOINCREMENT,
 					$ISSUES_NAME TEXT,
-					$ISSUES_CREATED DATETIME)"""
+					$ISSUES_CREATED DATETIME)""".trimMargin()
 			)
 		}
 
 		private fun createArguments(db: SQLiteDatabase) {
-			db.execSQL("DROP TABLE IF EXISTS $ARGUMENTS")
+			db.execSQL("DROP TABLE IF EXISTS $ARGUMENTS".trimMargin())
 			db.execSQL(
 				"""CREATE TABLE $ARGUMENTS (
 					$ARGUMENTS_ID INTEGER PRIMARY KEY AUTOINCREMENT,
 					$ARGUMENTS_ISSUE INTEGER,
 					$ARGUMENTS_TEXT TEXT NOT NULL,
 					$ARGUMENTS_WEIGHT INTEGER,
-					$ARGUMENTS_ORDER INTEGER)"""
+					$ARGUMENTS_ORDER INTEGER)""".trimMargin()
 			)
 		}
 	}
 }
 
-fun now(): String {
-	return SimpleDateFormat(
-		"yyyy-MM-dd HH:mm:ss",
-		Locale.US
-	).format(Date())
-}
+private fun now(): String = SimpleDateFormat(
+	"yyyy-MM-dd HH:mm:ss",
+	Locale.US
+).format(Date())
