@@ -1,5 +1,8 @@
 # Change Log
 
+## 1.12.2
+* Update Dutch translation
+
 ## 1.12.1
 * Set cursor at the end of an argument when editing
 
