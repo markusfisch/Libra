@@ -2,12 +2,12 @@ package de.markusfisch.android.libra.activity
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.Toolbar
 import de.markusfisch.android.libra.R
 import de.markusfisch.android.libra.app.addFragment
 import de.markusfisch.android.libra.app.setFragment
 import de.markusfisch.android.libra.fragment.IssuesFragment
 import de.markusfisch.android.libra.fragment.PreferencesFragment
-import kotlinx.android.synthetic.main.toolbar.*
 
 class MainActivity : AppCompatActivity() {
 	override fun onSupportNavigateUp(): Boolean {
@@ -34,7 +34,7 @@ class MainActivity : AppCompatActivity() {
 	}
 
 	private fun initToolbar() {
-		setSupportActionBar(toolbar)
+		setSupportActionBar(findViewById(R.id.toolbar) as Toolbar)
 		supportFragmentManager.addOnBackStackChangedListener {
 			updateUpArrow()
 		}
