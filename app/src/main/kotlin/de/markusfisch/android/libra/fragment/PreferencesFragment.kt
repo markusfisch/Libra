@@ -30,7 +30,7 @@ class PreferencesFragment : PreferenceFragmentCompat() {
 				// to restart the whole app to make sure the night mode setting
 				// takes effect. Simply recreating the Activity doesn't work
 				// when returning to MODE_NIGHT_FOLLOW_SYSTEM.
-				restartApp(activity)
+				activity?.restartApp()
 			}
 		}
 	}
@@ -71,13 +71,13 @@ class PreferencesFragment : PreferenceFragmentCompat() {
 	}
 }
 
-private fun restartApp(activity: Activity? = null) {
-	if (activity != null) {
-		val intent = Intent(activity, MainActivity::class.java)
-		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-		intent.putExtra(MainActivity.OPEN_PREFERENCES, true)
-		activity.startActivity(intent)
-		activity.finish()
-	}
+private fun Activity.restartApp() {
+	startActivity(
+		Intent(this, MainActivity::class.java).apply {
+			addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+			putExtra(MainActivity.OPEN_PREFERENCES, true)
+		}
+	)
+	finish()
 	Runtime.getRuntime().exit(0)
 }
