@@ -26,6 +26,7 @@
 	<string name="header_pros">Ventajas</string>
 	<string name="header_neutral">Neutral</string>
 	<string name="header_cons">Desventajas</string>
+	<string name="add_issue">Agregar incidente</string>
 	<string name="duplicate_issue">Duplicar incidente</string>
 	<string name="remove_issue">Borrar incidente</string>
 	<string name="edit_issue">Renombrar incidente</string>

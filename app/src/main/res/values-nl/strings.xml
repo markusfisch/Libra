@@ -26,6 +26,7 @@
 	<string name="header_pros">Voordelen</string>
 	<string name="header_neutral">Neutraal</string>
 	<string name="header_cons">Nadelen</string>
+	<string name="add_issue">Nieuw probleem</string>
 	<string name="duplicate_issue">Dubbel probleem</string>
 	<string name="remove_issue">Probleem verwijderen</string>
 	<string name="edit_issue">Probleemnaam wijzigen</string>

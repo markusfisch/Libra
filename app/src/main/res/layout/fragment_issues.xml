@@ -39,5 +39,6 @@
 		android:layout_alignParentBottom="true"
 		android:layout_margin="20dp"
 		android:src="@drawable/ic_action_add"
+		android:contentDescription="@string/"
 		app:elevation="4dp"/>
 </RelativeLayout>

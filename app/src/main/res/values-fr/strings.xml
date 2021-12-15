@@ -26,6 +26,7 @@
 	<string name="header_pros">Avantages</string>
 	<string name="header_neutral">Neutre</string>
 	<string name="header_cons">Inconvénients</string>
+	<string name="add_issue">Ajouter la problématique</string>
 	<string name="duplicate_issue">Dupliquer la problématique</string>
 	<string name="remove_issue">Supprimer la problématique</string>
 	<string name="edit_issue">Renommer la problématique</string>
