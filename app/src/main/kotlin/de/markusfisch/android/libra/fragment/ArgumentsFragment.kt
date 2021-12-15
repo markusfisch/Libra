@@ -348,7 +348,7 @@ class ArgumentsFragment : Fragment() {
 			if (!cursor.moveToFirst()) {
 				return@shareArgumentsAs
 			}
-			shareText(ctx, producer(cursor), type)
+			ctx.shareText(producer(cursor), type)
 		}
 	}
 
