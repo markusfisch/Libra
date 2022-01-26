@@ -10,6 +10,16 @@ import java.util.*
 import kotlin.math.max
 import kotlin.math.min
 
+fun Cursor.getString(name: String): String {
+	val idx = getColumnIndex(name)
+	return if (idx < 0) "" else getString(idx)
+}
+
+fun Cursor.getInt(name: String): Int {
+	val idx = getColumnIndex(name)
+	return if (idx < 0) 0 else getInt(idx)
+}
+
 class Database {
 	data class Argument(val text: String, val weight: Int)
 
@@ -48,7 +58,7 @@ class Database {
 		arrayOf("$id")
 	)?.use {
 		if (it.moveToFirst()) {
-			it.getString(it.getColumnIndex(ISSUES_NAME))
+			it.getString(ISSUES_NAME)
 		} else {
 			null
 		}
@@ -125,8 +135,8 @@ class Database {
 	)?.use {
 		if (it.moveToFirst()) {
 			Argument(
-				it.getString(it.getColumnIndex(ARGUMENTS_TEXT)),
-				it.getInt(it.getColumnIndex(ARGUMENTS_WEIGHT))
+				it.getString(ARGUMENTS_TEXT),
+				it.getInt(ARGUMENTS_WEIGHT)
 			)
 		} else {
 			null
@@ -181,6 +191,9 @@ class Database {
 				return
 			}
 			val idColumn = it.getColumnIndex(ARGUMENTS_ID)
+			if (idColumn < 0) {
+				return
+			}
 			var currentPos = -1
 			var i = 0
 			do {

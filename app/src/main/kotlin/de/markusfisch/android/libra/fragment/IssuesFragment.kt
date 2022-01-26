@@ -16,6 +16,7 @@ import de.markusfisch.android.libra.adapter.IssuesAdapter
 import de.markusfisch.android.libra.app.addFragment
 import de.markusfisch.android.libra.app.db
 import de.markusfisch.android.libra.database.Database
+import de.markusfisch.android.libra.database.getString
 
 class IssuesFragment : Fragment() {
 	private val actionModeCallback = object : ActionMode.Callback {
@@ -153,11 +154,7 @@ class IssuesFragment : Fragment() {
 
 	private fun getItemText(position: Int): String? {
 		val cursor = adapter.getItem(position) as Cursor?
-		return cursor?.getString(
-			cursor.getColumnIndex(
-				Database.ISSUES_NAME
-			)
-		)
+		return cursor?.getString(Database.ISSUES_NAME)
 	}
 
 	private fun updateList() {
