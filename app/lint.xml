@@ -5,4 +5,9 @@
 	<issue id="UnusedResources">
 		<ignore path="src/main/res/"/>
 	</issue>
+	<!-- Androidx SplashScreen compat library would require minSdk 21,
+		make the app unnecessarily larger and Android 12 automatically
+		replaces our custom splash screen anyway, which is exactly what
+		we want. So there is no reason to complain. -->
+	<issue id="CustomSplashScreen" severity="ignore"/>
 </lint>
