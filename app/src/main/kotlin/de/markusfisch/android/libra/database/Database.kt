@@ -219,7 +219,7 @@ class Database {
 				val cv = ContentValues()
 				cv.put(
 					ARGUMENTS_ORDER,
-					if (i >= start && i <= stop) {
+					if (i in start..stop) {
 						if (id == argumentId) {
 							newPos
 						} else {
