@@ -12,7 +12,7 @@ import kotlin.math.min
 
 fun Cursor.getString(name: String): String {
 	val idx = getColumnIndex(name)
-	return if (idx < 0) "" else getString(idx)
+	return if (idx < 0) "" else getString(idx) ?: ""
 }
 
 fun Cursor.getInt(name: String): Int {
