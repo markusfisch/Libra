@@ -225,7 +225,7 @@ class ScaleView(context: Context) : View(context) {
 		textPaint.getTextBounds(text, 0, text.length, textBounds)
 		val range = scaleRadius * .05f
 		val base = scaleRadius * .15f + range
-		val radius = textBounds.diagonal().toFloat() * .5f +
+		val radius = textBounds.diagonal() * .5f +
 				base +
 				range * size.toFloat()
 		pnt.color = color
