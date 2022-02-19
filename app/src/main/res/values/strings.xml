@@ -41,7 +41,7 @@
 	<string name="dark_mode">Dark Mode</string>
 	<string name="arguments_category">ARGUMENTS</string>
 	<string name="show_sums">Show sums</string>
-	<string name="show_sums_summary">Summe der positiven und negativen Argumente anzeigen</string>
+	<string name="show_sums_summary">Show sums of negatives and positives arguments</string>
 	<string name="sort_on_insert">Sort arguments automatically</string>
-	<string name="sort_on_insert_summary">Summe der positiven und negativen Argumente anzeigen</string>
+	<string name="sort_on_insert_summary">Arguments are automatically sorted by weight when added</string>
 </resources>
