@@ -1,14 +1,17 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 	<plurals name="minutes_ago">
 		<item quantity="one">Il y a %d minute</item>
+		<item quantity="many">Il y a %d minutes</item>
 		<item quantity="other">Il y a %d minutes</item>
 	</plurals>
 	<plurals name="hours_ago">
 		<item quantity="one">Il y a %d heure</item>
+		<item quantity="many">Il y a %d heures</item>
 		<item quantity="other">Il y a %d heures</item>
 	</plurals>
 	<plurals name="days_ago">
 		<item quantity="one" tools:ignore="ImpliedQuantity">Hier</item>
+		<item quantity="many">Il y a %d jours</item>
 		<item quantity="other">Il y a %d jours</item>
 	</plurals>
 </resources>
