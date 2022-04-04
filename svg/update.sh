@@ -109,8 +109,8 @@ EOF
 
 # drawable SVGs to PNGs
 update app/src/main/res/drawable << EOF
-svg/ic_empty_arguments.svg 174x128
-svg/ic_empty_issues.svg 200x175
+svg/empty_arguments.svg 174x128
+svg/empty_issues.svg 200x175
 svg/ic_splash.svg 128
 svg/scale_bar.svg 102x68
 svg/scale_frame.svg 96x142
@@ -119,8 +119,8 @@ EOF
 
 # drawable SVGs to PNGs
 update app/src/main/res/drawable-night << EOF
-svg/night/ic_empty_arguments.svg 174x128
-svg/night/ic_empty_issues.svg 200x175
+svg/night/empty_arguments.svg 174x128
+svg/night/empty_issues.svg 200x175
 svg/night/ic_splash.svg 128
 svg/night/scale_bar.svg 102x68
 svg/night/scale_frame.svg 96x142
