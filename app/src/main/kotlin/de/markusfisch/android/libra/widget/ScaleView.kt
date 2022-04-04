@@ -9,6 +9,7 @@ import android.view.animation.Animation
 import android.view.animation.Transformation
 import de.markusfisch.android.libra.R
 import de.markusfisch.android.libra.app.prefs
+import de.markusfisch.android.libra.graphics.getBitmapFromDrawable
 import kotlin.math.*
 
 class ScaleView(context: Context) : View(context) {
@@ -76,20 +77,20 @@ class ScaleView(context: Context) : View(context) {
 		negativeSumLabel = context.getString(R.string.negative_sum)
 		positiveSumLabel = context.getString(R.string.positive_sum)
 
-		frame = BitmapFactory.decodeResource(res, R.drawable.scale_frame)
+		frame = res.getBitmapFromDrawable(R.drawable.scale_frame)
 		val frameWidth = frame.width
 		frameHeight = frame.height
 		frameMidX = (frameWidth * .5f).roundToInt().toFloat()
 		frameAxis = (frameHeight * .39f).roundToInt().toFloat()
 
-		scale = BitmapFactory.decodeResource(res, R.drawable.scale_bar)
+		scale = res.getBitmapFromDrawable(R.drawable.scale_bar)
 		val scaleWidth = scale.width
 		val scaleHeight = scale.height
 		scaleMidX = (scaleWidth * .5f).roundToInt().toFloat()
 		scaleMidY = (scaleHeight * .5f).roundToInt().toFloat()
 		scaleRadius = (scaleWidth * .48f).roundToInt().toFloat()
 
-		pan = BitmapFactory.decodeResource(res, R.drawable.scale_pan)
+		pan = res.getBitmapFromDrawable(R.drawable.scale_pan)
 		val panWidth = pan.width
 		panMidX = (panWidth * .5f).roundToInt().toFloat()
 	}
