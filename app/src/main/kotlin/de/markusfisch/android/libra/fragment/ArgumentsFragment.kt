@@ -18,6 +18,7 @@ import de.markusfisch.android.libra.app.db
 import de.markusfisch.android.libra.app.prefs
 import de.markusfisch.android.libra.app.shareText
 import de.markusfisch.android.libra.database.Database
+import de.markusfisch.android.libra.database.use
 import de.markusfisch.android.libra.widget.ScaleView
 import kotlin.math.max
 import kotlin.math.min
