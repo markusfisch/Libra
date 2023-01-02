@@ -1,5 +1,10 @@
 # Change Log
 
+## 1.12.3
+* Add a monochome launcher icon
+* Add Brazilian Portuguese translation
+* Fix English and French translations
+
 ## 1.12.2
 * Update Dutch translation
 
