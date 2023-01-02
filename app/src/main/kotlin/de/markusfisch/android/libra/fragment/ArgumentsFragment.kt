@@ -415,6 +415,8 @@ class ArgumentsFragment : Fragment() {
 	}
 }
 
-private fun String.quoteAndEscape() = "\"${this
-	.replace("\n", " ")
-	.replace("\"", "\"\"")}\""
+private fun String.quoteAndEscape() = "\"${
+	this
+		.replace("\n", " ")
+		.replace("\"", "\"\"")
+}\""
