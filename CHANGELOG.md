@@ -1,5 +1,8 @@
 # Change Log
 
+## 1.12.4
+* Fix calculating sums when sharing arguments
+
 ## 1.12.3
 * Add a monochome launcher icon
 * Add Brazilian Portuguese translation
