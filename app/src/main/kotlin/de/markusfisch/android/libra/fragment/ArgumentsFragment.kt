@@ -286,7 +286,6 @@ class ArgumentsFragment : Fragment() {
 			var lastType = TYPE_UNSET
 			do {
 				val weight = cursor.getInt(weightIndex)
-				sum += weight
 				val type = max(-1, min(weight, 1))
 				if (type != lastType) {
 					val header = getString(
@@ -306,6 +305,7 @@ class ArgumentsFragment : Fragment() {
 					sb.append("$header\n")
 					lastType = type
 				}
+				sum += weight
 				sb.append("* %3d ".format(weight))
 				sb.append(cursor.getString(textIndex))
 				sb.append("\n")
