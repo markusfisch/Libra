@@ -1,0 +1,2 @@
+* Set cursor at the end of an argument when editing
+

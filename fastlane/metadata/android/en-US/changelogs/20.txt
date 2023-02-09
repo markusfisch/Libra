@@ -1,0 +1,2 @@
+* Fix calculating sums when sharing arguments
+

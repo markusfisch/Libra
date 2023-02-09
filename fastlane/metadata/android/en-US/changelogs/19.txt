@@ -1,0 +1,4 @@
+* Add a monochome launcher icon
+* Add Brazilian Portuguese translation
+* Fix English and French translations
+
