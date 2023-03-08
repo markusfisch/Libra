@@ -1,0 +1,20 @@
+<resources>
+	<plurals name="minutes_ago">
+		<item quantity="one">%d минуту назад</item>
+		<item quantity="few">%d минуты назад</item>
+		<item quantity="many">%d минуты назад</item>
+		<item quantity="other">%d минуты назад</item>
+	</plurals>
+	<plurals name="hours_ago">
+		<item quantity="one">%d час назад</item>
+		<item quantity="few">%d часа назад</item>
+		<item quantity="many">%d часа назад</item>
+		<item quantity="other">%d часа назад</item>
+	</plurals>
+	<plurals name="days_ago">
+		<item quantity="one">%d день назад</item>
+		<item quantity="few">%d дня назад</item>
+		<item quantity="many">%d дня назад</item>
+		<item quantity="other">%d дня назад</item>
+	</plurals>
+</resources>

@@ -1,0 +1,14 @@
+<resources>
+	<plurals name="minutes_ago">
+		<item quantity="one">%d minuut geleden</item>
+		<item quantity="other">%d minuten geleden</item>
+	</plurals>
+	<plurals name="hours_ago">
+		<item quantity="one">%d uur geleden</item>
+		<item quantity="other">%d uur geleden</item>
+	</plurals>
+	<plurals name="days_ago">
+		<item quantity="one">Gisteren</item>
+		<item quantity="other">%d dagen geleden</item>
+	</plurals>
+</resources>
