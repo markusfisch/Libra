@@ -108,7 +108,13 @@ class IssuesFragment : Fragment() {
 		}
 		listView.setOnItemLongClickListener { _, v, position, id ->
 			v.isSelected = true
-			editIssue(id,position)
+			adapter.select(id, position)
+			val a = activity
+			if (actionMode == null && a is AppCompatActivity) {
+				actionMode = a.delegate.startSupportActionMode(
+					actionModeCallback
+				)
+			}
 			true
 		}
 
@@ -116,30 +122,8 @@ class IssuesFragment : Fragment() {
 		addButton.setOnClickListener {
 			showArguments(db.insertIssue())
 		}
-		if (state != null) {
-			val id = state.getLong(ISSUES_ID, 0)
-			val position = state.getInt(POSITION_ID,0)
-			if (id > 0) {
-				editIssue(id, position)
-			}
-		}
 
 		return view
-	}
-
-	private fun editIssue(id: Long, position: Int) {
-		adapter.select(id, position)
-		val a = activity
-		if (actionMode == null && a is AppCompatActivity) {
-			actionMode = a.delegate.startSupportActionMode(
-				actionModeCallback
-			)
-		}
-	}
-
-	override fun onSaveInstanceState(outState: Bundle) {
-		outState.putLong(ISSUES_ID, adapter.selectedId)
-		outState.putInt(POSITION_ID, adapter.selectedPosition)
 	}
 
 	override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -175,11 +159,6 @@ class IssuesFragment : Fragment() {
 
 	private fun updateList() {
 		adapter.changeCursor(db.getIssues())
-	}
-
-	companion object{
-		private const val ISSUES_ID = "issuesID"
-		private const val POSITION_ID = "positionID"
 	}
 }
 
