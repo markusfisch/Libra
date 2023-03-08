@@ -108,7 +108,7 @@ class IssuesFragment : Fragment() {
 		}
 		listView.setOnItemLongClickListener { _, v, position, id ->
 			v.isSelected = true
-			editIssue(id,position)
+			editIssue(id, position)
 			true
 		}
 
@@ -118,7 +118,7 @@ class IssuesFragment : Fragment() {
 		}
 		if (state != null) {
 			val id = state.getLong(ISSUES_ID, 0)
-			val position = state.getInt(POSITION_ID,0)
+			val position = state.getInt(POSITION_ID, 0)
 			if (id > 0) {
 				editIssue(id, position)
 			}
@@ -177,7 +177,7 @@ class IssuesFragment : Fragment() {
 		adapter.changeCursor(db.getIssues())
 	}
 
-	companion object{
+	companion object {
 		private const val ISSUES_ID = "issuesID"
 		private const val POSITION_ID = "positionID"
 	}
