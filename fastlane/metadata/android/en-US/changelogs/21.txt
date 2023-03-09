@@ -1,0 +1,4 @@
+* Fix loss of selection when rotating the screen
+* Add Russian translation
+* Update Dutch translation
+

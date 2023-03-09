@@ -1,5 +1,10 @@
 # Change Log
 
+## 1.12.5
+* Fix loss of selection when rotating the screen
+* Add Russian translation
+* Update Dutch translation
+
 ## 1.12.4
 * Fix calculating sums when sharing arguments
 
