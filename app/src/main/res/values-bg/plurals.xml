@@ -1,0 +1,14 @@
+<resources>
+	<plurals name="minutes_ago">
+		<item quantity="one">преди %d минута</item>
+		<item quantity="other">преди %d минути</item>
+	</plurals>
+	<plurals name="hours_ago">
+		<item quantity="one">преди %d час</item>
+		<item quantity="other">преди %d часа</item>
+	</plurals>
+	<plurals name="days_ago">
+		<item quantity="one">вчера</item>
+		<item quantity="other">преди %d дена</item>
+	</plurals>
+</resources>
