@@ -1,5 +1,8 @@
 # Change Log
 
+## 1.12.6
+* Add Bulgarian translation
+
 ## 1.12.5
 * Fix loss of selection when rotating the screen
 * Add Russian translation
