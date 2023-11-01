@@ -17,9 +17,10 @@ import de.markusfisch.android.libra.preferences.Preferences
 class PreferencesFragment : PreferenceFragmentCompat() {
 	private val changeListener = object : OnSharedPreferenceChangeListener {
 		override fun onSharedPreferenceChanged(
-			sharedPreferences: SharedPreferences,
-			key: String
+			sharedPreferences: SharedPreferences?,
+			key: String?
 		) {
+			key ?: return
 			val preference = findPreference(key) ?: return
 			val design = prefs.design
 			prefs.update()
