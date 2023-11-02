@@ -46,4 +46,5 @@ dependencies {
 	implementation "com.android.support:preference-v7:$support_version"
 	implementation "com.android.support:preference-v14:$support_version"
 	implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+	implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4"
 }

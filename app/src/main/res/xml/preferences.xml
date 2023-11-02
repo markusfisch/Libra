@@ -22,4 +22,16 @@
 			android:title="@string/sort_on_insert"
 			android:summary="@string/sort_on_insert_summary"/>
 	</PreferenceCategory>
+	<PreferenceCategory
+		android:key="import_export"
+		android:title="@string/import_export">
+		<Preference
+			android:key="export_database"
+			android:title="@string/export_database"
+			android:summary="@string/export_database_summary"/>
+		<Preference
+			android:key="import_database"
+			android:title="@string/import_database"
+			android:summary="@string/import_database_summary"/>
+	</PreferenceCategory>
 </PreferenceScreen>

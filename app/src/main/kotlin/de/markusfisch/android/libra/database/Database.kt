@@ -2,9 +2,15 @@ package de.markusfisch.android.libra.database
 
 import android.content.ContentValues
 import android.content.Context
+import android.content.ContextWrapper
 import android.database.Cursor
+import android.database.DatabaseErrorHandler
+import android.database.SQLException
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import de.markusfisch.android.libra.R
+import de.markusfisch.android.libra.database.Database.Companion.issueExists
+import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.math.max
@@ -225,8 +231,12 @@ class Database {
 		}
 	}
 
+	fun importDatabase(context: Context, fileName: String): String? {
+		return db.importDatabase(context, fileName)
+	}
+
 	private class OpenHelper(context: Context) :
-		SQLiteOpenHelper(context, "arguments.db", null, 1) {
+		SQLiteOpenHelper(context, FILE_NAME, null, 1) {
 		override fun onCreate(db: SQLiteDatabase) {
 			createIssues(db)
 			createArguments(db)
@@ -241,6 +251,8 @@ class Database {
 	}
 
 	companion object {
+		const val FILE_NAME = "arguments.db"
+
 		const val ISSUES = "issues"
 		const val ISSUES_ID = "_id"
 		const val ISSUES_NAME = "name"
@@ -277,6 +289,161 @@ class Database {
 					$ARGUMENTS_ORDER INTEGER)""".trimMargin()
 			)
 		}
+
+		private fun SQLiteDatabase.importDatabase(
+			context: Context,
+			fileName: String
+		): String? {
+			var edb: SQLiteDatabase? = null
+			return try {
+				edb = ImportHelper(
+					ExternalDatabaseContext(context),
+					fileName
+				).readableDatabase
+				beginTransaction()
+				if (importIssuesFrom(edb)) {
+					setTransactionSuccessful()
+					null
+				} else {
+					context.getString(R.string.import_failed_unknown)
+				}
+			} catch (e: SQLException) {
+				e.message
+			} finally {
+				if (inTransaction()) {
+					endTransaction()
+				}
+				edb?.close()
+			}
+		}
+
+		private fun SQLiteDatabase.importIssuesFrom(
+			src: SQLiteDatabase
+		): Boolean {
+			val cursor = src.rawQuery(
+				"""SELECT *
+				FROM $ISSUES
+				ORDER BY $ISSUES_ID""".trimIndent(),
+				null
+			) ?: return false
+			val idIndex = cursor.getColumnIndex(ISSUES_ID)
+			val nameIndex = cursor.getColumnIndex(ISSUES_NAME)
+			val createdIndex = cursor.getColumnIndex(ISSUES_CREATED)
+			var success = true
+			if (cursor.moveToFirst()) {
+				do {
+					val srcId = cursor.getLong(idIndex)
+					val name = cursor.getString(nameIndex)
+					val created = cursor.getString(createdIndex)
+					if (srcId < 1L || issueExists(name, created)) {
+						continue
+					}
+					val destId = insert(
+						ISSUES,
+						null,
+						ContentValues().apply {
+							put(ISSUES_NAME, name)
+							put(ISSUES_CREATED, created)
+						}
+					)
+					if (destId < 1L ||
+						!importArgumentsFrom(src, srcId, destId)
+					) {
+						success = false
+						break
+					}
+				} while (cursor.moveToNext())
+			}
+			cursor.close()
+			return success
+		}
+
+		private fun SQLiteDatabase.issueExists(
+			name: String,
+			created: String
+		): Boolean {
+			val cursor = rawQuery(
+				"""SELECT $ISSUES_ID
+					FROM $ISSUES
+					WHERE $ISSUES_NAME = ?
+						AND $ISSUES_CREATED = ?
+					LIMIT 1""".trimMargin(),
+				arrayOf(name, created)
+			) ?: return false
+			val exists = cursor.moveToFirst() && cursor.count > 0
+			cursor.close()
+			return exists
+		}
+
+		private fun SQLiteDatabase.importArgumentsFrom(
+			src: SQLiteDatabase,
+			srcId: Long,
+			destId: Long
+		): Boolean {
+			val cursor = src.rawQuery(
+				"""SELECT *
+				FROM $ARGUMENTS
+				WHERE $ARGUMENTS_ISSUE = ?
+				ORDER BY $ARGUMENTS_ID""".trimIndent(),
+				arrayOf(srcId.toString())
+			) ?: return false
+			val textIndex = cursor.getColumnIndex(ARGUMENTS_TEXT)
+			val weightIndex = cursor.getColumnIndex(ARGUMENTS_WEIGHT)
+			val orderIndex = cursor.getColumnIndex(ARGUMENTS_ORDER)
+			var success = true
+			if (cursor.moveToFirst()) {
+				do {
+					val text = cursor.getString(textIndex)
+					val weight = cursor.getInt(weightIndex)
+					val order = cursor.getInt(orderIndex)
+					if (argumentExists(destId, text, weight, order)) {
+						continue
+					}
+					if (insert(
+							ARGUMENTS,
+							null,
+							ContentValues().apply {
+								put(ARGUMENTS_ISSUE, destId)
+								put(ARGUMENTS_TEXT, text)
+								put(ARGUMENTS_WEIGHT, weight)
+								put(ARGUMENTS_ORDER, order)
+							}
+						) < 1L
+					) {
+						success = false
+						break
+					}
+				} while (cursor.moveToNext())
+			}
+			cursor.close()
+			return success
+		}
+
+		private fun SQLiteDatabase.argumentExists(
+			issueId: Long,
+			text: String,
+			weight: Int,
+			order: Int
+		): Boolean {
+			val cursor = rawQuery(
+				"""SELECT $ARGUMENTS_ID
+					FROM $ARGUMENTS
+					WHERE $ARGUMENTS_ISSUE = ?
+						AND $ARGUMENTS_TEXT = ?
+						AND $ARGUMENTS_WEIGHT = ?
+						AND $ARGUMENTS_ORDER = ?
+					LIMIT 1""".trimMargin(),
+				arrayOf(
+					issueId.toString(),
+					text,
+					weight.toString(),
+					order.toString(),
+				)
+			) ?: return false
+			val exists = cursor.moveToFirst() && cursor.count > 0
+			cursor.close()
+			return exists
+		}
 	}
 }
 
@@ -284,3 +451,50 @@ private fun now(): String = SimpleDateFormat(
 	"yyyy-MM-dd HH:mm:ss",
 	Locale.US
 ).format(Date())
+
+private class ImportHelper constructor(context: Context, path: String) :
+	SQLiteOpenHelper(context, path, null, 1) {
+	override fun onCreate(db: SQLiteDatabase) {
+		// Do nothing.
+	}
+
+	override fun onDowngrade(
+		db: SQLiteDatabase,
+		oldVersion: Int,
+		newVersion: Int
+	) {
+		// Do nothing, but without that method we cannot open
+		// different versions.
+	}
+
+	override fun onUpgrade(
+		db: SQLiteDatabase,
+		oldVersion: Int,
+		newVersion: Int
+	) {
+		// Do nothing, but without that method we cannot open
+		// different versions.
+	}
+}
+
+// Somehow it's required to use this ContextWrapper to access the
+// tables in an external database. Without this, the database will
+// only contain the table "android_metadata".
+private class ExternalDatabaseContext(base: Context?) : ContextWrapper(base) {
+	override fun getDatabasePath(name: String) = File(filesDir, name)
+
+	override fun openOrCreateDatabase(
+		name: String,
+		mode: Int,
+		factory: SQLiteDatabase.CursorFactory,
+		errorHandler: DatabaseErrorHandler?
+	): SQLiteDatabase = openOrCreateDatabase(name, mode, factory)
+
+	override fun openOrCreateDatabase(
+		name: String,
+		mode: Int,
+		factory: SQLiteDatabase.CursorFactory
+	): SQLiteDatabase = SQLiteDatabase.openOrCreateDatabase(
+		getDatabasePath(name), null
+	)
+}

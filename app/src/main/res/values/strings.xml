@@ -44,4 +44,19 @@
 	<string name="show_sums_summary">Show sums of negatives and positives arguments</string>
 	<string name="sort_on_insert">Sort arguments automatically</string>
 	<string name="sort_on_insert_summary">Arguments are automatically sorted by weight when added</string>
+	<string name="import_export">Import/export database</string>
+	<string name="import_database">Import database</string>
+	<string name="import_database_summary">From a previous export</string>
+	<string name="cant_find_db">Cannot find database</string>
+	<string name="import_failed">Import failed: %1$s</string>
+	<string name="import_failed_unknown">Import failed for unknown reasons</string>
+	<string name="importing">Importing…</string>
+	<string name="import_successful">Import successful</string>
+	<string name="export_database">Export database</string>
+	<string name="export_database_summary">Into an external file</string>
+	<string name="exporting">Exporting…</string>
+	<string name="export_successful">Export successful</string>
+	<string name="export_failed">Export failed</string>
+	<string name="save_as">Save to Downloads as:</string>
+	<string name="enter_file_name">Enter a file name</string>
 </resources>

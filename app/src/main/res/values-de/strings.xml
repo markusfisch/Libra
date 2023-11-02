@@ -44,4 +44,19 @@
 	<string name="show_sums_summary">Summe der positiven und negativen Argumente anzeigen</string>
 	<string name="sort_on_insert">Argumente automatisch sortieren</string>
 	<string name="sort_on_insert_summary">Argumente werden beim Hinzufügen automatisch nach Gewicht sortiert</string>
+	<string name="import_export">Datenbank Import/Export</string>
+	<string name="import_database">Datenbank importieren</string>
+	<string name="import_database_summary">Aus einem vorhergehenden Export</string>
+	<string name="cant_find_db">Datenbank kann nicht gefunden werden</string>
+	<string name="import_failed">Import fehlgeschlagen: %1$s</string>
+	<string name="import_failed_unknown">Import fehlgeschlagen</string>
+	<string name="importing">Importiere…</string>
+	<string name="import_successful">Import erfolgreich</string>
+	<string name="export_database">Exportiere Datenbank</string>
+	<string name="export_database_summary">In eine Datei</string>
+	<string name="exporting">Exportiere…</string>
+	<string name="export_successful">Export erfolgreich</string>
+	<string name="export_failed">Export fehlgeschlagen</string>
+	<string name="save_as">Unter Downloads speichern als:</string>
+	<string name="enter_file_name">Dateinamen eingeben</string>
 </resources>

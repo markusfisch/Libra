@@ -1,20 +1,34 @@
 package de.markusfisch.android.libra.fragment
 
+import android.annotation.SuppressLint
 import android.app.Activity
+import android.app.AlertDialog
+import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener
+import android.os.Build
 import android.os.Bundle
 import android.support.v7.preference.ListPreference
 import android.support.v7.preference.Preference
 import android.support.v7.preference.PreferenceFragmentCompat
 import android.support.v7.preference.PreferenceGroup
+import android.view.LayoutInflater
+import android.widget.EditText
+import android.widget.Toast
 import de.markusfisch.android.libra.R
 import de.markusfisch.android.libra.activity.MainActivity
 import de.markusfisch.android.libra.app.prefs
+import de.markusfisch.android.libra.app.requestWritePermission
+import de.markusfisch.android.libra.database.Database
+import de.markusfisch.android.libra.database.exportDatabase
+import de.markusfisch.android.libra.database.importDatabase
 import de.markusfisch.android.libra.preferences.Preferences
+import kotlinx.coroutines.*
 
 class PreferencesFragment : PreferenceFragmentCompat() {
+	private val job = SupervisorJob()
+	private val scope = CoroutineScope(Dispatchers.Default + job)
 	private val changeListener = object : OnSharedPreferenceChangeListener {
 		override fun onSharedPreferenceChanged(
 			sharedPreferences: SharedPreferences?,
@@ -36,9 +50,45 @@ class PreferencesFragment : PreferenceFragmentCompat() {
 		}
 	}
 
+	override fun onActivityResult(
+		requestCode: Int, resultCode: Int,
+		resultData: Intent?
+	) {
+		if (requestCode == PICK_FILE_RESULT_CODE &&
+			resultCode == Activity.RESULT_OK &&
+			resultData != null
+		) {
+			val ctx = context ?: return
+			Toast.makeText(
+				ctx,
+				ctx.importDatabase(resultData.data),
+				Toast.LENGTH_LONG
+			).show()
+		}
+	}
+
 	override fun onCreatePreferences(state: Bundle?, rootKey: String?) {
 		addPreferencesFromResource(R.xml.preferences)
 		activity?.setTitle(R.string.preferences)
+		findPreference("import_database").setOnPreferenceClickListener { _ ->
+			val chooseFile = Intent(Intent.ACTION_GET_CONTENT)
+			// In theory, it should be "application/x-sqlite3"
+			// or the newer "application/vnd.sqlite3" but
+			// only "application/octet-stream" works.
+			chooseFile.type = "application/octet-stream"
+			startActivityForResult(
+				Intent.createChooser(
+					chooseFile,
+					getString(R.string.import_database)
+				),
+				PICK_FILE_RESULT_CODE
+			)
+			true
+		}
+		findPreference("export_database").setOnPreferenceClickListener { _ ->
+			activity?.askToExportToFile()
+			true
+		}
 	}
 
 	override fun onResume() {
@@ -70,6 +120,35 @@ class PreferencesFragment : PreferenceFragmentCompat() {
 			setSummary(screen.getPreference(i))
 		}
 	}
+
+	private fun Activity.askToExportToFile() {
+		// Write permission is only required before Android Q.
+		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q &&
+			!requestWritePermission() { askToExportToFile() }
+		) {
+			return
+		}
+		askForName(R.string.save_as, Database.FILE_NAME) { name ->
+			scope.launch {
+				val messageId = if (exportDatabase(name)) {
+					R.string.export_successful
+				} else {
+					R.string.export_failed
+				}
+				withContext(Dispatchers.Main) {
+					Toast.makeText(
+						this@askToExportToFile,
+						messageId,
+						Toast.LENGTH_LONG
+					).show()
+				}
+			}
+		}
+	}
+
+	companion object {
+		const val PICK_FILE_RESULT_CODE = 1
+	}
 }
 
 private fun Activity.restartApp() {
@@ -81,4 +160,26 @@ private fun Activity.restartApp() {
 	)
 	finish()
 	Runtime.getRuntime().exit(0)
+}
+
+fun Context.askForName(
+	titleId: Int,
+	preset: String,
+	callback: (String) -> Any
+) {
+	// Dialogs don't have a parent layout.
+	@SuppressLint("InflateParams")
+	val view = LayoutInflater.from(this).inflate(
+		R.layout.dialog_save_as, null
+	)
+	val nameView = view.findViewById<EditText>(R.id.name)
+	nameView.setText(preset)
+	AlertDialog.Builder(this)
+		.setTitle(titleId)
+		.setView(view)
+		.setPositiveButton(android.R.string.ok) { _, _ ->
+			callback(nameView.text.toString())
+		}
+		.setNegativeButton(android.R.string.cancel) { _, _ -> }
+		.show()
 }

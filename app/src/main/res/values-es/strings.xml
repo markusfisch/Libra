@@ -44,4 +44,19 @@
 	<string name="show_sums_summary">Muestra la suma de las ventajas y desventajas</string>
 	<string name="sort_on_insert">Ordenar automáticamente los argumentos</string>
 	<string name="sort_on_insert_summary">Ordenar automáticamente los argumentos por peso cuando se añaden</string>
+	<string name="import_export">Importar/Exportar base de datos</string>
+	<string name="import_database">Importar base de datos</string>
+	<string name="import_database_summary">Desde una exportación anterior</string>
+	<string name="cant_find_db">No se puede encontrar la base de datos</string>
+	<string name="import_failed">Fallo en la importación: %1$s</string>
+	<string name="import_failed_unknown">Fallo en la importación por razones desconocidas</string>
+	<string name="importing">Importando…</string>
+	<string name="import_successful">Importación exitosa</string>
+	<string name="export_database">Exportar base de datos</string>
+	<string name="export_database_summary">A un archivo externo</string>
+	<string name="exporting">Exportando…</string>
+	<string name="export_successful">Exportación exitosa</string>
+	<string name="export_failed">Fallo en la exportación</string>
+	<string name="save_as">Guardar en Descargas como:</string>
+	<string name="enter_file_name">Ingresar un nombre de archivo</string>
 </resources>

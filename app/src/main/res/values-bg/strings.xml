@@ -44,4 +44,19 @@
 	<string name="show_sums_summary">Показване на сбора от отрицателните и положителните доводи</string>
 	<string name="sort_on_insert">Автоматично сортиране на доводи</string>
 	<string name="sort_on_insert_summary">При добавяне, доводите се сортират автоматично според тежеста им</string>
+	<string name="import_export">Импорт/Експорт на база данни</string>
+	<string name="import_database">Импорт на база данни</string>
+	<string name="import_database_summary">От предишен експорт</string>
+	<string name="cant_find_db">Не може да бъде намерена база данни</string>
+	<string name="import_failed">Неуспешен импорт: %1$s</string>
+	<string name="import_failed_unknown">Неуспешен импорт поради неизвестни причини</string>
+	<string name="importing">Импортиране…</string>
+	<string name="import_successful">Успешен импорт</string>
+	<string name="export_database">Експорт на база данни</string>
+	<string name="export_database_summary">Във външен файл</string>
+	<string name="exporting">Експортиране…</string>
+	<string name="export_successful">Успешен експорт</string>
+	<string name="export_failed">Неуспешен експорт</string>
+	<string name="save_as">Запазване в Изтегляния като:</string>
+	<string name="enter_file_name">Въведете име на файл</string>
 </resources>

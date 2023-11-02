@@ -44,4 +44,19 @@
 	<string name="sort_on_insert">Ordenar argumentos automaticamente</string>
 	<string name="sort_on_insert_summary">Ordenar automaticamente os argumentos por peso quando são adicionados</string>
 	<string name="find_arguments">Anote todos os seus argumentos.\n\nAvalie cada argumento negativo com um número vermelho do lado esquerdo e cada argumento positivo com um número verde do lado direito.\n\nQuanto mais alto o número, mais importante é o argumento.\n\nA balança aponta para Sim se a soma dos argumentos positivos é pelo menos o dobro da soma dos negativos.</string>
+	<string name="import_export">Importar/Exportar banco de dados</string>
+	<string name="import_database">Importar banco de dados</string>
+	<string name="import_database_summary">De uma exportação anterior</string>
+	<string name="cant_find_db">Não foi possível encontrar o banco de dados</string>
+	<string name="import_failed">Falha na importação: %1$s</string>
+	<string name="import_failed_unknown">Falha na importação por razões desconhecidas</string>
+	<string name="importing">Importando…</string>
+	<string name="import_successful">Importação bem-sucedida</string>
+	<string name="export_database">Exportar banco de dados</string>
+	<string name="export_database_summary">Para um arquivo externo</string>
+	<string name="exporting">Exportando…</string>
+	<string name="export_successful">Exportação bem-sucedida</string>
+	<string name="export_failed">Falha na exportação</string>
+	<string name="save_as">Salvar em Downloads como:</string>
+	<string name="enter_file_name">Digite um nome de arquivo</string>
 </resources>

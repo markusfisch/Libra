@@ -44,4 +44,19 @@
 	<string name="show_sums_summary">Toon de som van positieve en negatieve argumenten</string>
 	<string name="sort_on_insert">Argumenten automatisch sorteren</string>
 	<string name="sort_on_insert_summary">Argumenten worden automatisch gesorteerd op niveau zodra ze worden toegevoegd</string>
+	<string name="import_export">Database importeren/exporteren</string>
+	<string name="import_database">Database importeren</string>
+	<string name="import_database_summary">Van een eerdere export</string>
+	<string name="cant_find_db">Kan de database niet vinden</string>
+	<string name="import_failed">Importeren mislukt: %1$s</string>
+	<string name="import_failed_unknown">Importeren mislukt om onbekende redenen</string>
+	<string name="importing">Importeren…</string>
+	<string name="import_successful">Importeren gelukt</string>
+	<string name="export_database">Database exporteren</string>
+	<string name="export_database_summary">Naar een extern bestand</string>
+	<string name="exporting">Exporteren…</string>
+	<string name="export_successful">Exporteren gelukt</string>
+	<string name="export_failed">Exporteren mislukt</string>
+	<string name="save_as">Opslaan in Downloads als:</string>
+	<string name="enter_file_name">Voer een bestandsnaam in</string>
 </resources>
