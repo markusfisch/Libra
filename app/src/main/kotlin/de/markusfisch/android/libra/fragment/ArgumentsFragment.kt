@@ -7,7 +7,12 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.view.ActionMode
-import android.view.*
+import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import android.widget.ListView
@@ -52,15 +57,18 @@ class ArgumentsFragment : Fragment() {
 					moveArgument(adapter.selectedId, -1)
 					true
 				}
+
 				R.id.move_argument_down -> {
 					moveArgument(adapter.selectedId, 1)
 					true
 				}
+
 				R.id.remove_argument -> {
 					askToRemoveArgument(activity, adapter.selectedId)
 					closeActionMode()
 					true
 				}
+
 				else -> false
 			}
 		}
@@ -118,6 +126,7 @@ class ArgumentsFragment : Fragment() {
 				EditorInfo.IME_ACTION_DONE,
 				EditorInfo.IME_ACTION_NEXT,
 				EditorInfo.IME_NULL -> saveArgument()
+
 				else -> false
 			}
 		}
@@ -167,29 +176,35 @@ class ArgumentsFragment : Fragment() {
 				}
 				true
 			}
+
 			R.id.sort_arguments -> {
 				sortArguments()
 				true
 			}
+
 			R.id.unsort_arguments -> {
 				unsortArguments()
 				true
 			}
+
 			R.id.remove_issue -> {
 				askToRemoveIssue(context, issueId) {
 					fragmentManager?.popBackStack()
 				}
 				true
 			}
+
 			R.id.duplicate_issue -> {
 				db.duplicateIssue(issueId)
 				fragmentManager?.popBackStack()
 				true
 			}
+
 			R.id.share_arguments -> {
 				shareArguments()
 				true
 			}
+
 			else -> super.onOptionsItemSelected(item)
 		}
 	}

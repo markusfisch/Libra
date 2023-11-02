@@ -12,7 +12,7 @@ import android.widget.TextView
 import de.markusfisch.android.libra.R
 import de.markusfisch.android.libra.app.Recommendation
 import de.markusfisch.android.libra.database.Database
-import java.util.*
+import java.util.Date
 
 class IssuesAdapter(context: Context, cursor: Cursor) :
 	CursorAdapter(context, cursor, false) {
@@ -114,6 +114,7 @@ class IssuesAdapter(context: Context, cursor: Cursor) :
 					minutes
 				)
 			}
+
 			since < hour * 24L -> {
 				val hours = (since / hour).toInt()
 				return res.getQuantityString(
@@ -122,6 +123,7 @@ class IssuesAdapter(context: Context, cursor: Cursor) :
 					hours
 				)
 			}
+
 			since < hour * 72L -> {
 				val days = (since / day).toInt()
 				return res.getQuantityString(
@@ -130,6 +132,7 @@ class IssuesAdapter(context: Context, cursor: Cursor) :
 					days
 				)
 			}
+
 			else -> return dateFormat.format(Date(time * 1000L))
 		}
 	}

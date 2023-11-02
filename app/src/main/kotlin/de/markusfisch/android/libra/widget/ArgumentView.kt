@@ -1,7 +1,12 @@
 package de.markusfisch.android.libra.widget
 
 import android.content.Context
-import android.graphics.*
+import android.graphics.Canvas
+import android.graphics.Paint
+import android.graphics.Path
+import android.graphics.Rect
+import android.graphics.RectF
+import android.graphics.Typeface
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.AppCompatTextView
 import android.text.TextPaint
@@ -26,6 +31,7 @@ class ArgumentView : AppCompatTextView {
 					)
 					getParams(RelativeLayout.ALIGN_PARENT_LEFT)
 				}
+
 				value > 0 -> {
 					setPadding(
 						outerPaddingHorizontalSmall,
@@ -35,6 +41,7 @@ class ArgumentView : AppCompatTextView {
 					)
 					getParams(RelativeLayout.ALIGN_PARENT_RIGHT)
 				}
+
 				else -> {
 					setPadding(
 						outerPaddingHorizontalSmall,

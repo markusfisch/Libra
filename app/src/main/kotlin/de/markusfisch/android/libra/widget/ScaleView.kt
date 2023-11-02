@@ -1,7 +1,12 @@
 package de.markusfisch.android.libra.widget
 
 import android.content.Context
-import android.graphics.*
+import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.graphics.Matrix
+import android.graphics.Paint
+import android.graphics.Rect
+import android.graphics.Typeface
 import android.support.v4.content.ContextCompat
 import android.text.TextPaint
 import android.view.View
@@ -10,7 +15,13 @@ import android.view.animation.Transformation
 import de.markusfisch.android.libra.R
 import de.markusfisch.android.libra.app.prefs
 import de.markusfisch.android.libra.graphics.getBitmapFromDrawable
-import kotlin.math.*
+import kotlin.math.cos
+import kotlin.math.hypot
+import kotlin.math.max
+import kotlin.math.min
+import kotlin.math.round
+import kotlin.math.roundToInt
+import kotlin.math.sin
 
 class ScaleView(context: Context) : View(context) {
 	var radians = 0.0

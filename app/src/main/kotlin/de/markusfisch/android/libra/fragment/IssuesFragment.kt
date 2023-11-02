@@ -49,6 +49,7 @@ class IssuesFragment : Fragment() {
 					closeActionMode()
 					true
 				}
+
 				R.id.edit_issue -> {
 					askForIssueName(
 						context,
@@ -60,6 +61,7 @@ class IssuesFragment : Fragment() {
 					closeActionMode()
 					true
 				}
+
 				R.id.remove_issue -> {
 					askToRemoveIssue(activity, adapter.selectedId) {
 						updateList()
@@ -67,6 +69,7 @@ class IssuesFragment : Fragment() {
 					closeActionMode()
 					true
 				}
+
 				else -> false
 			}
 		}
@@ -152,6 +155,7 @@ class IssuesFragment : Fragment() {
 				fragmentManager?.addFragment(PreferencesFragment())
 				true
 			}
+
 			else -> super.onOptionsItemSelected(item)
 		}
 	}
