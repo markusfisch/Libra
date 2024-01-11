@@ -9,10 +9,10 @@ import android.database.SQLException
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import de.markusfisch.android.libra.R
-import de.markusfisch.android.libra.database.Database.Companion.issueExists
 import java.io.File
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Date
+import java.util.Locale
 import kotlin.math.max
 import kotlin.math.min
 
