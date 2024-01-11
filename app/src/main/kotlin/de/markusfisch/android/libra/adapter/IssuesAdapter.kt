@@ -75,7 +75,7 @@ class IssuesAdapter(context: Context, cursor: Cursor) :
 		holder.iconView.setImageResource(icon)
 		val time = cursor.getLong(createdIndex)
 		var name: String? = cursor.getString(nameIndex)
-		if (name == null || name.isEmpty()) {
+		if (name.isNullOrEmpty()) {
 			name = dateFormat.format(Date(time * 1000L))
 		}
 		holder.nameView.text = name
