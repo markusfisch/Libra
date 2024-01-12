@@ -1,5 +1,8 @@
 # Change Log
 
+## 1.13.0
+* Import/Export database
+
 ## 1.12.6
 * Add Bulgarian translation
 
