@@ -1,0 +1,8 @@
+Запишіть плюси і мінуси, потім зважте всі аргументи та отримайте рекомендацію на основі цієї статті Time:
+http://time.com/3772262/billionaire-trick-for-decisions/
+
+Це відкритий вихідний код:
+https://github.com/markusfisch/Libra
+
+Будь ласка, повідомляйте про помилки тут:
+https://github.com/markusfisch/Libra/issues
