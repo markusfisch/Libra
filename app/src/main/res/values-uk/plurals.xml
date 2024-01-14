@@ -1,14 +1,20 @@
 <resources>
 	<plurals name="minutes_ago">
 		<item quantity="one">%d хвилину тому</item>
+		<item quantity="few">%d хвилин тому</item>
+		<item quantity="many">%d хвилин тому</item>
 		<item quantity="other">%d хвилин тому</item>
 	</plurals>
 	<plurals name="hours_ago">
 		<item quantity="one">%d годину тому</item>
+		<item quantity="few">%d години тому</item>
+		<item quantity="many">%d годин тому</item>
 		<item quantity="other">%d години тому</item>
 	</plurals>
 	<plurals name="days_ago">
-		<item quantity="one">Вчора</item>
+		<item quantity="one">%d день тому</item>
+		<item quantity="few">%d дні тому</item>
+		<item quantity="many">%d днів тому</item>
 		<item quantity="other">%d днів тому</item>
 	</plurals>
 </resources>
