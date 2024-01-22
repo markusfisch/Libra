@@ -44,7 +44,7 @@
 	<string name="show_sums_summary">Показване на сбора от отрицателните и положителните доводи</string>
 	<string name="sort_on_insert">Автоматично сортиране на доводи</string>
 	<string name="sort_on_insert_summary">При добавяне, доводите се сортират автоматично според тежеста им</string>
-	<string name="import_export">Импорт/Експорт на база данни</string>
+	<string name="import_export_category">ИМПОРТ/ЕКСПОРТ НА БАЗА ДАННИ</string>
 	<string name="import_database">Импорт на база данни</string>
 	<string name="import_database_summary">От предишен експорт</string>
 	<string name="cant_find_db">Не може да бъде намерена база данни</string>

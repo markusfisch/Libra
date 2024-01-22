@@ -44,7 +44,7 @@
 	<string name="show_sums_summary">Summe der positiven und negativen Argumente anzeigen</string>
 	<string name="sort_on_insert">Argumente automatisch sortieren</string>
 	<string name="sort_on_insert_summary">Argumente werden beim Hinzufügen automatisch nach Gewicht sortiert</string>
-	<string name="import_export">Datenbank Import/Export</string>
+	<string name="import_export_category">DATENBANK IMPORT/EXPORT</string>
 	<string name="import_database">Datenbank importieren</string>
 	<string name="import_database_summary">Aus einem vorhergehenden Export</string>
 	<string name="cant_find_db">Datenbank kann nicht gefunden werden</string>

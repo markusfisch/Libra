@@ -44,7 +44,7 @@
 	<string name="show_sums_summary">Afficher la somme des avantages et inconvénients</string>
 	<string name="sort_on_insert">Ordonner automatiquement les arguments</string>
 	<string name="sort_on_insert_summary">Ordonner automatiquement les arguments par poids à l’ajout</string>
-	<string name="import_export">Importer/Exporter la base de données</string>
+	<string name="import_export_category">IMPORTER/EXPORTER LA BASE DE DONNÉES</string>
 	<string name="import_database">Importer la base de données</string>
 	<string name="import_database_summary">Depuis une précédente exportation</string>
 	<string name="cant_find_db">Impossible de trouver la base de données</string>

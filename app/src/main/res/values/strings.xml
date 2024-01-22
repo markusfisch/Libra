@@ -44,7 +44,7 @@
 	<string name="show_sums_summary">Show sums of negatives and positives arguments</string>
 	<string name="sort_on_insert">Sort arguments automatically</string>
 	<string name="sort_on_insert_summary">Arguments are automatically sorted by weight when added</string>
-	<string name="import_export">Import/export database</string>
+	<string name="import_export_category">IMPORT/EXPORT DATABASE</string>
 	<string name="import_database">Import database</string>
 	<string name="import_database_summary">From a previous export</string>
 	<string name="cant_find_db">Cannot find database</string>

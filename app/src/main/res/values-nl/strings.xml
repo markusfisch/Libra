@@ -44,7 +44,7 @@
 	<string name="show_sums_summary">Toon de som van positieve en negatieve argumenten</string>
 	<string name="sort_on_insert">Argumenten automatisch sorteren</string>
 	<string name="sort_on_insert_summary">Argumenten worden automatisch gesorteerd op niveau zodra ze worden toegevoegd</string>
-	<string name="import_export">Database importeren/exporteren</string>
+	<string name="import_export_category">DATABASE IMPORTEREN/EXPORTEREN</string>
 	<string name="import_database">Database importeren</string>
 	<string name="import_database_summary">Van een eerdere export</string>
 	<string name="cant_find_db">Kan de database niet vinden</string>

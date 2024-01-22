@@ -44,7 +44,7 @@
 	<string name="sort_on_insert">Ordenar argumentos automaticamente</string>
 	<string name="sort_on_insert_summary">Ordenar automaticamente os argumentos por peso quando são adicionados</string>
 	<string name="find_arguments">Anote todos os seus argumentos.\n\nAvalie cada argumento negativo com um número vermelho do lado esquerdo e cada argumento positivo com um número verde do lado direito.\n\nQuanto mais alto o número, mais importante é o argumento.\n\nA balança aponta para Sim se a soma dos argumentos positivos é pelo menos o dobro da soma dos negativos.</string>
-	<string name="import_export">Importar/Exportar banco de dados</string>
+	<string name="import_export_category">IMPORTAR/EXPORTAR BANCO DE DADOS</string>
 	<string name="import_database">Importar banco de dados</string>
 	<string name="import_database_summary">De uma exportação anterior</string>
 	<string name="cant_find_db">Não foi possível encontrar o banco de dados</string>

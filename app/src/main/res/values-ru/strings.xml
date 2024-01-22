@@ -45,7 +45,7 @@
 	<string name="show_sums_summary">Показать сумму негативных и позитивных аргументов</string>
 	<string name="sort_on_insert">Сортировать аргументы автоматически</string>
 	<string name="sort_on_insert_summary">Сортировать аргументы по весу при добавлении</string>
-	<string name="import_export">Импорт/экспорт базы данных</string>
+	<string name="import_export_category">ИМПОРТ/ЭКСПОРТ БАЗЫ ДАННЫХ</string>
 	<string name="import_database">Импорт базы данных</string>
 	<string name="import_database_summary">Из предыдущего экспорта</string>
 	<string name="cant_find_db">Не удается найти базу данных</string>
