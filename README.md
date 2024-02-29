@@ -8,6 +8,15 @@ Android app that helps making decisions. Works like this:
 
 Inspired by this [Time article][trick-for-decisions].
 
+If you find this app useful and wish to support its continued development,
+you can [buy me a coffee](https://www.buymeacoffee.com/markusfisch) or
+send some Bitcoin decimals to `bc1q2guk2rpll587aymrfadkdtpq32448x5khk5j8z`.
+
+<a href="https://www.buymeacoffee.com/markusfisch" target="_blank"><img
+	src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png"
+	alt="Buy Me A Coffee"
+	style="height: 60px !important;width: 217px !important;"/></a>
+
 ## Screenshots
 
 <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/screencap-arguments-light.png"
@@ -22,10 +31,10 @@ Inspired by this [Time article][trick-for-decisions].
 ## Download
 
 [<img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png"
-     alt="Get it on F-Droid"
-     height="80">](https://f-droid.org/packages/de.markusfisch.android.libra/)
+	alt="Get it on F-Droid"
+	height="80">](https://f-droid.org/packages/de.markusfisch.android.libra/)
 [<img src="https://play.google.com/intl/en_us/badges/images/generic/en-play-badge.png"
-     alt="Get it on Google Play"
-     height="80">](https://play.google.com/store/apps/details?id=de.markusfisch.android.libra)
+	alt="Get it on Google Play"
+	height="80">](https://play.google.com/store/apps/details?id=de.markusfisch.android.libra)
 
 [trick-for-decisions]: http://time.com/3772262/billionaire-trick-for-decisions/
