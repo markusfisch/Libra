@@ -1,5 +1,6 @@
 package de.markusfisch.android.libra.graphics
 
+import android.annotation.SuppressLint
 import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.Canvas
@@ -12,6 +13,7 @@ fun Resources.getBitmapFromDrawable(
 	resId: Int
 ): Bitmap = getBitmapFromDrawable(getDrawableCompat(resId))
 
+@SuppressLint("UseCompatLoadingForDrawables")
 fun Resources.getDrawableCompat(
 	resId: Int
 ): Drawable = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
