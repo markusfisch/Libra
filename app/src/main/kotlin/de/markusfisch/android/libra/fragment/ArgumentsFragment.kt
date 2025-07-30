@@ -4,9 +4,9 @@ import android.app.AlertDialog
 import android.content.Context
 import android.database.Cursor
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v7.app.AppCompatActivity
-import android.support.v7.view.ActionMode
+import androidx.fragment.app.Fragment
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.view.ActionMode
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
@@ -64,7 +64,7 @@ class ArgumentsFragment : Fragment() {
 				}
 
 				R.id.remove_argument -> {
-					askToRemoveArgument(activity, adapter.selectedId)
+					activity?.let { askToRemoveArgument(it, adapter.selectedId) }
 					closeActionMode()
 					true
 				}
@@ -96,19 +96,19 @@ class ArgumentsFragment : Fragment() {
 		container: ViewGroup?,
 		state: Bundle?
 	): View? {
-		if (arguments != null) {
-			issueId = arguments.getLong(ISSUE_ID, 0)
+		arguments?.let {
+			issueId = it.getLong(ISSUE_ID, 0)
 		}
 
 		val title = db.getIssueName(issueId)
 		if (title.isEmpty()) {
-			activity.setTitle(R.string.arguments)
+			activity?.setTitle(R.string.arguments)
 		} else {
-			activity.title = title
+			activity?.title = title
 		}
 
 		val cursor = db.getArguments(issueId) ?: return null
-		adapter = ArgumentsAdapter(activity, cursor)
+		adapter = ArgumentsAdapter(requireActivity(), cursor)
 
 		val view = inflater.inflate(
 			R.layout.fragment_arguments,
@@ -134,7 +134,7 @@ class ArgumentsFragment : Fragment() {
 		val enterButton = view.findViewById<View>(R.id.save_argument)
 		enterButton.setOnClickListener { saveArgument() }
 
-		scaleView = ScaleView(activity)
+		scaleView = ScaleView(requireActivity())
 		updateScale(cursor)
 
 		listView = view.findViewById(R.id.arguments)
@@ -168,7 +168,7 @@ class ArgumentsFragment : Fragment() {
 		return when (item.itemId) {
 			R.id.edit_issue -> {
 				askForIssueName(
-					context,
+					requireContext(),
 					issueId,
 					db.getIssueName(issueId)
 				) { title ->
@@ -188,7 +188,7 @@ class ArgumentsFragment : Fragment() {
 			}
 
 			R.id.remove_issue -> {
-				askToRemoveIssue(context, issueId) {
+				askToRemoveIssue(requireContext(), issueId) {
 					fragmentManager?.popBackStack()
 				}
 				true

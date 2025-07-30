@@ -9,10 +9,10 @@ import android.content.SharedPreferences
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener
 import android.os.Build
 import android.os.Bundle
-import android.support.v7.preference.ListPreference
-import android.support.v7.preference.Preference
-import android.support.v7.preference.PreferenceFragmentCompat
-import android.support.v7.preference.PreferenceGroup
+import androidx.preference.ListPreference
+import androidx.preference.Preference
+import androidx.preference.PreferenceFragmentCompat
+import androidx.preference.PreferenceGroup
 import android.view.LayoutInflater
 import android.widget.EditText
 import android.widget.Toast
@@ -70,7 +70,7 @@ class PreferencesFragment : PreferenceFragmentCompat() {
 	override fun onCreatePreferences(state: Bundle?, rootKey: String?) {
 		addPreferencesFromResource(R.xml.preferences)
 		activity?.setTitle(R.string.preferences)
-		findPreference("import_database").setOnPreferenceClickListener { _ ->
+		findPreference<Preference>("import_database")?.onPreferenceClickListener = Preference.OnPreferenceClickListener { _ ->
 			val chooseFile = Intent(Intent.ACTION_GET_CONTENT)
 			// In theory, it should be "application/x-sqlite3"
 			// or the newer "application/vnd.sqlite3" but
@@ -85,7 +85,7 @@ class PreferencesFragment : PreferenceFragmentCompat() {
 			)
 			true
 		}
-		findPreference("export_database").setOnPreferenceClickListener { _ ->
+		findPreference<Preference>("export_database")?.onPreferenceClickListener = Preference.OnPreferenceClickListener { _ ->
 			activity?.askToExportToFile()
 			true
 		}
@@ -95,7 +95,7 @@ class PreferencesFragment : PreferenceFragmentCompat() {
 		super.onResume()
 		preferenceScreen
 			.sharedPreferences
-			.registerOnSharedPreferenceChangeListener(changeListener)
+			?.registerOnSharedPreferenceChangeListener(changeListener)
 		setSummaries(preferenceScreen)
 	}
 
@@ -103,7 +103,7 @@ class PreferencesFragment : PreferenceFragmentCompat() {
 		super.onPause()
 		preferenceScreen
 			.sharedPreferences
-			.unregisterOnSharedPreferenceChangeListener(changeListener)
+			?.unregisterOnSharedPreferenceChangeListener(changeListener)
 	}
 
 	private fun setSummary(preference: Preference) {

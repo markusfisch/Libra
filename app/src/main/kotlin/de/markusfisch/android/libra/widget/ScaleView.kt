@@ -7,7 +7,7 @@ import android.graphics.Matrix
 import android.graphics.Paint
 import android.graphics.Rect
 import android.graphics.Typeface
-import android.support.v4.content.ContextCompat
+import androidx.core.content.ContextCompat
 import android.text.TextPaint
 import android.view.View
 import android.view.animation.Animation

@@ -2,8 +2,8 @@ package de.markusfisch.android.libra.activity
 
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.Toolbar
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import de.markusfisch.android.libra.R
 import de.markusfisch.android.libra.app.PERMISSION_WRITE
 import de.markusfisch.android.libra.app.addFragment

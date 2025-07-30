@@ -5,9 +5,9 @@ import android.app.AlertDialog
 import android.content.Context
 import android.database.Cursor
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v7.app.AppCompatActivity
-import android.support.v7.view.ActionMode
+import androidx.fragment.app.Fragment
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.view.ActionMode
 import android.view.*
 import android.widget.EditText
 import android.widget.ListView
@@ -52,7 +52,7 @@ class IssuesFragment : Fragment() {
 
 				R.id.edit_issue -> {
 					askForIssueName(
-						context,
+						requireContext(),
 						adapter.selectedId,
 						getItemText(adapter.selectedPosition)
 					) {
@@ -63,9 +63,9 @@ class IssuesFragment : Fragment() {
 				}
 
 				R.id.remove_issue -> {
-					askToRemoveIssue(activity, adapter.selectedId) {
+					activity?.let { askToRemoveIssue(it, adapter.selectedId) {
 						updateList()
-					}
+					} }
 					closeActionMode()
 					true
 				}
@@ -92,10 +92,10 @@ class IssuesFragment : Fragment() {
 		container: ViewGroup?,
 		state: Bundle?
 	): View? {
-		activity.setTitle(R.string.issues)
+		activity?.setTitle(R.string.issues)
 
 		val cursor = db.getIssues() ?: return null
-		adapter = IssuesAdapter(activity, cursor)
+		adapter = IssuesAdapter(requireActivity(), cursor)
 
 		val view = inflater.inflate(
 			R.layout.fragment_issues,
