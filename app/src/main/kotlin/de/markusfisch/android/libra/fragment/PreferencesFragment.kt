@@ -9,13 +9,13 @@ import android.content.SharedPreferences
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener
 import android.os.Build
 import android.os.Bundle
+import android.view.LayoutInflater
+import android.widget.EditText
+import android.widget.Toast
 import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceGroup
-import android.view.LayoutInflater
-import android.widget.EditText
-import android.widget.Toast
 import de.markusfisch.android.libra.R
 import de.markusfisch.android.libra.activity.MainActivity
 import de.markusfisch.android.libra.app.prefs
@@ -24,7 +24,11 @@ import de.markusfisch.android.libra.database.Database
 import de.markusfisch.android.libra.database.exportDatabase
 import de.markusfisch.android.libra.database.importDatabase
 import de.markusfisch.android.libra.preferences.Preferences
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class PreferencesFragment : PreferenceFragmentCompat() {
 	private val job = SupervisorJob()
@@ -70,25 +74,27 @@ class PreferencesFragment : PreferenceFragmentCompat() {
 	override fun onCreatePreferences(state: Bundle?, rootKey: String?) {
 		addPreferencesFromResource(R.xml.preferences)
 		activity?.setTitle(R.string.preferences)
-		findPreference<Preference>("import_database")?.onPreferenceClickListener = Preference.OnPreferenceClickListener { _ ->
-			val chooseFile = Intent(Intent.ACTION_GET_CONTENT)
-			// In theory, it should be "application/x-sqlite3"
-			// or the newer "application/vnd.sqlite3" but
-			// only "application/octet-stream" works.
-			chooseFile.type = "application/octet-stream"
-			startActivityForResult(
-				Intent.createChooser(
-					chooseFile,
-					getString(R.string.import_database)
-				),
-				PICK_FILE_RESULT_CODE
-			)
-			true
-		}
-		findPreference<Preference>("export_database")?.onPreferenceClickListener = Preference.OnPreferenceClickListener { _ ->
-			activity?.askToExportToFile()
-			true
-		}
+		findPreference<Preference>("import_database")?.onPreferenceClickListener =
+			Preference.OnPreferenceClickListener { _ ->
+				val chooseFile = Intent(Intent.ACTION_GET_CONTENT)
+				// In theory, it should be "application/x-sqlite3"
+				// or the newer "application/vnd.sqlite3" but
+				// only "application/octet-stream" works.
+				chooseFile.type = "application/octet-stream"
+				startActivityForResult(
+					Intent.createChooser(
+						chooseFile,
+						getString(R.string.import_database)
+					),
+					PICK_FILE_RESULT_CODE
+				)
+				true
+			}
+		findPreference<Preference>("export_database")?.onPreferenceClickListener =
+			Preference.OnPreferenceClickListener { _ ->
+				activity?.askToExportToFile()
+				true
+			}
 	}
 
 	override fun onResume() {

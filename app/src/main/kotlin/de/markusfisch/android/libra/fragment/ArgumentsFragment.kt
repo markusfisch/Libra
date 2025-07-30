@@ -4,9 +4,6 @@ import android.app.AlertDialog
 import android.content.Context
 import android.database.Cursor
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.view.ActionMode
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
@@ -17,6 +14,9 @@ import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import android.widget.ListView
 import android.widget.SeekBar
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.view.ActionMode
+import androidx.fragment.app.Fragment
 import de.markusfisch.android.libra.R
 import de.markusfisch.android.libra.adapter.ArgumentsAdapter
 import de.markusfisch.android.libra.app.db

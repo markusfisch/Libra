@@ -7,11 +7,11 @@ import android.graphics.Path
 import android.graphics.Rect
 import android.graphics.RectF
 import android.graphics.Typeface
-import androidx.core.content.ContextCompat
-import androidx.appcompat.widget.AppCompatTextView
 import android.text.TextPaint
 import android.util.AttributeSet
 import android.widget.RelativeLayout
+import androidx.appcompat.widget.AppCompatTextView
+import androidx.core.content.ContextCompat
 import de.markusfisch.android.libra.R
 import kotlin.math.abs
 import kotlin.math.min

@@ -4,9 +4,9 @@ import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.Rect
-import androidx.core.content.ContextCompat
-import androidx.appcompat.widget.AppCompatSeekBar
 import android.util.AttributeSet
+import androidx.appcompat.widget.AppCompatSeekBar
+import androidx.core.content.ContextCompat
 import de.markusfisch.android.libra.R
 import kotlin.math.abs
 import kotlin.math.roundToInt

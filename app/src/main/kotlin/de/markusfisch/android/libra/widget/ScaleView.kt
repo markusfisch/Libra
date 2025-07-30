@@ -7,11 +7,11 @@ import android.graphics.Matrix
 import android.graphics.Paint
 import android.graphics.Rect
 import android.graphics.Typeface
-import androidx.core.content.ContextCompat
 import android.text.TextPaint
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.Transformation
+import androidx.core.content.ContextCompat
 import de.markusfisch.android.libra.R
 import de.markusfisch.android.libra.app.prefs
 import de.markusfisch.android.libra.graphics.getBitmapFromDrawable
