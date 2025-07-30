@@ -2,10 +2,12 @@
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
-	android:orientation="vertical">
+	android:orientation="vertical"
+	android:fitsSystemWindows="true">
 	<include layout="@layout/toolbar"/>
 	<FrameLayout
 		android:id="@+id/content_frame"
+		android:background="@color/background_window"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"/>
 </LinearLayout>

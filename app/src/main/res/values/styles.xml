@@ -6,7 +6,7 @@
 		<item name="colorPrimaryDark">@color/primary_dark</item>
 		<item name="colorAccent">@color/accent</item>
 		<item name="android:windowLightStatusBar" tools:targetApi="23">true</item>
-		<item name="android:windowBackground">@color/background_window</item>
+		<item name="android:windowBackground">@color/primary</item>
 		<item name="windowActionModeOverlay">true</item>
 		<item name="actionModeBackground">@color/background_action_mode</item>
 		<item name="preferenceTheme">@style/PreferenceThemeOverlay</item>
