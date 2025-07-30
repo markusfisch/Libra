@@ -34,7 +34,7 @@ fun Context.importDatabase(uri: Uri?): String {
 		try {
 			inputStream?.close()
 			outputStream?.close()
-		} catch (e: java.io.IOException) {
+		} catch (_: java.io.IOException) {
 			// Ignore, can't do anything about it.
 		}
 	}
