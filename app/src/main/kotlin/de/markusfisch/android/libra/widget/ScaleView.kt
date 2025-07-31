@@ -22,6 +22,7 @@ import kotlin.math.min
 import kotlin.math.round
 import kotlin.math.roundToInt
 import kotlin.math.sin
+import androidx.core.view.isVisible
 
 class ScaleView(context: Context) : View(context) {
 	var radians = 0.0
@@ -118,7 +119,7 @@ class ScaleView(context: Context) : View(context) {
 				positive.toFloat()
 			).toDouble()
 			if (target != radians) {
-				if (visibility == VISIBLE) {
+				if (isVisible) {
 					animation = ScaleAnimation(this, radians, target)
 				} else {
 					radians = target
