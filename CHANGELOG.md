@@ -1,5 +1,8 @@
 # Change Log
 
+## 1.13.1
+* Target Android 16
+
 ## 1.13.0
 * Import/Export database
 
