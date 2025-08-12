@@ -168,7 +168,7 @@ private fun Activity.restartApp() {
 	Runtime.getRuntime().exit(0)
 }
 
-fun Context.askForName(
+private fun Context.askForName(
 	titleId: Int,
 	preset: String,
 	callback: (String) -> Any
