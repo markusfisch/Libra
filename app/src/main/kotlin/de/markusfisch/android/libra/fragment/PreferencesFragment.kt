@@ -39,7 +39,7 @@ class PreferencesFragment : PreferenceFragmentCompat() {
 			key: String?
 		) {
 			key ?: return
-			val preference = findPreference(key) ?: return
+			val preference = findPreference<Preference>(key) ?: return
 			val design = prefs.design
 			prefs.update()
 			setSummary(preference)
