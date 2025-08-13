@@ -1,5 +1,8 @@
 # Change Log
 
+## 1.13.2
+* Fix handling preferences
+
 ## 1.13.1
 * Target Android 16
 
